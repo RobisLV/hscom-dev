@@ -4,7 +4,6 @@ Arturs Orbidans
 Raivis Paberz
 Roberts Trops
 */
-
 #include <msp430.h>
 #include "dpuser.h"
 #include "RCS_auxiliary.h"
@@ -19,19 +18,19 @@ Roberts Trops
 #define enable_tx		3
 #define disable_tx		4
 //#define enable_rx		5
-//#define disable_rx		6
+//#define disable_rx	6
 #define set_pwr			7
 #define set_reg			8
 #define get_phase_lck	9
-//#define set_dac			10
+//#define set_dac		10
 #define stdby_high		11
 #define stdby_low		12
 //#define gset_high		13
 //#define gset_low		14
 //#define pdv_high		15
-//#define pdv_low			16
-//#define pd_high			17
-//#define pd_low			18
+//#define pdv_low		16
+//#define pd_high		17
+//#define pd_low		18
 //#define read_adc		19
 #define osc_en			20
 #define osc_dis			21
@@ -356,7 +355,6 @@ int main(void) {
     temp2 = 0;
     temp3 = 0;
     }
-	return 0;
 }
 
 unsigned char UART_read_buffer (void)

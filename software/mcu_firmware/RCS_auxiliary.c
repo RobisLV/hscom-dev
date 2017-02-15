@@ -5,9 +5,43 @@
 #include "dpuser.h"
 
 //Array in MCU's non-volatile FRAM memory to sotre RCS settings
-#pragma NOINIT(settings_array)
-//unsigned char settings_array[17];
-unsigned int settings_array[17];
+#pragma PERSISTENT(default_settings)
+#pragma NOINIT(userdef_settings)
+uint16_t default_settings[conf_block_size] = {
+	    0b01000101000000, // R0
+	    0b00000011001010, // R1
+	    0b01000000000111, // R2
+	    0b11000011101000, // R3
+	    0b00110011001100, // R4
+	    0b01111101100011, // R5
+	    0b01110000000000, // R6
+	    0b00000000101010, // R7
+	    0b00000000100101, // R8
+	    0b00001000000000, // R9
+	    0b00001111000000, // R10
+	    0b00000001111111, // R11
+	    0b00000000000000, // R12
+		0x00,
+		0x00,
+		0x00,
+		0x00
+};
+uint16_t userdef_settings[conf_block_size];
+
+struct chip_conf
+{
+	//uint16_t max2828_reg[13];
+	uint16_t max2828_pin;
+	uint8_t max2828_pwr;
+	uint8_t dac2932_pin;
+}ch_conf;
+
+#pragma PERSISTENT(test_struct)
+struct chip_conf test_struct =
+{
+		.max2828_pin = 0x05,
+		.max2828_pwr = 0x45
+};
 
 unsigned char init_pins()
 {
@@ -110,23 +144,23 @@ unsigned char SPI_RCS_send_byte(unsigned char data)
 	return 1;
 }
 
-//unsigned char store_dac(unsigned char* data_msb, unsigned char* data_lsb)
-//{
-//	settings_array[index_dac_msb] = *data_msb;
-//	settings_array[index_dac_lsb] = *data_lsb;
-//	return 1;
-//}
+unsigned char store_dac(unsigned char* data_msb, unsigned char* data_lsb)
+{
+	default_settings[index_dac_msb] = *data_msb;
+	default_settings[index_dac_lsb] = *data_lsb;
+	return 1;
+}
 
 unsigned char store_max2828_power_settings (unsigned char* data)
 {
-	settings_array[index_max2828_pwr] = *data;
+	default_settings[index_max2828_pwr] = *data;
 	return 1;
 }
 
 unsigned char store_max2828_gpio_settings (unsigned char bit_no, unsigned char state)
 {
 	//Clears or sets specified bit in register
-	if (state) settings_array[index_max2828_gpio] |= (1<<bit_no); else settings_array[3] &= ~(1<<bit_no);
+	if (state) default_settings[index_max2828_gpio] |= (1<<bit_no); else default_settings[3] &= ~(1<<bit_no);
 	return 1;
 }
 
@@ -137,20 +171,20 @@ unsigned char store_max2828_registers (unsigned char* register_no, unsigned long
 //	settings_array[index_max2828_reg1+offset]	=  *data_msb;
 //	settings_array[index_max2828_reg2+offset]	=  *data_lsb;
 	unsigned int offset = *register_no;
-	settings_array[index_max2828_reg1+offset]	=  *data;
+	default_settings[index_max2828_reg1+offset]	=  *data;
 	return 1;
 }
 
 signed char get_stored_settings (unsigned char requested_byte)
 {
-	if (requested_byte > settings_array_size-1)
+	if (requested_byte > conf_block_size-1)
 		{
 			#ifdef ENABLE_DISPLAY
 			dp_display_text("Incorrect index!");
 			#endif
 			return -1;
 		}
-	return settings_array[requested_byte];
+	return default_settings[requested_byte];
 }
 
 
