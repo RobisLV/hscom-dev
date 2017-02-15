@@ -17,8 +17,6 @@ Roberts Trops
 #define disable_chip	2
 #define enable_tx		3
 #define disable_tx		4
-//#define enable_rx		5
-//#define disable_rx	6
 #define set_pwr			7
 #define set_reg			8
 #define get_phase_lck	9
