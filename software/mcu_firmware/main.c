@@ -12,6 +12,7 @@ Roberts Trops
 #include "ADC_functions.h"
 
 #define bin_mode		1
+
 //Menu command numbers:
 #define enable_chip 	1
 #define disable_chip	2
@@ -20,16 +21,8 @@ Roberts Trops
 #define set_pwr			7
 #define set_reg			8
 #define get_phase_lck	9
-//#define set_dac		10
 #define stdby_high		11
 #define stdby_low		12
-//#define gset_high		13
-//#define gset_low		14
-//#define pdv_high		15
-//#define pdv_low		16
-//#define pd_high		17
-//#define pd_low		18
-//#define read_adc		19
 #define osc_en			20
 #define osc_dis			21
 #define reset_settings	99
@@ -101,28 +94,10 @@ int main(void) {
 	CSCTL3		= DIVM__1| DIVS__1;
 	CSCTL0_H	= 0;
 
-	// Configure Timer1_A
-//	P1DIR |= BIT2;             // P1.2 to output
-//	TA1CCTL1 = OUTMOD_7;                    // Reset/Set Mode
-//	TA1CTL = TASSEL_2 + MC_1 +TACLR;       // SMCLK / Upmode
-//	TA1CCR0 = 38-1;                        // PWM Frequency 1.33 MHz
-//	TA1CCR1 = 0;                           // 50% Duty Cycle
-////	TA1CCR0 = 60-1;                        // PWM Frequency 10 kHz
-////	TA1CCR1 = 30;                           // 50% Duty Cycle
-//	P1SEL0 |= BIT2;                         // PWM output to LED P1.0
-//
-//	//TA1CCR2 = 2;
-//	TA1CCR2 = 130;
-//	TA1CCTL2 = CCIE;
-
 	dp_delay(500);
 
     uart_a0_init();
     init_pins();
-//  SPI_RCS_init();
-    //ADC_init(1);
-    //ADC_init(0);
-
     //Board specific assigment
     PJDIR &= ~BIT5;
 
@@ -221,26 +196,7 @@ int main(void) {
     	else
     		display_error();
     	break;
-//    case set_dac:
-//    	//SET DAC output voltage
-///*
-//    	dp_display_text("\r\n--->Type DAC MSB val [0;15] & press enter: ");
-//    	temp2 = get_number();
-//    	dp_display_text("\r\n--->Type DAC LSB val [0;255] & press enter: ");
-//    	temp3 = get_number();
-//*/
-//    	dp_display_text("\r\n--->Type DAC 12 bit val [0;4095] & press enter: ");
-//    	in_val = get_number(DEC);
-//    	temp2 = in_val>>8;	//MSB
-//    	temp3 = in_val&0xff;//LSB
-//    	if (DAC_set_value(temp2,temp3)==0b00011111)
-//    	{
-//    		dp_display_text("\r\n--->DAC is set to val: ");
-//    		dp_display_value(temp2<<8|temp3,DEC);
-//    	}
-//    	else
-//    		display_error();
-//    	break;
+
     case get_phase_lck:
     	dp_display_text("\r\n--->MAX282 phase lock: ");
     	if (MAX2828_get_phase_lock_statuss())
@@ -248,56 +204,7 @@ int main(void) {
     	else
     		dp_display_text("not locked");
     	break;
-//    case read_adc:
-//    	ADC_init(0);
-//    	dp_display_text("\r\n--->Sens No0: ");
-//    	dp_display_value(ADC_get_sample(0),DEC);
-//    	ADC_init(1);
-//    	dp_display_text("\r\n--->Sens No1: ");
-//    	dp_display_value(ADC_get_sample(1),DEC);
-//    	break;
-//    case gset_low:
-//    	//DAC GSET set to 0
-//    	if (DAC_gset_set(0))
-//    		dp_display_text("\r\n--->DAC GSET=0");
-//    	else
-//    		display_error();
-//    	break;
-//    case gset_high:
-//    	//DAC GSET set to 1
-//    	if (DAC_gset_set(1))
-//    		dp_display_text("\r\n--->DAC GSET=1");
-//    	else
-//    		display_error();
-//    	break;
-//    case pdv_low:
-//    	//DAC PDV set to 0
-//    	if (DAC_pdv_set(0))
-//    		dp_display_text("\r\n--->DAC PDV=0");
-//    	else
-//    		display_error();
-//    	break;
-//    case pdv_high:
-//    	//DAC PDV set to 1
-//    	if (DAC_pdv_set(1))
-//    		dp_display_text("\r\n--->DAC PDV=1");
-//    	else
-//    		display_error();
-//    	break;
-//    case pd_low:
-//    	//DAC PD set to 0
-//    	if (DAC_pd_set(0))
-//    		dp_display_text("\r\n--->DAC PD=0");
-//    	else
-//    		display_error();
-//    	break;
-//    case pd_high:
-//    	//DAC PD set to 1
-//    	if (DAC_pd_set(1))
-//    		dp_display_text("\r\n--->DAC PD=1");
-//    	else
-//    		display_error();
-//    	break;
+
     case stdby_low:
     	//DAC STANDBY set to 0
     	if (DAC_standby_set(0))

@@ -46,8 +46,6 @@ struct chip_conf test_struct =
 unsigned char init_pins()
 {
 	//Init SS pins for all SPI peripherals  as outputs
-//	SPI_SS_DAC_ddr 		|= SPI_SS_DAC_pin;
-//	SPI_SS_FPGA_ddr		|= SPI_SS_FPGA_pin;
 	SPI_SS_MAX2828_ddr 	|= SPI_SS_MAX2828_pin;
 	SPI_DIN_MAX2828_ddr |= SPI_DIN_MAX2828_pin;
 	SPI_CLK_MAX2828_ddr |= SPI_CLK_MAX2828_pin;
@@ -114,10 +112,6 @@ unsigned char osc_set (unsigned char val)
 
 unsigned char SPI_RCS_init()
 {
-  // Configure GPIO
-  //P1SEL1 |= BIT6+BIT7;
-  //P1SEL0 &= ~(BIT6+BIT7);
-
 	P1SEL1 |= BIT6;
 	P1SEL0 &= ~BIT6;
 
@@ -167,9 +161,6 @@ unsigned char store_max2828_gpio_settings (unsigned char bit_no, unsigned char s
 //unsigned char store_max2828_registers (unsigned char* register_no, unsigned char* data_msb, unsigned char* data_lsb)
 unsigned char store_max2828_registers (unsigned char* register_no, unsigned long int* data)
 {
-//	unsigned int offset = *register_no *2;
-//	settings_array[index_max2828_reg1+offset]	=  *data_msb;
-//	settings_array[index_max2828_reg2+offset]	=  *data_lsb;
 	unsigned int offset = *register_no;
 	default_settings[index_max2828_reg1+offset]	=  *data;
 	return 1;
@@ -189,7 +180,6 @@ signed char get_stored_settings (unsigned char requested_byte)
 
 
 //Timer B0 counts up to 10; needed for timing of the pause in
-//escape sequence
 unsigned char init_timer_b0 (void)
 {
 	TB0R = 0;
