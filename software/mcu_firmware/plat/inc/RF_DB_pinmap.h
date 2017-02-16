@@ -2,8 +2,8 @@
 //Auxiliary functions for implementing RCS control software
 #include <msp430.h>
 #include <stdint.h>
-#ifndef RCS_AUXILIARY_H_
-#define RCS_AUXILIARY_H_
+#ifndef PLAT_INC_RF_DB_PINMAP_H_
+#define PLAT_INC_RF_DB_PINMAP_H_
 
 //Define SS pins for peripherals
 #define SPI_CLK_MAX2828_pin		BIT2
@@ -70,26 +70,6 @@
 #define index_max2828_gpio	3
 #define index_max2828_reg1	4
 
-//#define index_max2828_reg2	5
 #define conf_block_size		17
-
-unsigned char 	init_pins						(void);					//Init MCU pins 
-unsigned char 	osc_set 						(unsigned char);
-unsigned char	SPI_RCS_init					(void);					//Init SPI realised by eUSCI B0
-unsigned char	SPI_RCS_send_byte				(unsigned char);	
-
-//Functions to store DAC, MAX2828 settings
-//in case of brown out etc.
-unsigned char	store_dac						(unsigned char*,unsigned char*);
-unsigned char	store_max2828_power_settings	(unsigned char*);
-unsigned char	store_max2828_gpio_settings		(unsigned char,unsigned char);
-//unsigned char	store_max2828_registers			(unsigned char*,unsigned char*,unsigned char*);
-unsigned char	store_max2828_registers			(unsigned char*,unsigned long int*);
-
-//Read stored RCS settings by accessing a single byte
-//address specified in storage array
-signed	 char	get_stored_settings				(unsigned char);
-//Other auxiliary functions
-unsigned char	init_timer_b0					(void);
 
 #endif 

@@ -187,6 +187,6 @@ void uart_a1_init(void);
 
 
 //#ifdef ENABLE_FILE_SYSTEM
-#endif /* INC_DPUSER_H */
+#endif /* INCLUDE_DPUSER_H */
 
 

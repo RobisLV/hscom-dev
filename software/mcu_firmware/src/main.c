@@ -6,16 +6,13 @@ Roberts Trops
 */
 
 /* Abbreviation Table
-* Dsply  = = Display (the verb)
-* Disp = = Display (our LCD display)
+* RF - radio frequency
+* DB - daughterboard
+* MB - motherboard
 */
 #include <msp430.h>
-
-#include "ADC_functions.h"
+#include "RF_DB.h"
 #include "dpuser.h"
-#include "DAC_functions.h"
-#include "MAX2828_functions.h"
-#include "RCS_auxiliary.h"
 
 #define bin_mode		1
 
