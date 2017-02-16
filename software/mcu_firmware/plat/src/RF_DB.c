@@ -2,7 +2,7 @@
 //Functions to control ADC (get current sensor output) 
 
 #include "RF_DB.h"
-#include "RF_DB_pinmap.h"
+#include "pinmap.h"
 #include "dpuser.h"
 
 unsigned char ADC_init(unsigned char pin)
@@ -120,6 +120,7 @@ unsigned char ADC_disable(unsigned char pin)
 //	return 1;
 //}
 
+/*
 unsigned char DAC_standby_set (unsigned char val)
 {
 	if (val == 1) DAC_standby_port |= DAC_standby_pin; else
@@ -127,7 +128,7 @@ unsigned char DAC_standby_set (unsigned char val)
 			return 0;
 	return 1;
 }
-
+*/
 unsigned char MAX2828_get_phase_lock_statuss(void)
 {
 	if (MAX2828_lock_port & MAX2828_lock_pin) return 1;

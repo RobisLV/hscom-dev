@@ -1,7 +1,6 @@
 /*
 Authors:
 Arturs Orbidans
-Raivis Paberz
 Roberts Trops
 */
 
@@ -9,6 +8,8 @@ Roberts Trops
 * RF - radio frequency
 * DB - daughterboard
 * MB - motherboard
+* AF
+* TXRX
 */
 #include <msp430.h>
 #include "RF_DB.h"
@@ -18,7 +19,7 @@ Roberts Trops
 
 //Menu command numbers:
 #define enable_chip 	1
-#define disable_chip	2
+#define enable_chip		2
 #define enable_tx		3
 #define disable_tx		4
 #define set_pwr			7
@@ -31,6 +32,16 @@ Roberts Trops
 #define reset_settings	99
 #define menu			0
 #define UART_RX_BUFFER_SIZE		16
+/*
+typedef enum selection{
+	enable_chip,
+	enable_tx,
+	disable_tx
+	set_pwr,
+	set_reg,
+	get_phase_lck
+	get_phase_lck,
+};*/
 
 #define reg_count   13 // number of configurable registers in max2828
 #define reg_bits    14 // number of bits in max2828 conf. register
