@@ -10,14 +10,15 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./ADC_functions.obj" \
-"./DAC_functions.obj" \
-"./MAX2828_functions.obj" \
-"./RCS_auxiliary.obj" \
-"./dpuser.obj" \
-"./main.obj" \
-"../lnk_msp430fr5969.cmd" \
+"./source/ADC_functions.obj" \
+"./source/DAC_functions.obj" \
+"./source/MAX2828_functions.obj" \
+"./source/RCS_auxiliary.obj" \
+"./source/dpuser.obj" \
+"./source/main.obj" \
+"../link/lnk_msp430fr5969.cmd" \
 $(GEN_CMDS__FLAG) \
+-llibmpu_init.a \
 -l"libmath.a" \
 -l"libc.a" \
 
@@ -28,8 +29,10 @@ RMDIR := RMDIR /S/Q
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include subdir_vars.mk
--include subdir_rules.mk
+-include source/subdir_vars.mk
+-include link/subdir_vars.mk
+-include source/subdir_rules.mk
+-include link/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -142,7 +145,7 @@ all: RCS_Test.out
 RCS_Test.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP430 Linker'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.5/bin/cl430" -vmspx --abi=eabi --data_model=restricted --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all -g --define=__MSP430FR5969__ --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"RCS_Test.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccsv6/ccs_base/msp430/include" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.5/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.5/include" -i"C:/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"C:/ti/ccsv6/ccs_base/msp430/lib/FR59xx" --reread_libs --priority --warn_sections --diag_wrap=off --display_error_number --xml_link_info="RCS_Test_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "RCS_Test.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.5/bin/cl430" -vmspx --abi=eabi --data_model=restricted --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all -g --define=__MSP430FR5969__ --define=_MPU_ENABLE --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"RCS_Test.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccsv6/ccs_base/msp430/include" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.5/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.5/include" -i"C:/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"C:/ti/ccsv6/ccs_base/msp430/lib/FR59xx" --reread_libs --priority --define=_MPU_ENABLE --warn_sections --diag_wrap=off --display_error_number --xml_link_info="RCS_Test_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "RCS_Test.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -155,8 +158,8 @@ RCS_Test.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "ADC_functions.pp" "DAC_functions.pp" "MAX2828_functions.pp" "RCS_auxiliary.pp" "dpuser.pp" "main.pp" 
-	-$(RM) "ADC_functions.obj" "DAC_functions.obj" "MAX2828_functions.obj" "RCS_auxiliary.obj" "dpuser.obj" "main.obj" 
+	-$(RM) "source\ADC_functions.pp" "source\DAC_functions.pp" "source\MAX2828_functions.pp" "source\RCS_auxiliary.pp" "source\dpuser.pp" "source\main.pp" 
+	-$(RM) "source\ADC_functions.obj" "source\DAC_functions.obj" "source\MAX2828_functions.obj" "source\RCS_auxiliary.obj" "source\dpuser.obj" "source\main.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

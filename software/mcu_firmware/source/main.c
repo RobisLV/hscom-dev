@@ -4,12 +4,18 @@ Arturs Orbidans
 Raivis Paberz
 Roberts Trops
 */
+
+/* Abbreviation Table
+* Dsply  = = Display (the verb)
+* Disp = = Display (our LCD display)
+*/
 #include <msp430.h>
-#include "dpuser.h"
-#include "RCS_auxiliary.h"
-#include "MAX2828_functions.h"
-#include "DAC_functions.h"
+
 #include "ADC_functions.h"
+#include "dpuser.h"
+#include "DAC_functions.h"
+#include "MAX2828_functions.h"
+#include "RCS_auxiliary.h"
 
 #define bin_mode		1
 
