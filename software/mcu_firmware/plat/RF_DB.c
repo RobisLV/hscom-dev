@@ -4,9 +4,9 @@
 #include "RF_DB.h"
 #include "pinmap.h"
 #include "dpuser.h"
+#include "gpio.h"
 
-unsigned char ADC_init(unsigned char pin)
-{
+unsigned char ADC_init(unsigned char pin){
 	/*
 	//Analogue inputs P1.0 and P1.1 are used
 	P1SEL1 |= (BIT0 |BIT1);                          
@@ -35,7 +35,6 @@ unsigned char ADC_init(unsigned char pin)
 	if (pin == 0) ADC12MCTL0 = ADC12INCH_2;	// ADC input select; Vref=AVCC
 		else if (pin == 1) ADC12MCTL0 = ADC12INCH_3;
 			else return 0;
-
 	return 1;
 }
 
@@ -317,66 +316,44 @@ struct chip_conf test_struct =
 		.max2828_pwr = 0x45
 };
 
-unsigned char init_pins()
+uint8_t gpio_init()
 {
 	// Init SS pins for all SPI peripherals  as outputs
-	INT_SPI_FPGA_SS_DIR		|= INT_SPI_FLASH_SS_PIN;
-	INT_SPI_FLASH_SS_DIR	|= INT_SPI_FPGA_SS_PIN;
-	INT_SPI_TXRX_SS_DIR 	|= INT_SPI_TXRX_SS_PIN;
-	INT_SPI_AF_SS_DIR		|= INT_SPI_AF_SS_PIN;
+	gpio_mode_set(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_DIR, output);
+	gpio_mode_set(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_DIR, output);
+	gpio_mode_set(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_DIR, output);
+	gpio_mode_set(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_DIR, output);
 
-	INT_SPI_MOSI_DIR |= INT_SPI_MOSI_PIN;
-	INT_SPI_SCK_DIR |= INT_SPI_SCK_PIN;
+	gpio_mode_set(INT_SPI_MOSI_PIN, INT_SPI_MOSI_DIR, output);
+	gpio_mode_set(INT_SPI_SCK_PIN, INT_SPI_SCK_DIR, output);
 
 	// Set all SS pins as 1's (default - not active)
-	INT_SPI_FLASH_SS_PORT |= INT_SPI_FLASH_SS_PIN;
-	INT_SPI_FPGA_SS_PORT  |= INT_SPI_FPGA_SS_PIN;
-	INT_SPI_TXRX_SS_PORT  |= INT_SPI_TXRX_SS_PIN;
-	INT_SPI_AF_SS_PORT    |= INT_SPI_AF_SS_PIN;
+	gpio_port_write(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_PORT, high);
+	gpio_port_write(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_PORT, high);
+	gpio_port_write(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_PORT, high);
+	gpio_port_write(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_PORT, high);
 
-	// Default 0
-	INT_SPI_MOSI_PORT 	&= ~INT_SPI_MOSI_PIN;
-	INT_SPI_SCK_PORT 	&= ~INT_SPI_SCK_PIN;
+	// Default state of SPI data and clock lines is 0
+	gpio_port_write(INT_SPI_MOSI_PIN, INT_SPI_MOSI_PORT, low);
+	gpio_port_write(INT_SPI_SCK_PIN, INT_SPI_SCK_PORT, low);
 
 	// Set MAX2828 lock-detect pin as input
-	TXRX_LOCK_DET_DIR 	&= ~TXRX_LOCK_DET_PIN;
-	TXRX_LOCK_DET_PULL &= ~TXRX_LOCK_DET_PIN;
+	gpio_mode_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_DIR, input);
+	gpio_pull_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_PULL, pull_disable);
 
-	// Init MAX2828 related pins
-	TXRX_TX_EN_DIR	|= TXRX_TX_EN_PIN;
-	TXRX_RX_EN_DIR	|= TXRX_RX_EN_PIN;
-	TXRX_SHDN_DIR	|= TXRX_SHDN_PIN;
+	// Other MAX2828 related pins settings
+	gpio_mode_set(TXRX_TX_EN_PIN, TXRX_TX_EN_DIR, output);
+	gpio_mode_set(TXRX_RX_EN_PIN, TXRX_RX_EN_DIR, output);
+	gpio_mode_set(TXRX_SHDN_PIN, TXRX_SHDN_DIR, output);
+	gpio_mode_set(TXRX_OSC_EN_PIN, TXRX_OSC_EN_DIR, output);
 
-	TXRX_TX_EN_PORT	&= ~TXRX_TX_EN_PIN;
-	TXRX_RX_EN_PORT	&= ~TXRX_RX_EN_PIN;
-	TXRX_SHDN_PORT	&= ~TXRX_SHDN_PIN;
-/*
-	MAX2828_pwr_set_ddr1 |= MAX2828_pwr_set_pin1;
-	MAX2828_pwr_set_ddr2 |= MAX2828_pwr_set_pin2;
-	MAX2828_pwr_set_ddr3 |= MAX2828_pwr_set_pin3;
-	MAX2828_pwr_set_ddr4 |= MAX2828_pwr_set_pin4;
-	MAX2828_pwr_set_ddr5 |= MAX2828_pwr_set_pin5;
-	MAX2828_pwr_set_ddr6 |= MAX2828_pwr_set_pin6;
+	// Keep the following pins low
+	gpio_port_write(TXRX_TX_EN_PIN, TXRX_TX_EN_PORT, low);
+	gpio_port_write(TXRX_RX_EN_PIN, TXRX_RX_EN_PORT, low);
+	gpio_port_write(TXRX_SHDN_PIN, TXRX_SHDN_PORT, low);
+	gpio_port_write(TXRX_OSC_EN_PIN, TXRX_OSC_EN_PORT, low);
 
-	MAX2828_pwr_set_port1 &= ~MAX2828_pwr_set_pin1;
-	MAX2828_pwr_set_port2 &= ~MAX2828_pwr_set_pin2;
-	MAX2828_pwr_set_port3 &= ~MAX2828_pwr_set_pin3;
-	MAX2828_pwr_set_port4 &= ~MAX2828_pwr_set_pin4;
-	MAX2828_pwr_set_port5 &= ~MAX2828_pwr_set_pin5;
-	MAX2828_pwr_set_port6 &= ~MAX2828_pwr_set_pin6;
-*/
-	TXRX_OSC_EN_DIR		|= TXRX_OSC_EN_PIN;
-
-//	DAC_gset_port		&= ~DAC_gset_pin;
-//	DAC_pdv_port		&= ~DAC_pdv_pin;
-//	DAC_pd_port			&= ~DAC_pd_pin;
-//	DAC_standby_port	&= ~DAC_standby_pin;
-	TXRX_OSC_EN_PORT			&= ~TXRX_OSC_EN_PIN;
-
-	P1SEL1 &= ~BIT5;
-	P1SEL0 &= ~BIT5;
-
-	return 1;
+	return 0;
 }
 
 unsigned char osc_set (unsigned char val)

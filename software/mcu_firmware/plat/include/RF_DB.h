@@ -1,8 +1,8 @@
 //Arturs Orbidans, for Master's thesis
 //RF daughterboard's functions
 
-#ifndef PLAT_INC_RF_MB_H_
-#define PLAT_INC_RF_MB_H_
+#ifndef PLAT_INCLUDE_RF_MB_H_
+#define PLAT_INCLUDE_RF_MB_H_
 
 #include <msp430.h>
 #include <stdint.h>
@@ -31,7 +31,7 @@ unsigned char	MAX2828_set_GPIO_stored			(void);
 unsigned char	MAX2828_pwr_set_stored			(void);
 unsigned char	MAX2828_set_registers_stored		(void);
 
-unsigned char 	init_pins						(void);					//Init MCU pins
+unsigned char 	gpio_init						(void);					//Init MCU pins
 unsigned char 	osc_set 						(unsigned char);
 unsigned char	SPI_RCS_init					(void);					//Init SPI realised by eUSCI B0
 unsigned char	SPI_RCS_send_byte				(unsigned char);

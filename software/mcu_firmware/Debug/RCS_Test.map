@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker PC v4.4.5                      
 ******************************************************************************
->> Linked Fri Feb 17 11:16:52 2017
+>> Linked Fri Feb 17 17:14:48 2017
 
 OUTPUT FILE NAME:   <RCS_Test.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit_mpu"  address: 00004800
@@ -79,7 +79,7 @@ MEMORY CONFIGURATION
   INT53                 0000fffa   00000002  00000002  00000000  RWIX
   INT54                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FRAM2                 00010000   00004000  00000b0a  000034f6  RWIX
+  FRAM2                 00010000   00004000  00000bf6  0000340a  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -237,48 +237,52 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    00000b0a     
-                  00010000    000002c6     main.obj (.text:main)
-                  000102c6    0000010a     RF_DB.obj (.text:MAX2828_set_tegister_values)
-                  000103d0    0000008c     dpuser.obj (.text:itoa)
-                  0001045c    0000008a     main.obj (.text:display_main_menu)
-                  000104e6    0000007c     RF_DB.obj (.text:init_pins)
-                  00010562    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  000105ce    00000068                            : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  00010636    0000005c     main.obj (.text:get_number)
-                  00010692    00000058     rts430x_lc_rd_eabi.lib : div32u.obj (.text)
-                  000106ea    0000004a     dpuser.obj (.text:dp_display_value)
-                  00010734    00000044     main.obj (.text:bin_to_int)
-                  00010778    0000003e     rts430x_lc_rd_eabi.lib : lsl32.obj (.text:l_lsl_const)
-                  000107b6    0000003e                            : lsr32.obj (.text:l_lsr_const)
-                  000107f4    00000038     dpuser.obj (.text:uart_a0_init)
-                  0001082c    00000036     main.obj (.text:print_bin)
-                  00010862    00000034     RF_DB.obj (.text:MAX2828_TX_set)
-                  00010896    00000034     dpuser.obj (.text:dp_delay)
-                  000108ca    00000030     RF_DB.obj (.text:MAX2828_enable_set)
-                  000108fa    00000030     main.obj (.text:UART_read_buffer)
-                  0001092a    0000002e     main.obj (.text:UART_receive_byte_handle)
-                  00010958    0000002a     main.obj (.text:cpy_array)
-                  00010982    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
-                  000109aa    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
-                  000109ce    00000022     dpuser.obj (.text:atoi)
-                  000109f0    00000022     RF_DB.obj (.text:store_max2828_gpio_settings)
-                  00010a12    0000001e     dpuser.obj (.text:uart_a1_rx_int_handle)
-                  00010a30    0000001a     RF_DB.obj (.text:osc_set)
-                  00010a4a    00000016     rts430x_lc_rd_eabi.lib : memset.obj (.text:memset)
-                  00010a60    00000016                            : mult16_f5hw.obj (.text)
-                  00010a76    00000014     dpuser.obj (.text:dp_display_text)
-                  00010a8a    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
-                  00010a9e    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  00010ab0    00000010                            : lsr32.obj (.text:l_lsr)
-                  00010ac0    00000010     RF_DB.obj (.text:store_max2828_registers)
-                  00010ad0    00000010     dpuser.obj (.text:uart_a0_send_byte)
-                  00010ae0    0000000a     main.obj (.text:display_error)
-                  00010aea    0000000a     rts430x_lc_rd_eabi.lib : lsl16.obj (.text)
-                  00010af4    00000008     RF_DB.obj (.text:MAX2828_get_phase_lock_statuss)
-                  00010afc    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  00010b02    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  00010b06    00000004                            : exit.obj (.text:abort)
+.text      0    00010000    00000bf6     
+                  00010000    000002b0     main.obj (.text:main)
+                  000102b0    00000136     RF_DB.obj (.text:gpio_init)
+                  000103e6    0000010a     RF_DB.obj (.text:MAX2828_set_tegister_values)
+                  000104f0    0000008c     dpuser.obj (.text:itoa)
+                  0001057c    0000008a     main.obj (.text:display_main_menu)
+                  00010606    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  00010672    00000068                            : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  000106da    0000005c     main.obj (.text:get_number)
+                  00010736    00000058     rts430x_lc_rd_eabi.lib : div32u.obj (.text)
+                  0001078e    0000004a     dpuser.obj (.text:dp_display_value)
+                  000107d8    00000044     main.obj (.text:bin_to_int)
+                  0001081c    0000003e     rts430x_lc_rd_eabi.lib : lsl32.obj (.text:l_lsl_const)
+                  0001085a    0000003e                            : lsr32.obj (.text:l_lsr_const)
+                  00010898    00000038     dpuser.obj (.text:uart_a0_init)
+                  000108d0    00000036     main.obj (.text:print_bin)
+                  00010906    00000034     RF_DB.obj (.text:MAX2828_TX_set)
+                  0001093a    00000034     dpuser.obj (.text:dp_delay)
+                  0001096e    00000030     RF_DB.obj (.text:MAX2828_enable_set)
+                  0001099e    00000030     main.obj (.text:UART_read_buffer)
+                  000109ce    0000002e     main.obj (.text:UART_receive_byte_handle)
+                  000109fc    0000002a     main.obj (.text:cpy_array)
+                  00010a26    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
+                  00010a4e    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
+                  00010a72    00000022     dpuser.obj (.text:atoi)
+                  00010a94    00000022     RF_DB.obj (.text:store_max2828_gpio_settings)
+                  00010ab6    0000001e     dpuser.obj (.text:uart_a1_rx_int_handle)
+                  00010ad4    0000001c     clock.obj (.text:Clock_Init)
+                  00010af0    0000001a     RF_DB.obj (.text:osc_set)
+                  00010b0a    00000016     rts430x_lc_rd_eabi.lib : memset.obj (.text:memset)
+                  00010b20    00000016                            : mult16_f5hw.obj (.text)
+                  00010b36    00000014     dpuser.obj (.text:dp_display_text)
+                  00010b4a    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
+                  00010b5e    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  00010b70    00000010     gpio.obj (.text:gpio_mode_set)
+                  00010b80    00000010     gpio.obj (.text:gpio_pull_set)
+                  00010b90    00000010     rts430x_lc_rd_eabi.lib : lsr32.obj (.text:l_lsr)
+                  00010ba0    00000010     RF_DB.obj (.text:store_max2828_registers)
+                  00010bb0    00000010     dpuser.obj (.text:uart_a0_send_byte)
+                  00010bc0    0000000c     gpio.obj (.text:gpio_port_write)
+                  00010bcc    0000000a     main.obj (.text:display_error)
+                  00010bd6    0000000a     rts430x_lc_rd_eabi.lib : lsl16.obj (.text)
+                  00010be0    00000008     RF_DB.obj (.text:MAX2828_get_phase_lock_statuss)
+                  00010be8    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  00010bee    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  00010bf2    00000004                            : exit.obj (.text:abort)
 
 
 LINKER GENERATED COPY TABLES
@@ -557,7 +561,7 @@ address   name
 000009ce  AESAXIN_L                     
 000004be  BCD2BIN                       
 000004bc  BIN2BCD                       
-00010b06  C$$EXIT                       
+00010bf2  C$$EXIT                       
 0000043e  CAPTIO0CTL                    
 0000043f  CAPTIO0CTL_H                  
 0000043e  CAPTIO0CTL_L                  
@@ -615,6 +619,7 @@ address   name
 0000016c  CSCTL6                        
 0000016d  CSCTL6_H                      
 0000016c  CSCTL6_L                      
+00010ad4  Clock_Init                    
 00000510  DMA0CTL                       
 00000511  DMA0CTL_H                     
 00000510  DMA0CTL_L                     
@@ -690,10 +695,10 @@ address   name
 000004c6  MACS_L                        
 000004c5  MAC_H                         
 000004c4  MAC_L                         
-00010862  MAX2828_TX_set                
-000108ca  MAX2828_enable_set            
-00010af4  MAX2828_get_phase_lock_statuss
-000102c6  MAX2828_set_tegister_values   
+00010906  MAX2828_TX_set                
+0001096e  MAX2828_enable_set            
+00010be0  MAX2828_get_phase_lock_statuss
+000103e6  MAX2828_set_tegister_values   
 000005a0  MPUCTL0                       
 000005a1  MPUCTL0_H                     
 000005a0  MPUCTL0_L                     
@@ -991,8 +996,8 @@ address   name
 000003ee  TB0IV                         
 000003d0  TB0R                          
 00001cb8  UART_RX_BUFFER                
-000108fa  UART_read_buffer              
-0001092a  UART_receive_byte_handle      
+0001099e  UART_read_buffer              
+000109ce  UART_receive_byte_handle      
 000005d0  UCA0ABCTL                     
 000005c6  UCA0BRW                       
 000005c7  UCA0BRW_H                     
@@ -1116,8 +1121,8 @@ address   name
 UNDEFED   __TI_INITARRAY_Base           
 UNDEFED   __TI_INITARRAY_Limit          
 00004850  __TI_ISR_TRAP                 
-00010a9e  __TI_decompress_none          
-00010afc  __TI_decompress_rle24         
+00010b5e  __TI_decompress_none          
+00010be8  __TI_decompress_rle24         
 0000ffcc  __TI_int30                    
 0000ffce  __TI_int31                    
 0000ffd0  __TI_int32                    
@@ -1143,83 +1148,86 @@ UNDEFED   __TI_INITARRAY_Limit
 0000fff8  __TI_int52                    
 0000fffa  __TI_int53                    
 0000fffc  __TI_int54                    
-000109aa  __TI_zero_init                
+00010a4e  __TI_zero_init                
 ffffffff  __binit__                     
 ffffffff  __c_args__                    
 00000001  __mpu_enable                  
-00010982  __mpu_init                    
-00010692  __mspabi_divul                
-00010a60  __mspabi_mpyi_f5hw            
-00010692  __mspabi_remul                
-00010aea  __mspabi_slli                 
-000107b0  __mspabi_slll_1               
-0001078c  __mspabi_slll_10              
-00010788  __mspabi_slll_11              
-00010784  __mspabi_slll_12              
-00010780  __mspabi_slll_13              
-0001077c  __mspabi_slll_14              
-00010778  __mspabi_slll_15              
-000107ac  __mspabi_slll_2               
-000107a8  __mspabi_slll_3               
-000107a4  __mspabi_slll_4               
-000107a0  __mspabi_slll_5               
-0001079c  __mspabi_slll_6               
-00010798  __mspabi_slll_7               
-00010794  __mspabi_slll_8               
-00010790  __mspabi_slll_9               
-00010ab0  __mspabi_srll                 
-000107ee  __mspabi_srll_1               
-000107ca  __mspabi_srll_10              
-000107c6  __mspabi_srll_11              
-000107c2  __mspabi_srll_12              
-000107be  __mspabi_srll_13              
-000107ba  __mspabi_srll_14              
-000107b6  __mspabi_srll_15              
-000107ea  __mspabi_srll_2               
-000107e6  __mspabi_srll_3               
-000107e2  __mspabi_srll_4               
-000107de  __mspabi_srll_5               
-000107da  __mspabi_srll_6               
-000107d6  __mspabi_srll_7               
-000107d2  __mspabi_srll_8               
-000107ce  __mspabi_srll_9               
-00010562  _auto_init_hold_wdt           
+00010a26  __mpu_init                    
+00010736  __mspabi_divul                
+00010b20  __mspabi_mpyi_f5hw            
+00010736  __mspabi_remul                
+00010bd6  __mspabi_slli                 
+00010854  __mspabi_slll_1               
+00010830  __mspabi_slll_10              
+0001082c  __mspabi_slll_11              
+00010828  __mspabi_slll_12              
+00010824  __mspabi_slll_13              
+00010820  __mspabi_slll_14              
+0001081c  __mspabi_slll_15              
+00010850  __mspabi_slll_2               
+0001084c  __mspabi_slll_3               
+00010848  __mspabi_slll_4               
+00010844  __mspabi_slll_5               
+00010840  __mspabi_slll_6               
+0001083c  __mspabi_slll_7               
+00010838  __mspabi_slll_8               
+00010834  __mspabi_slll_9               
+00010b90  __mspabi_srll                 
+00010892  __mspabi_srll_1               
+0001086e  __mspabi_srll_10              
+0001086a  __mspabi_srll_11              
+00010866  __mspabi_srll_12              
+00010862  __mspabi_srll_13              
+0001085e  __mspabi_srll_14              
+0001085a  __mspabi_srll_15              
+0001088e  __mspabi_srll_2               
+0001088a  __mspabi_srll_3               
+00010886  __mspabi_srll_4               
+00010882  __mspabi_srll_5               
+0001087e  __mspabi_srll_6               
+0001087a  __mspabi_srll_7               
+00010876  __mspabi_srll_8               
+00010872  __mspabi_srll_9               
+00010606  _auto_init_hold_wdt           
 00004800  _c_int00_noargs_noexit_mpu    
 0000fffe  _reset_vector                 
 00002360  _stack                        
-00010b02  _system_pre_init              
-00010b06  abort                         
-000109ce  atoi                          
-00010734  bin_to_int                    
+00010bee  _system_pre_init              
+00010bf2  abort                         
+00010a72  atoi                          
+000107d8  bin_to_int                    
 ffffffff  binit                         
-00010958  cpy_array                     
+000109fc  cpy_array                     
 00001c80  default_reg                   
 00004400  default_settings              
-00010ae0  display_error                 
-0001045c  display_main_menu             
-00010896  dp_delay                      
-00010a76  dp_display_text               
-000106ea  dp_display_value              
+00010bcc  display_error                 
+0001057c  display_main_menu             
+0001093a  dp_delay                      
+00010b36  dp_display_text               
+0001078e  dp_display_value              
 00004400  fram_ipe_end                  
 00004400  fram_ipe_start                
 00004800  fram_rx_start                 
-00010636  get_number                    
-000104e6  init_pins                     
-000103d0  itoa                          
+000106da  get_number                    
+000102b0  gpio_init                     
+00010b70  gpio_mode_set                 
+00010bc0  gpio_port_write               
+00010b80  gpio_pull_set                 
+000104f0  itoa                          
 00010000  main                          
-00010a8a  memcpy                        
-00010a4a  memset                        
+00010b4a  memcpy                        
+00010b0a  memset                        
 0000a501  mpu_ctl0_value                
 00001513  mpu_sam_value                 
 00000480  mpu_segment_border1           
 00000480  mpu_segment_border2           
-00010a30  osc_set                       
-0001082c  print_bin                     
-000109f0  store_max2828_gpio_settings   
-00010ac0  store_max2828_registers       
-000107f4  uart_a0_init                  
-00010ad0  uart_a0_send_byte             
-00010a12  uart_a1_rx_int_handle         
+00010af0  osc_set                       
+000108d0  print_bin                     
+00010a94  store_max2828_gpio_settings   
+00010ba0  store_max2828_registers       
+00010898  uart_a0_init                  
+00010bb0  uart_a0_send_byte             
+00010ab6  uart_a1_rx_int_handle         
 00001c9a  user_reg                      
 
 
@@ -2074,79 +2082,83 @@ address   name
 0000fffc  __TI_int54                    
 0000fffe  _reset_vector                 
 00010000  main                          
-000102c6  MAX2828_set_tegister_values   
-000103d0  itoa                          
-0001045c  display_main_menu             
-000104e6  init_pins                     
-00010562  _auto_init_hold_wdt           
-00010636  get_number                    
-00010692  __mspabi_divul                
-00010692  __mspabi_remul                
-000106ea  dp_display_value              
-00010734  bin_to_int                    
-00010778  __mspabi_slll_15              
-0001077c  __mspabi_slll_14              
-00010780  __mspabi_slll_13              
-00010784  __mspabi_slll_12              
-00010788  __mspabi_slll_11              
-0001078c  __mspabi_slll_10              
-00010790  __mspabi_slll_9               
-00010794  __mspabi_slll_8               
-00010798  __mspabi_slll_7               
-0001079c  __mspabi_slll_6               
-000107a0  __mspabi_slll_5               
-000107a4  __mspabi_slll_4               
-000107a8  __mspabi_slll_3               
-000107ac  __mspabi_slll_2               
-000107b0  __mspabi_slll_1               
-000107b6  __mspabi_srll_15              
-000107ba  __mspabi_srll_14              
-000107be  __mspabi_srll_13              
-000107c2  __mspabi_srll_12              
-000107c6  __mspabi_srll_11              
-000107ca  __mspabi_srll_10              
-000107ce  __mspabi_srll_9               
-000107d2  __mspabi_srll_8               
-000107d6  __mspabi_srll_7               
-000107da  __mspabi_srll_6               
-000107de  __mspabi_srll_5               
-000107e2  __mspabi_srll_4               
-000107e6  __mspabi_srll_3               
-000107ea  __mspabi_srll_2               
-000107ee  __mspabi_srll_1               
-000107f4  uart_a0_init                  
-0001082c  print_bin                     
-00010862  MAX2828_TX_set                
-00010896  dp_delay                      
-000108ca  MAX2828_enable_set            
-000108fa  UART_read_buffer              
-0001092a  UART_receive_byte_handle      
-00010958  cpy_array                     
-00010982  __mpu_init                    
-000109aa  __TI_zero_init                
-000109ce  atoi                          
-000109f0  store_max2828_gpio_settings   
-00010a12  uart_a1_rx_int_handle         
-00010a30  osc_set                       
-00010a4a  memset                        
-00010a60  __mspabi_mpyi_f5hw            
-00010a76  dp_display_text               
-00010a8a  memcpy                        
-00010a9e  __TI_decompress_none          
-00010ab0  __mspabi_srll                 
-00010ac0  store_max2828_registers       
-00010ad0  uart_a0_send_byte             
-00010ae0  display_error                 
-00010aea  __mspabi_slli                 
-00010af4  MAX2828_get_phase_lock_statuss
-00010afc  __TI_decompress_rle24         
-00010b02  _system_pre_init              
-00010b06  C$$EXIT                       
-00010b06  abort                         
+000102b0  gpio_init                     
+000103e6  MAX2828_set_tegister_values   
+000104f0  itoa                          
+0001057c  display_main_menu             
+00010606  _auto_init_hold_wdt           
+000106da  get_number                    
+00010736  __mspabi_divul                
+00010736  __mspabi_remul                
+0001078e  dp_display_value              
+000107d8  bin_to_int                    
+0001081c  __mspabi_slll_15              
+00010820  __mspabi_slll_14              
+00010824  __mspabi_slll_13              
+00010828  __mspabi_slll_12              
+0001082c  __mspabi_slll_11              
+00010830  __mspabi_slll_10              
+00010834  __mspabi_slll_9               
+00010838  __mspabi_slll_8               
+0001083c  __mspabi_slll_7               
+00010840  __mspabi_slll_6               
+00010844  __mspabi_slll_5               
+00010848  __mspabi_slll_4               
+0001084c  __mspabi_slll_3               
+00010850  __mspabi_slll_2               
+00010854  __mspabi_slll_1               
+0001085a  __mspabi_srll_15              
+0001085e  __mspabi_srll_14              
+00010862  __mspabi_srll_13              
+00010866  __mspabi_srll_12              
+0001086a  __mspabi_srll_11              
+0001086e  __mspabi_srll_10              
+00010872  __mspabi_srll_9               
+00010876  __mspabi_srll_8               
+0001087a  __mspabi_srll_7               
+0001087e  __mspabi_srll_6               
+00010882  __mspabi_srll_5               
+00010886  __mspabi_srll_4               
+0001088a  __mspabi_srll_3               
+0001088e  __mspabi_srll_2               
+00010892  __mspabi_srll_1               
+00010898  uart_a0_init                  
+000108d0  print_bin                     
+00010906  MAX2828_TX_set                
+0001093a  dp_delay                      
+0001096e  MAX2828_enable_set            
+0001099e  UART_read_buffer              
+000109ce  UART_receive_byte_handle      
+000109fc  cpy_array                     
+00010a26  __mpu_init                    
+00010a4e  __TI_zero_init                
+00010a72  atoi                          
+00010a94  store_max2828_gpio_settings   
+00010ab6  uart_a1_rx_int_handle         
+00010ad4  Clock_Init                    
+00010af0  osc_set                       
+00010b0a  memset                        
+00010b20  __mspabi_mpyi_f5hw            
+00010b36  dp_display_text               
+00010b4a  memcpy                        
+00010b5e  __TI_decompress_none          
+00010b70  gpio_mode_set                 
+00010b80  gpio_pull_set                 
+00010b90  __mspabi_srll                 
+00010ba0  store_max2828_registers       
+00010bb0  uart_a0_send_byte             
+00010bc0  gpio_port_write               
+00010bcc  display_error                 
+00010bd6  __mspabi_slli                 
+00010be0  MAX2828_get_phase_lock_statuss
+00010be8  __TI_decompress_rle24         
+00010bee  _system_pre_init              
+00010bf2  C$$EXIT                       
+00010bf2  abort                         
 ffffffff  __binit__                     
 ffffffff  __c_args__                    
 ffffffff  binit                         
 UNDEFED   __TI_INITARRAY_Base           
 UNDEFED   __TI_INITARRAY_Limit          
 
-[921 symbols]
+[925 symbols]

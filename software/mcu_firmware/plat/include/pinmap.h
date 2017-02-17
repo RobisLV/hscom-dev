@@ -1,7 +1,7 @@
 #include <msp430.h>
 #include <stdint.h>
-#ifndef PLAT_INC_PINMAP_H_
-#define PLAT_INC_PINMAP_H_
+#ifndef PLAT_INCLUDE_PINMAP_H_
+#define PLAT_INCLUDE_PINMAP_H_
 
 /***** Microcontroller (MCU) ******/
 // Status LED (D1)
@@ -72,14 +72,14 @@
 #define PA_DET_DIR		P1DIR
 
 // Antenna switch control digital input pins
-#define PA_SW_C0_PIN		BIT5
-#define PA_SW_C1_PIN		BIT7
+#define PA_SW_C0_PIN	BIT5
+#define PA_SW_C1_PIN	BIT7
 
-#define PA_SW_C0_PORT		P4OUT
-#define PA_SW_C1_PORT		P1OUT
+#define PA_SW_C0_PORT	P4OUT
+#define PA_SW_C1_PORT	P1OUT
 
-#define PA_SW_C0_DIR		P4DIR
-#define PA_SW_C1_DIR		P2DIR
+#define PA_SW_C0_DIR	P4DIR
+#define PA_SW_C1_DIR	P2DIR
 
 // Transmit enable digital input pin
 #define PA_TX_EN_PIN	BIT7

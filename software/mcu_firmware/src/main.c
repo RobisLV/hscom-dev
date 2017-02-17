@@ -12,6 +12,7 @@ Roberts Trops
 * TXRX
 */
 #include <msp430.h>
+#include "clock.h"
 #include "RF_DB.h"
 #include "dpuser.h"
 
@@ -102,16 +103,14 @@ int main(void) {
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
 	//SET master clock to 8 MHz
-    CSCTL0_H	= CSKEY>>8;			//CSKEY password
-	CSCTL1		= DCOFSEL_6;  		//Set DCO 8 MHZ
-	CSCTL2		= SELM_3 | SELS_3 | SELA_2;
-	CSCTL3		= DIVM__1| DIVS__1;
-	CSCTL0_H	= 0;
-
+    Clock_Init();
 	dp_delay(500);
-
     uart_a0_init();
-    init_pins();
+
+
+    gpio_init();
+
+
     //Board specific assigment
     PJDIR &= ~BIT5;
 

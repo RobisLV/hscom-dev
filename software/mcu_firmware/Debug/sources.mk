@@ -109,7 +109,8 @@ S64_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 src \
-plat/src \
+plat \
 link \
-lib/src \
+lib \
+driver \
 

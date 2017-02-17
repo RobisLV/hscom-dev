@@ -81,8 +81,8 @@ Parties with respect to the subject matter herein and supersedes all other
 communications whether written or oral.
 */
 
-#ifndef INC_DPUSER_H
-#define INC_DPUSER_H
+#ifndef LIB_INCLUDE_DPUSER_H
+#define LIB_INCLUDE_DPUSER_H
 
 #include <MSP430.h>
 /*************** Hardware related constants *****************************/

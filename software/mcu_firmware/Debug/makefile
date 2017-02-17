@@ -11,9 +11,11 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./src/main.obj" \
-"./plat/src/FPGA_MB.obj" \
-"./plat/src/RF_DB.obj" \
-"./lib/src/dpuser.obj" \
+"./plat/FPGA_MB.obj" \
+"./plat/RF_DB.obj" \
+"./lib/dpuser.obj" \
+"./driver/clock.obj" \
+"./driver/gpio.obj" \
 "../link/lnk_msp430fr5969.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibmpu_init.a \
@@ -28,13 +30,15 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include src/subdir_vars.mk
--include plat/src/subdir_vars.mk
+-include plat/subdir_vars.mk
 -include link/subdir_vars.mk
--include lib/src/subdir_vars.mk
+-include lib/subdir_vars.mk
+-include driver/subdir_vars.mk
 -include src/subdir_rules.mk
--include plat/src/subdir_rules.mk
+-include plat/subdir_rules.mk
 -include link/subdir_rules.mk
--include lib/src/subdir_rules.mk
+-include lib/subdir_rules.mk
+-include driver/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -160,8 +164,8 @@ RCS_Test.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "src\main.pp" "plat\src\FPGA_MB.pp" "plat\src\RF_DB.pp" "lib\src\dpuser.pp" 
-	-$(RM) "src\main.obj" "plat\src\FPGA_MB.obj" "plat\src\RF_DB.obj" "lib\src\dpuser.obj" 
+	-$(RM) "src\main.pp" "plat\FPGA_MB.pp" "plat\RF_DB.pp" "lib\dpuser.pp" "driver\clock.pp" "driver\gpio.pp" 
+	-$(RM) "src\main.obj" "plat\FPGA_MB.obj" "plat\RF_DB.obj" "lib\dpuser.obj" "driver\clock.obj" "driver\gpio.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
