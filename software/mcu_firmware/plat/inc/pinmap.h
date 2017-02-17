@@ -42,13 +42,13 @@
 #define FPGA_JTAG_TDI_PORT	P1OUT
 #define FPGA_JTAG_TCK_PORT	P4OUT
 #define FPGA_JTAG_TMS_PORT	P1OUT
-#define FPGA_JTAG_TRST_PIN	P1OUT
+#define FPGA_JTAG_TRST_PORT	P1OUT
 
 #define FPGA_JTAG_TDO_DIR	P4DIR
 #define FPGA_JTAG_TDI_DIR	P1DIR
 #define FPGA_JTAG_TCK_DIR	P4DIR
 #define FPGA_JTAG_TMS_DIR	P1DIR
-#define FPGA_JTAG_TRST_PIN	P1DIR
+#define FPGA_JTAG_TRST_DIR	P1DIR
 
 //***** 5V and 3.3V current measument analog input pins *****/
 #define PWR_5V_ISENSE_PIN	BIT0
@@ -101,6 +101,11 @@
 #define TXRX_SHDN_PIN		BIT2
 #define TXRX_SHDN_PORT		P4OUT
 #define TXRX_SHDN_DIR		P4DIR
+
+// Transmit enable input pin
+#define TXRX_TX_EN_PIN		BIT7
+#define TXRX_TX_EN_PORT		P3OUT
+#define TXRX_TX_EN_DIR		P3DIR
 
 // Receive enable input pin
 #define TXRX_RX_EN_PIN		BIT3

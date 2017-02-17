@@ -131,7 +131,7 @@ unsigned char DAC_standby_set (unsigned char val)
 */
 unsigned char MAX2828_get_phase_lock_statuss(void)
 {
-	if (MAX2828_lock_port & MAX2828_lock_pin) return 1;
+	if (TXRX_LOCK_DET_PORT & TXRX_LOCK_DET_PIN) return 1;
 	return 0;
 }
 
@@ -139,13 +139,13 @@ unsigned char MAX2828_TX_set(unsigned char val)
 {
 	if (val == 1)
 	{
-		MAX2828_tx_en_port |= MAX2828_tx_en_pin;
+		TXRX_TX_EN_PORT |= TXRX_TX_EN_PIN;
 		store_max2828_gpio_settings(1,1);
 		return 0b01001101;
 	} else
 	if (val == 0)
 	{
-		MAX2828_tx_en_port &= ~MAX2828_tx_en_pin;
+		TXRX_TX_EN_PORT &= ~TXRX_TX_EN_PIN;
 		store_max2828_gpio_settings(1,0);
 		return 0b01001011;
 	} else
@@ -156,13 +156,13 @@ unsigned char MAX2828_TX_set(unsigned char val)
 //{
 //	if (val == 1)
 //	{
-//		MAX2828_rx_en_port |= MAX2828_rx_en_pin;
+//		TXRX_RX_EN_PORT |= TXRX_RX_EN_PIN;
 //		//store_max2828_gpio_settings(1,1);
 //		return 0b01001101;
 //	} else
 //	if (val == 0)
 //	{
-//		MAX2828_rx_en_port &= ~MAX2828_rx_en_pin;
+//		TXRX_RX_EN_PORT &= ~TXRX_RX_EN_PIN;
 //		//store_max2828_gpio_settings(1,0);
 //		return 0b01001011;
 //	} else
@@ -173,19 +173,19 @@ unsigned char MAX2828_enable_set(unsigned char val)
 {
 	if (val == 1)
 	{
-		MAX2828_shdn_port |= MAX2828_shdn_pin;
+		TXRX_SHDN_PORT |= TXRX_SHDN_PIN;
 		store_max2828_gpio_settings(2,1);
 		return 0b01001001;
 	} else
 	if (val == 0)
 	{
-		MAX2828_shdn_port &= ~MAX2828_shdn_pin;
+		TXRX_SHDN_PORT &= ~TXRX_SHDN_PIN;
 		store_max2828_gpio_settings(2,0);
 		return 0b01001011;
 	} else
 	return 0;
 }
-
+/*
 unsigned char MAX2828_TX_set_power(unsigned char value)
 {
 	unsigned char status_code = 0;
@@ -211,7 +211,7 @@ unsigned char MAX2828_TX_set_power(unsigned char value)
 	}
 	return status_code;
 }
-
+*/
 //unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned char data_msb,unsigned char data_lsb)
 unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned long int data)
 {
@@ -224,27 +224,27 @@ unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned long in
 	for (i=17;i>=0;i--){
 			temp[17-i]=(data >> i) & 1;
 	}
-	SPI_SS_MAX2828_port &= ~SPI_SS_MAX2828_pin;
+	INT_SPI_TXRX_SS_PORT &= ~INT_SPI_TXRX_SS_PIN;
 //	TA1CCR1 = 19;
 //	unsigned char byte1 = (data_msb&0b110000)>>4;
 //	unsigned char byte2 = ((data_msb&0b1111)<<4) | ((data_lsb&0b11110000)>>4);
 //	unsigned char byte3 = ((data_lsb&0b1111)<<4) | (adress&0b1111);
 	for (i=0;i<18;i++){
-		if(temp[i]) SPI_DIN_MAX2828_port |= SPI_DIN_MAX2828_pin;
-		else SPI_DIN_MAX2828_port &= ~SPI_DIN_MAX2828_pin;
-		SPI_CLK_MAX2828_port ^= SPI_CLK_MAX2828_pin;
-		if(temp[i]) SPI_DIN_MAX2828_port |= SPI_DIN_MAX2828_pin;
-		else SPI_DIN_MAX2828_port &= ~SPI_DIN_MAX2828_pin;
-		SPI_CLK_MAX2828_port ^= SPI_CLK_MAX2828_pin;
+		if(temp[i]) INT_SPI_MOSI_PORT |= INT_SPI_MOSI_PIN;
+		else INT_SPI_MOSI_PORT &= ~INT_SPI_MOSI_PIN;
+		INT_SPI_SCK_PORT ^= INT_SPI_SCK_PIN;
+		if(temp[i]) INT_SPI_MOSI_PORT |= INT_SPI_MOSI_PIN;
+		else INT_SPI_MOSI_PORT &= ~INT_SPI_MOSI_PIN;
+		INT_SPI_SCK_PORT ^= INT_SPI_SCK_PIN;
 	}
 
 //	SPI_RCS_send_byte(byte1);
 //	SPI_RCS_send_byte(byte2);
 //	SPI_RCS_send_byte(byte3);
 
-	SPI_SS_MAX2828_port |= SPI_SS_MAX2828_pin;
+	INT_SPI_TXRX_SS_PORT |= INT_SPI_TXRX_SS_PIN;
 //	TA1CCR1 = 0;
-	SPI_DIN_MAX2828_port &= ~SPI_DIN_MAX2828_pin;
+	INT_SPI_MOSI_PORT &= ~INT_SPI_MOSI_PIN;
 
 //	store_max2828_registers (&adress,&data_msb,&data_lsb);
 	store_max2828_registers (&adress,&data);
@@ -258,13 +258,13 @@ unsigned char MAX2828_set_GPIO_stored (void)
 	MAX2828_enable_set(temp&0b10>>1);
 	return 1;
 }
-
+/*
 unsigned char MAX2828_pwr_set_stored (void)
 {
 	MAX2828_TX_set_power(get_stored_settings(index_max2828_pwr));
 	return 1;
 }
-
+*/
 unsigned char MAX2828_set_registers_stored (void)
 {
 	unsigned char i = 0;
@@ -319,30 +319,38 @@ struct chip_conf test_struct =
 
 unsigned char init_pins()
 {
-	//Init SS pins for all SPI peripherals  as outputs
-	SPI_SS_MAX2828_ddr 	|= SPI_SS_MAX2828_pin;
-	SPI_DIN_MAX2828_ddr |= SPI_DIN_MAX2828_pin;
-	SPI_CLK_MAX2828_ddr |= SPI_CLK_MAX2828_pin;
+	// Init SS pins for all SPI peripherals  as outputs
+	INT_SPI_FPGA_SS_DIR		|= INT_SPI_FLASH_SS_PIN;
+	INT_SPI_FLASH_SS_DIR	|= INT_SPI_FPGA_SS_PIN;
+	INT_SPI_TXRX_SS_DIR 	|= INT_SPI_TXRX_SS_PIN;
+	INT_SPI_AF_SS_DIR		|= INT_SPI_AF_SS_PIN;
 
-	//Set all SS pins as 1 (default) - not active
-//	SPI_SS_DAC_port		|= SPI_SS_DAC_pin;
-//	SPI_SS_FPGA_port 	|= SPI_SS_FPGA_pin;
-	SPI_SS_MAX2828_port |= SPI_SS_MAX2828_pin;
-	SPI_DIN_MAX2828_port &= ~SPI_DIN_MAX2828_pin;//Default 0
-	SPI_CLK_MAX2828_port &= ~SPI_CLK_MAX2828_pin;
+	INT_SPI_MOSI_DIR |= INT_SPI_MOSI_PIN;
+	INT_SPI_SCK_DIR |= INT_SPI_SCK_PIN;
 
-	//set MAX2828 lock  read pins as input
-	MAX2828_lock_ddr 	&= ~MAX2828_lock_pin;
-	MAX2828_lock_pullup &= ~MAX2828_lock_pin;
-	//Init MAX2828 related pins
-	MAX2828_tx_en_ddr	|= MAX2828_tx_en_pin;
-//	MAX2828_rx_en_ddr	|= MAX2828_rx_en_pin;
-	MAX2828_shdn_ddr	|= MAX2828_shdn_pin;
+	// Set all SS pins as 1's (default - not active)
+	INT_SPI_FLASH_SS_PORT |= INT_SPI_FLASH_SS_PIN;
+	INT_SPI_FPGA_SS_PORT  |= INT_SPI_FPGA_SS_PIN;
+	INT_SPI_TXRX_SS_PORT  |= INT_SPI_TXRX_SS_PIN;
+	INT_SPI_AF_SS_PORT    |= INT_SPI_AF_SS_PIN;
 
-	MAX2828_tx_en_port	&= ~MAX2828_tx_en_pin;
-//	MAX2828_rx_en_port	&= ~MAX2828_rx_en_pin;
-	MAX2828_shdn_port	&= ~MAX2828_shdn_pin;
+	// Default 0
+	INT_SPI_MOSI_PORT 	&= ~INT_SPI_MOSI_PIN;
+	INT_SPI_SCK_PORT 	&= ~INT_SPI_SCK_PIN;
 
+	// Set MAX2828 lock-detect pin as input
+	TXRX_LOCK_DET_DIR 	&= ~TXRX_LOCK_DET_PIN;
+	TXRX_LOCK_DET_PULL &= ~TXRX_LOCK_DET_PIN;
+
+	// Init MAX2828 related pins
+	TXRX_TX_EN_DIR	|= TXRX_TX_EN_PIN;
+	TXRX_RX_EN_DIR	|= TXRX_RX_EN_PIN;
+	TXRX_SHDN_DIR	|= TXRX_SHDN_PIN;
+
+	TXRX_TX_EN_PORT	&= ~TXRX_TX_EN_PIN;
+	TXRX_RX_EN_PORT	&= ~TXRX_RX_EN_PIN;
+	TXRX_SHDN_PORT	&= ~TXRX_SHDN_PIN;
+/*
 	MAX2828_pwr_set_ddr1 |= MAX2828_pwr_set_pin1;
 	MAX2828_pwr_set_ddr2 |= MAX2828_pwr_set_pin2;
 	MAX2828_pwr_set_ddr3 |= MAX2828_pwr_set_pin3;
@@ -356,19 +364,14 @@ unsigned char init_pins()
 	MAX2828_pwr_set_port4 &= ~MAX2828_pwr_set_pin4;
 	MAX2828_pwr_set_port5 &= ~MAX2828_pwr_set_pin5;
 	MAX2828_pwr_set_port6 &= ~MAX2828_pwr_set_pin6;
-
-	//init DAC related pins
-//	DAC_gset_ddr	|= DAC_gset_pin;
-//	DAC_pdv_ddr 	|= DAC_pdv_pin;
-//	DAC_pd_ddr 		|= DAC_pd_pin;
-//	DAC_standby_ddr |= DAC_standby_pin;
-	osc_en_ddr		|= osc_en_pin;
+*/
+	TXRX_OSC_EN_DIR		|= TXRX_OSC_EN_PIN;
 
 //	DAC_gset_port		&= ~DAC_gset_pin;
 //	DAC_pdv_port		&= ~DAC_pdv_pin;
 //	DAC_pd_port			&= ~DAC_pd_pin;
 //	DAC_standby_port	&= ~DAC_standby_pin;
-	osc_en_port			&= ~osc_en_pin;
+	TXRX_OSC_EN_PORT			&= ~TXRX_OSC_EN_PIN;
 
 	P1SEL1 &= ~BIT5;
 	P1SEL0 &= ~BIT5;
@@ -378,8 +381,8 @@ unsigned char init_pins()
 
 unsigned char osc_set (unsigned char val)
 {
-	if (val == 1) osc_en_port |= osc_en_pin; else
-		if (val==0 )osc_en_port &= ~ osc_en_pin; else
+	if (val == 1) TXRX_OSC_EN_PORT |= TXRX_OSC_EN_PIN; else
+		if (val==0 )TXRX_OSC_EN_PORT &= ~ TXRX_OSC_EN_PIN; else
 			return 0;
 	return 1;
 }

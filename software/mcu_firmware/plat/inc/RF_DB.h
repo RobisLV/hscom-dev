@@ -14,16 +14,16 @@ unsigned char	ADC_disable		(unsigned char);
 unsigned char	DAC_set_value			(unsigned char,unsigned char);
 unsigned char	DAC_set_stored_value	(void);
 
-unsigned char 	DAC_gset_set 		(unsigned char);
-unsigned char 	DAC_pdv_set 		(unsigned char);
-unsigned char 	DAC_pd_set 			(unsigned char);
-unsigned char 	DAC_standby_set 	(unsigned char);
+//unsigned char 	DAC_gset_set 		(unsigned char);
+//unsigned char 	DAC_pdv_set 		(unsigned char);
+//unsigned char 	DAC_pd_set 			(unsigned char);
+//unsigned char 	DAC_standby_set 	(unsigned char);
 
 unsigned char	MAX2828_get_phase_lock_statuss	(void);
 unsigned char	MAX2828_TX_set					(unsigned char);
 unsigned char	MAX2828_RX_set					(unsigned char);
 unsigned char	MAX2828_enable_set				(unsigned char);
-unsigned char	MAX2828_TX_set_power				(unsigned char);
+//unsigned char	MAX2828_TX_set_power				(unsigned char);
 //unsigned char MAX2828_set_tegister_values		(unsigned char,unsigned char,unsigned char);
 unsigned char	MAX2828_set_tegister_values		(unsigned char, unsigned long int);
 

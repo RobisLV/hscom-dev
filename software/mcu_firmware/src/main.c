@@ -19,7 +19,7 @@ Roberts Trops
 
 //Menu command numbers:
 #define enable_chip 	1
-#define enable_chip		2
+#define disable_chip	2
 #define enable_tx		3
 #define disable_tx		4
 #define set_pwr			7
@@ -182,6 +182,7 @@ int main(void) {
     case set_pwr:
     	dp_display_text("\r\n--->Type TX gain  [0;127] & press enter: ");
     	temp = get_number(DEC);
+    	/*
     	if (MAX2828_TX_set_power(temp)==0b01000111)
     	{
     		dp_display_text("\r\n--->TX gain set to: ");
@@ -189,6 +190,7 @@ int main(void) {
     	}
     	else
     		display_error();
+    	*/
     	break;
     case set_reg:
     	dp_display_text("\r\n--->Type MAX2828 register adress [0;12] & press enter: ");
@@ -221,17 +223,21 @@ int main(void) {
 
     case stdby_low:
     	//DAC STANDBY set to 0
+    	/*
     	if (DAC_standby_set(0))
     		dp_display_text("\r\n--->DAC STANDBY=0");
     	else
     		display_error();
+    		*/
     	break;
     case stdby_high:
     	//DAC STANDBY set to 1
+    	/*
     	if (DAC_standby_set(1))
     		dp_display_text("\r\n--->DAC STANDBY=1");
     	else
     		display_error();
+    		*/
     	break;
     case reset_settings:
     	dp_display_text("\r\nREG\tHEX\tBIN");
