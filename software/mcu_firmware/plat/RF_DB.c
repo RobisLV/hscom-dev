@@ -319,39 +319,39 @@ struct chip_conf test_struct =
 uint8_t gpio_init()
 {
 	// Init SS pins for all SPI peripherals  as outputs
-	gpio_mode_set(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_DIR, output);
-	gpio_mode_set(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_DIR, output);
-	gpio_mode_set(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_DIR, output);
-	gpio_mode_set(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_DIR, output);
+	GPIO_mode_set(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_DIR, OUTPUT);
+	GPIO_mode_set(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_DIR, OUTPUT);
+	GPIO_mode_set(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_DIR, OUTPUT);
+	GPIO_mode_set(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_DIR, OUTPUT);
 
-	gpio_mode_set(INT_SPI_MOSI_PIN, INT_SPI_MOSI_DIR, output);
-	gpio_mode_set(INT_SPI_SCK_PIN, INT_SPI_SCK_DIR, output);
+	GPIO_mode_set(INT_SPI_MOSI_PIN, INT_SPI_MOSI_DIR, OUTPUT);
+	GPIO_mode_set(INT_SPI_SCK_PIN, INT_SPI_SCK_DIR, OUTPUT);
 
 	// Set all SS pins as 1's (default - not active)
-	gpio_port_write(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_PORT, high);
-	gpio_port_write(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_PORT, high);
-	gpio_port_write(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_PORT, high);
-	gpio_port_write(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_PORT, high);
+	GPIO_port_write(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_PORT, HIGH);
+	GPIO_port_write(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_PORT, HIGH);
+	GPIO_port_write(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_PORT, HIGH);
+	GPIO_port_write(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_PORT, HIGH);
 
 	// Default state of SPI data and clock lines is 0
-	gpio_port_write(INT_SPI_MOSI_PIN, INT_SPI_MOSI_PORT, low);
-	gpio_port_write(INT_SPI_SCK_PIN, INT_SPI_SCK_PORT, low);
+	GPIO_port_write(INT_SPI_MOSI_PIN, INT_SPI_MOSI_PORT, LOW);
+	GPIO_port_write(INT_SPI_SCK_PIN, INT_SPI_SCK_PORT, LOW);
 
 	// Set MAX2828 lock-detect pin as input
-	gpio_mode_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_DIR, input);
-	gpio_pull_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_PULL, pull_disable);
+	GPIO_mode_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_DIR, INPUT);
+	GPIO_pull_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_PULL, PULL_DISABLE);
 
 	// Other MAX2828 related pins settings
-	gpio_mode_set(TXRX_TX_EN_PIN, TXRX_TX_EN_DIR, output);
-	gpio_mode_set(TXRX_RX_EN_PIN, TXRX_RX_EN_DIR, output);
-	gpio_mode_set(TXRX_SHDN_PIN, TXRX_SHDN_DIR, output);
-	gpio_mode_set(TXRX_OSC_EN_PIN, TXRX_OSC_EN_DIR, output);
+	GPIO_mode_set(TXRX_TX_EN_PIN, TXRX_TX_EN_DIR, OUTPUT);
+	GPIO_mode_set(TXRX_RX_EN_PIN, TXRX_RX_EN_DIR, OUTPUT);
+	GPIO_mode_set(TXRX_SHDN_PIN, TXRX_SHDN_DIR, OUTPUT);
+	GPIO_mode_set(TXRX_OSC_EN_PIN, TXRX_OSC_EN_DIR, OUTPUT);
 
 	// Keep the following pins low
-	gpio_port_write(TXRX_TX_EN_PIN, TXRX_TX_EN_PORT, low);
-	gpio_port_write(TXRX_RX_EN_PIN, TXRX_RX_EN_PORT, low);
-	gpio_port_write(TXRX_SHDN_PIN, TXRX_SHDN_PORT, low);
-	gpio_port_write(TXRX_OSC_EN_PIN, TXRX_OSC_EN_PORT, low);
+	GPIO_port_write(TXRX_TX_EN_PIN, TXRX_TX_EN_PORT, LOW);
+	GPIO_port_write(TXRX_RX_EN_PIN, TXRX_RX_EN_PORT, LOW);
+	GPIO_port_write(TXRX_SHDN_PIN, TXRX_SHDN_PORT, LOW);
+	GPIO_port_write(TXRX_OSC_EN_PIN, TXRX_OSC_EN_PORT, LOW);
 
 	return 0;
 }

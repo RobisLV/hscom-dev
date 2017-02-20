@@ -104,16 +104,12 @@ int main(void) {
 
 	//SET master clock to 8 MHz
     Clock_Init();
+    gpio_init();
 	dp_delay(500);
     uart_a0_init();
 
-
-    gpio_init();
-
-
     //Board specific assigment
     PJDIR &= ~BIT5;
-
     PM5CTL0 &= ~LOCKLPM5;	// Disable the GPIO power-on default high-impedance mode
     // to activate previously configured port settings
     char 			action_code 		= 0;
