@@ -356,6 +356,16 @@ uint8_t gpio_init()
 	return 0;
 }
 
+/*****************************************
+ * Clock select control registers
+ ****************************************/
+void Clock_Init(void){
+    //Set DCO 8 MHZ
+	CSCTL2		= SELM_3 | SELS_3 | SELA_2;
+	CSCTL3		= DIVM__1| DIVS__1;
+	CSCTL0_H	= 0;
+}
+
 unsigned char osc_set (unsigned char val)
 {
 	if (val == 1) TXRX_OSC_EN_PORT |= TXRX_OSC_EN_PIN; else

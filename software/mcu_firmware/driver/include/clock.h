@@ -33,12 +33,43 @@ typedef enum clock_setting{
 	DIV_8,
 	DIV_16,
 	DIV_32,
-	/* 							*/
+	/* Clock source control	*/
 	LFXT_ON,
 	LFXT_OFF,
 	SMCLK_ON,
 	SMCLK_OFF,
-
+	VLO_ON,
+	VLO_OFF,
+	HFXT_ON,
+	HFXT_OFF,
+	HFXT_FSEL_0_4M,		/*	0 to 4 MHz		*/
+	HFXT_FSEL_4_8M,		/* 	4 to 8 MHz		*/
+	HFXT_FSEL_8_16M,	/*	8 to 16 MHz		*/
+	HFXT_FSEL_16_24M,	/* 	16 to 24 MHz	*/
+	HFXT_DRIVE_LOWEST,
+	HFXT_DRIVE_LOW,
+	HFXT_DRIVE_HIGH,
+	HFXT_DRIVE_HIGHEST,
+	LFXT_DRIVE_LOWEST,
+	LFXT_DRIVE_LOW,
+	LFXT_DRIVE_HIGH,
+	LFXT_DRIVE_HIGHEST,
+	LFXT_BYPASS_ON,
+	LFXT_BYPASS_OFF,
+	HFXT_BYPASS_ON,
+	HFXT_BYPASS_OFF,
+	LFXT_FAULT_CNT_ON,
+	LFXT_FAULT_CNT_OFF,
+	HFXT_FAULT_CNT_ON,
+	HFXT_FAULT_CNT_OFF,
+	MODCLK_REQ_ENABLE,
+	SMCLK_REQ_ENABLE,
+	MCLK_REQ_ENABLE,
+	ACLK_REQ_ENABLE,
+	MODCLK_REQ_DISABLE,
+	SMCLK_REQ_DISABLE,
+	MCLK_REQ_DISABLE,
+	ACLK_REQ_DISABLE,
 } cs_setting;
 
 /********************************
@@ -46,6 +77,7 @@ typedef enum clock_setting{
  *******************************/
 uint8_t CS_key_write(void);
 uint8_t CS_DCO_freq_set(cs_setting clock_frequency);
+uint8_t CS_HFXT_freq_set(cs_setting clock_frequency);
 
 uint8_t CS_ACLK_source_set(cs_setting clock_source);
 uint8_t CS_MCLK_source_set(cs_setting clock_source);
@@ -55,9 +87,26 @@ uint8_t CS_ACLK_divider_set(cs_setting clock_divider);
 uint8_t CS_MCLK_divider_set(cs_setting clock_divider);
 uint8_t CS_SMCLK_divider_set(cs_setting clock_divider);
 
-uint8_t CS_LFXT_onoff(cs_setting LFXT_status);
-uint8_t CS_SMCLK_onoff(cs_setting SMCLK_status);
+uint8_t CS_LFXT_onoff(cs_setting clock_onoff);
+uint8_t CS_SMCLK_onoff(cs_setting clock_onoff);
+uint8_t CS_VLO_onoff(cs_setting clock_onoff);
+uint8_t CS_HFXT_onoff(cs_setting clock_onoff);
 
-void Clock_Init(void);
+uint8_t CS_LFXT_drive(cs_setting clock_drive);
+uint8_t CS_HFXT_drive(cs_setting clock_drive);
+
+uint8_t CS_LFXT_bypass(cs_setting clock_bypass);
+uint8_t CS_HFXT_bypass(cs_setting clock_bypass);
+
+uint8_t CS_HFXT_fault_cnt_onoff(cs_setting clock_counter);
+uint8_t CS_LFXT_fault_cnt_onoff(cs_setting clock_counter);
+
+uint8_t CS_HFXT_fault_flag_read(void);
+uint8_t CS_LFXT_fault_flag_read(void);
+
+uint8_t CS_MODCLK_request(cs_setting clock_request);
+uint8_t CS_SMCLK_request(cs_setting clock_request);
+uint8_t CS_MCLK_request(cs_setting clock_request);
+uint8_t CS_ACLK_request(cs_setting clock_request);
 
 #endif

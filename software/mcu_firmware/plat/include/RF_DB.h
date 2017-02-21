@@ -32,6 +32,7 @@ unsigned char	MAX2828_pwr_set_stored			(void);
 unsigned char	MAX2828_set_registers_stored		(void);
 
 unsigned char 	gpio_init						(void);					//Init MCU pins
+uint16_t 		Clock_Init						(void);
 unsigned char 	osc_set 						(unsigned char);
 unsigned char	SPI_RCS_init					(void);					//Init SPI realised by eUSCI B0
 unsigned char	SPI_RCS_send_byte				(unsigned char);
