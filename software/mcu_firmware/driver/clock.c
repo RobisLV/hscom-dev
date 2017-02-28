@@ -9,63 +9,53 @@
 /***************************************************
  *	Write clock system key password
  **************************************************/
-uint8_t CS_key_write(void){
-	MASK_SET(CSCTL0, CSKEY);
+uint16_t CS_Password(cs_setting clock_password){
+	if(clock_password == PWD_SET){
+		CSCTL0 = CSKEY;
+	}
+	else if(clock_password == PWD_CLEAR){
+		CSCTL0_L = 0x00;
+	}
+	else{
+		return 1;
+	}
     return 0;
 }
 
 /***************************************************
  *
  **************************************************/
-uint8_t CS_DCO_freq_set(cs_setting clock_frequency){
+uint16_t CS_DCO_Freq_Set(cs_setting clock_frequency){
+    // Load DCO frequency settings in register CSCTL1
 	if(clock_frequency == DCO_FSEL_1M){
-		MASK_CLEAR(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL0 | DCOFSEL1 | DCOFSEL2);
+		CSCTL1 = DCOFSEL_0;
 	}
 	else if(clock_frequency == DCO_FSEL_2M67){
-		MASK_CLEAR(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL0);
-		MASK_CLEAR(CSCTL1, DCOFSEL1 | DCOFSEL2);
+		CSCTL1 = DCOFSEL_1;
 	}
 	else if(clock_frequency == DCO_FSEL_3M5){
-		MASK_CLEAR(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL1);
-		MASK_CLEAR(CSCTL1, DCOFSEL0 | DCOFSEL2);
+		CSCTL1 = DCOFSEL_2;
 	}
 	else if(clock_frequency == DCO_FSEL_4M){
-		MASK_CLEAR(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL0 | DCOFSEL1);
-		MASK_CLEAR(CSCTL1, DCOFSEL2);
+        CSCTL1 = DCOFSEL_3;
 	}
 	else if(clock_frequency == DCO_FSEL_5M33){
-		MASK_SET(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL0);
-		MASK_CLEAR(CSCTL1, DCOFSEL1 | DCOFSEL2);
+        CSCTL1 = DCOFSEL_4;
 	}
 	else if(clock_frequency == DCO_FSEL_7M){
-		MASK_SET(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL1);
-		MASK_CLEAR(CSCTL1, DCOFSEL0 | DCOFSEL2);
+        CSCTL1 = DCOFSEL_5;
 	}
 	else if(clock_frequency == DCO_FSEL_8M){
-		MASK_SET(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL0 | DCOFSEL1);
-		MASK_CLEAR(CSCTL1, DCOFSEL2);
+        CSCTL1 = DCOFSEL_6;
 	}
 	else if(clock_frequency == DCO_FSEL_16M){
-		MASK_SET(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL2);
-		MASK_CLEAR(CSCTL1, DCOFSEL0 | DCOFSEL1);
+        CSCTL1 = DCORSEL | DCOFSEL_4;
 	}
 	else if(clock_frequency == DCO_FSEL_21M){
-		MASK_SET(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL0 | DCOFSEL2);
-		MASK_CLEAR(CSCTL1, DCOFSEL1);
+	    CSCTL1 = DCORSEL | DCOFSEL_5;
 	}
 	else if(clock_frequency == DCO_FSEL_24M){
-		MASK_SET(CSCTL1, DCORSEL);
-		MASK_SET(CSCTL1, DCOFSEL1 | DCOFSEL2);
-		MASK_CLEAR(CSCTL1, DCOFSEL0);
+	    CSCTL1 = DCORSEL | DCOFSEL_6;
 	}
 	else{
 		return 1;
@@ -76,7 +66,10 @@ uint8_t CS_DCO_freq_set(cs_setting clock_frequency){
 /***************************************************
  *	High frequency crystal on/off
  **************************************************/
-uint8_t CS_HFXT_freq_set(cs_setting clock_frequency){
+uint16_t CS_HFXT_Freq_Set(cs_setting clock_frequency){
+    // Clear any previously set frequency select bits
+    MASK_CLEAR(CSCTL4, HFFREQ0|HFFREQ1);
+    // Set HFXT frequency
 	if(clock_frequency == HFXT_FSEL_0_4M){
 		MASK_SET(CSCTL4, HFFREQ_0);
 	}
@@ -98,7 +91,10 @@ uint8_t CS_HFXT_freq_set(cs_setting clock_frequency){
 /***************************************************
  *	Auxilary clock source set
  **************************************************/
-uint8_t CS_ACLK_source_set(cs_setting clock_source){
+uint16_t CS_ACLK_Source_Set(cs_setting clock_source){
+    // Clear any previously set source select bits
+    MASK_CLEAR(CSCTL2, SELA0|SELA1|SELA2);
+    // Select Aux clock source
 	if(clock_source == LFXT_CLK){
 		MASK_SET(CSCTL2, SELA__LFXTCLK);
 	}
@@ -117,7 +113,10 @@ uint8_t CS_ACLK_source_set(cs_setting clock_source){
 /***************************************************
  *	Subsystem clock source set
  **************************************************/
-uint8_t CS_SCLK_source_set(cs_setting clock_source){
+uint16_t CS_SMCLK_Source_Set(cs_setting clock_source){
+    // Clear any previously set source select bits
+    MASK_CLEAR(CSCTL2, SELS0|SELS1|SELS2);
+    // Select Subsystem clock source
 	if(clock_source == LFXT_CLK){
 		MASK_SET(CSCTL2, SELS__LFXTCLK);
 	}
@@ -145,7 +144,10 @@ uint8_t CS_SCLK_source_set(cs_setting clock_source){
 /***************************************************
  *	Master clock source set
  **************************************************/
-uint8_t CS_MCLK_source_set(cs_setting clock_source){
+uint16_t CS_MCLK_Source_Set(cs_setting clock_source){
+    // Clear any previously set source select bits
+    MASK_CLEAR(CSCTL2, SELM0|SELM1|SELM2);
+    // Select Master clock source
 	if(clock_source == LFXT_CLK){
 		MASK_SET(CSCTL2, SELM__LFXTCLK);
 	}
@@ -173,7 +175,10 @@ uint8_t CS_MCLK_source_set(cs_setting clock_source){
 /***************************************************
  *	Auxilary clock divider set
  **************************************************/
-uint8_t CS_ACLK_divider_set(cs_setting clock_divider){
+uint16_t CS_ACLK_Divider_Set(cs_setting clock_divider){
+    // Clear any previously set divider select bits
+    MASK_CLEAR(CSCTL3, DIVA0|DIVA1|DIVA2);
+    // Select ACLK divider
 	if(clock_divider == DIV_1){
 		MASK_SET(CSCTL3, DIVA__1);
 	}
@@ -201,7 +206,10 @@ uint8_t CS_ACLK_divider_set(cs_setting clock_divider){
 /***************************************************
  *	Subsystem clock divider set
  **************************************************/
-uint8_t CS_SCLK_divider_set(cs_setting clock_divider){
+uint16_t CS_SMCLK_Divider_Set(cs_setting clock_divider){
+    // Clear any previously set divider select bits
+    MASK_CLEAR(CSCTL3, DIVS0|DIVS1|DIVS2);
+    // Select SMCLK divider
 	if(clock_divider == DIV_1){
 		MASK_SET(CSCTL3, DIVS__1);
 	}
@@ -229,7 +237,10 @@ uint8_t CS_SCLK_divider_set(cs_setting clock_divider){
 /***************************************************
  *	Master clock divider set
  **************************************************/
-uint8_t CS_MCLK_divider_set(cs_setting clock_divider){
+uint16_t CS_MCLK_Divider_Set(cs_setting clock_divider){
+    // Clear any previously set divider select bits
+    MASK_CLEAR(CSCTL3, DIVM0|DIVM1|DIVM2);
+    // Select MCLK divider
 	if(clock_divider == DIV_1){
 		MASK_SET(CSCTL3, DIVM__1);
 	}
@@ -257,7 +268,7 @@ uint8_t CS_MCLK_divider_set(cs_setting clock_divider){
 /***************************************************
  *	Low frequency crystal on/off
  **************************************************/
-uint8_t CS_LFXT_onoff(cs_setting clock_onoff){
+uint16_t CS_LFXT_Onoff(cs_setting clock_onoff){
 	if(clock_onoff == LFXT_OFF){
 		MASK_SET(CSCTL4, LFXTOFF);
 	}
@@ -273,7 +284,7 @@ uint8_t CS_LFXT_onoff(cs_setting clock_onoff){
 /***************************************************
  *	 on/off
  **************************************************/
-uint8_t CS_SMCLK_onoff(cs_setting clock_onoff){
+uint16_t CS_SMCLK_Onoff(cs_setting clock_onoff){
 	if(clock_onoff == SMCLK_OFF){
 		MASK_SET(CSCTL4, SMCLKOFF);
 	}
@@ -289,7 +300,7 @@ uint8_t CS_SMCLK_onoff(cs_setting clock_onoff){
 /***************************************************
  *	on/off
  **************************************************/
-uint8_t CS_VLO_onoff(cs_setting clock_onoff){
+uint16_t CS_VLO_Onoff(cs_setting clock_onoff){
 	if(clock_onoff == VLO_OFF){
 		MASK_SET(CSCTL4, VLOOFF);
 	}
@@ -305,7 +316,7 @@ uint8_t CS_VLO_onoff(cs_setting clock_onoff){
 /***************************************************
  *	High frequency crystal on/off
  **************************************************/
-uint8_t CS_HFXT_onoff(cs_setting HFXT_status){
+uint16_t CS_HFXT_Onoff(cs_setting HFXT_status){
 	if(HFXT_status == HFXT_OFF){
 		MASK_SET(CSCTL4, HFXTOFF);
 	}
@@ -321,7 +332,10 @@ uint8_t CS_HFXT_onoff(cs_setting HFXT_status){
 /***************************************************
  *	Low frequency crystal drive strength
  **************************************************/
-uint8_t CS_LFXT_drive(cs_setting clock_drive){
+uint16_t CS_LFXT_Drive(cs_setting clock_drive){
+    // Clear any previously set crystal drive strength select bits
+    MASK_CLEAR(CSCTL4, LFXTDRIVE0|LFXTDRIVE1);
+    // Select crystal drive strength
 	if(clock_drive == LFXT_DRIVE_LOWEST){
 		MASK_SET(CSCTL4, LFXTDRIVE_0);
 	}
@@ -342,7 +356,10 @@ uint8_t CS_LFXT_drive(cs_setting clock_drive){
 /***************************************************
  *	High frequency crystal drive strength
  **************************************************/
-uint8_t CS_HFXT_drive(cs_setting clock_drive){
+uint16_t CS_HFXT_Drive(cs_setting clock_drive){
+    // Clear any previously set crystal drive strength select bits
+    MASK_CLEAR(CSCTL4, HFXTDRIVE0|HFXTDRIVE1);
+    // Select crystal drive strength
 	if(clock_drive == HFXT_DRIVE_LOWEST){
 		MASK_SET(CSCTL4, HFXTDRIVE_0);
 	}
@@ -364,7 +381,7 @@ uint8_t CS_HFXT_drive(cs_setting clock_drive){
 /*****************************************
  * Low frequency crystal clock bypass
  ****************************************/
-uint8_t CS_LFXT_bypass(cs_setting clock_bypass){
+uint16_t CS_LFXT_Bypass(cs_setting clock_bypass){
 	if(clock_bypass == LFXT_BYPASS_ON){
 		MASK_SET(CSCTL4, LFXTBYPASS);
 	}
@@ -380,7 +397,7 @@ uint8_t CS_LFXT_bypass(cs_setting clock_bypass){
 /*****************************************
  * Hgih frequency crystal clock bypass
  ****************************************/
-uint8_t CS_HFXT_bypass(cs_setting clock_bypass){
+uint16_t CS_HFXT_Bypass(cs_setting clock_bypass){
 	if(clock_bypass == HFXT_BYPASS_ON){
 		MASK_SET(CSCTL4, HFXTBYPASS);
 	}
@@ -396,7 +413,7 @@ uint8_t CS_HFXT_bypass(cs_setting clock_bypass){
 /*****************************************
  * Hgih frequency crystal clock fault counter
  ****************************************/
-uint8_t CS_HFXT_fault_cnt_onoff(cs_setting clock_counter){
+uint16_t CS_HFXT_Fault_Cnt_Onoff(cs_setting clock_counter){
 	if(clock_counter == HFXT_FAULT_CNT_ON){
 		MASK_SET(CSCTL5, ENSTFCNT2);
 	}
@@ -412,7 +429,7 @@ uint8_t CS_HFXT_fault_cnt_onoff(cs_setting clock_counter){
 /*****************************************
  * Low frequency crystal clock fault counter
  ****************************************/
-uint8_t CS_LFXT_fault_cnt_onoff(cs_setting clock_counter){
+uint16_t CS_LFXT_Fault_Cnt_Onoff(cs_setting clock_counter){
 	if(clock_counter == LFXT_FAULT_CNT_ON){
 		MASK_SET(CSCTL5, ENSTFCNT1);
 	}
@@ -428,7 +445,7 @@ uint8_t CS_LFXT_fault_cnt_onoff(cs_setting clock_counter){
 /*****************************************
  * High frequency crystal clock fault flag
  ****************************************/
-uint8_t CS_HFXT_fault_flag_read(void){
+uint16_t CS_HFXT_Fault_Flag_Read(void){
 	if(CSCTL5 & HFXTOFFG){
 		return 1;
 	}
@@ -438,7 +455,7 @@ uint8_t CS_HFXT_fault_flag_read(void){
 /*****************************************
  * Low frequency crystal clock fault flag
  ****************************************/
-uint8_t CS_LFXT_fault_flag_read(void){
+uint16_t CS_LFXT_Fault_Flag_Read(void){
 	if(CSCTL5 & LFXTOFFG){
 		return 1;
 	}
@@ -448,7 +465,7 @@ uint8_t CS_LFXT_fault_flag_read(void){
 /*****************************************
  * Module clock request enable
  ****************************************/
-uint8_t CS_MODCLK_request(cs_setting clock_request){
+uint16_t CS_MODCLK_Request(cs_setting clock_request){
 	if(clock_request == MODCLK_REQ_ENABLE){
 		MASK_SET(CSCTL6, MODCLKREQEN);
 	}
@@ -464,7 +481,7 @@ uint8_t CS_MODCLK_request(cs_setting clock_request){
 /*****************************************
  * clock request enable
  ****************************************/
-uint8_t CS_SMCLK_request(cs_setting clock_request){
+uint16_t CS_SMCLK_Request(cs_setting clock_request){
 	if(clock_request == SMCLK_REQ_ENABLE){
 		MASK_SET(CSCTL6, SMCLKREQEN);
 	}
@@ -480,7 +497,7 @@ uint8_t CS_SMCLK_request(cs_setting clock_request){
 /*****************************************
  * clock request enable
  ****************************************/
-uint8_t CS_MCLK_request(cs_setting clock_request){
+uint16_t CS_MCLK_Request(cs_setting clock_request){
 	if(clock_request == MCLK_REQ_ENABLE){
 		MASK_SET(CSCTL6, MCLKREQEN);
 	}
@@ -496,7 +513,7 @@ uint8_t CS_MCLK_request(cs_setting clock_request){
 /*****************************************
  * clock request enable
  ****************************************/
-uint8_t CS_ACLK_request(cs_setting clock_request){
+uint16_t CS_ACLK_Request(cs_setting clock_request){
 	if(clock_request == ACLK_REQ_ENABLE){
 		MASK_SET(CSCTL6, ACLKREQEN);
 	}

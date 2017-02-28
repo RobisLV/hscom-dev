@@ -12,7 +12,6 @@ Roberts Trops
 * TXRX
 */
 #include <msp430.h>
-#include "clock.h"
 #include "RF_DB.h"
 #include "dpuser.h"
 
@@ -48,15 +47,9 @@ typedef enum selection{
 #define reg_bits    14 // number of bits in max2828 conf. register
 
 //Define UART RX buffer and its size
-static	unsigned char rx_a0_buffer_index 	= 0;
+//static	unsigned char rx_a0_buffer_index 	= 0;
 #pragma NOINIT(UART_RX_BUFFER)
 unsigned char UART_RX_BUFFER[UART_RX_BUFFER_SIZE];
-
-unsigned char	UART_read_buffer 	(void);
-void			display_main_menu	(void);
-void 			display_error		(void);
-uint16_t 		get_number			(char);
-uint16_t		bin_to_int			(unsigned char*);
 
 // Default register values of max2828
 uint16_t default_reg[reg_count]=
@@ -79,227 +72,38 @@ uint16_t default_reg[reg_count]=
 // Registers defined by user
 uint16_t user_reg[reg_count] = {0};
 
-// Function for coping arrays
-void cpy_array(uint16_t *dst_array, uint16_t *src_array, uint8_t ARRAY_SIZE){
-    int i;
-    for (i = 0; i != ARRAY_SIZE; ++i){
-            dst_array[i] = src_array[i];
-    }
-}
-
-void print_bin(uint16_t value, uint8_t bits){
-    int i;
-    for(i=bits-1; i>=0 ; i--){
-        if(((value>>i) & 0x01)==1){
-        	dp_display_text("1");
-        }
-        else{
-        	dp_display_text("0");
-        }
-    }
-}
-
-int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+int main(void){
+	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
 	//SET master clock to 8 MHz
     Clock_Init();
-    gpio_init();
+    // Disable the GPIO power-on default high-impedance mode to activate
+    // previously configured port settings
+    PM5CTL0 &= ~LOCKLPM5;
+    GPIO_Init();
 	dp_delay(500);
-    uart_a0_init();
-
+	uart_a0_init();
     //Board specific assigment
-    PJDIR &= ~BIT5;
-    PM5CTL0 &= ~LOCKLPM5;	// Disable the GPIO power-on default high-impedance mode
-    // to activate previously configured port settings
-    char 			action_code 		= 0;
-    unsigned char 	temp,temp2,temp3 	= 0;
-    unsigned long int in_val = 0;
-	uint8_t k;
+    //PJDIR &= ~BIT5;
+    volatile uint16_t counter = 0;
+    //
+	uint16_t i=0;
+    P2DIR |= BIT2;
+    while(1){
+    	//counter1++;
+    	GPIO_Port_Write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, HIGH);
 
-    display_main_menu();
-
-    cpy_array(user_reg, default_reg,reg_count); // Copy default values in user defined
-    //Main menu
-    while(1)
-    {
-    dp_display_text("\r\nEnter action code & press enter: ");
-
-    action_code = get_number(DEC);
-    switch(action_code)
-    {
-    case menu:
-    	//Display main menu
-    	display_main_menu();
-    	break;
-    case enable_chip:
-    	//Enable chip (power on)
-    	if (MAX2828_enable_set(1) == 0b01001001)
-    		dp_display_text("\r\n--->Chip enabled");
-    	else
-    		display_error();
-    	break;
-    case disable_chip:
-    	//Disable chip (power off)
-    	if (MAX2828_enable_set(0) == 0b01001011)
-    		dp_display_text("\r\n--->Chip disabled");
-    	else
-    		display_error();
-    	break;
-    case enable_tx:
-    	//Enable TX
-    	if (MAX2828_TX_set(1) == 0b01001101)
-    		dp_display_text("\r\n--->TX on");
-    	else
-    		dp_display_text("\r\n--->Error");
-    	break;
-    case disable_tx:
-    	//Disable TX
-    	if (MAX2828_TX_set(0) == 0b01001011)
-    		dp_display_text("\r\n--->TX off");
-    	else
-    		dp_display_text("\r\n--->Error");
-    	break;
-//    case enable_rx:
-//        //Enable RX
-//        if (MAX2828_RX_set(1) == 0b01001101)
-//        	dp_display_text("\r\n--->RX on");
-//        else
-//        	display_error();
-//        break;
-//    case disable_rx:
-//        //Disable RX
-//        if (MAX2828_RX_set(0) == 0b01001011)
-//        	dp_display_text("\r\n--->RX off");
-//        else
-//        	display_error();
-//        break;
-    case set_pwr:
-    	dp_display_text("\r\n--->Type TX gain  [0;127] & press enter: ");
-    	temp = get_number(DEC);
-    	/*
-    	if (MAX2828_TX_set_power(temp)==0b01000111)
-    	{
-    		dp_display_text("\r\n--->TX gain set to: ");
-    		dp_display_value(temp,DEC);
-    	}
-    	else
-    		display_error();
-    	*/
-    	break;
-    case set_reg:
-    	dp_display_text("\r\n--->Type MAX2828 register adress [0;12] & press enter: ");
-    	temp = get_number(DEC);	//Adr
-    	dp_display_text("\r\n--->Type MAX2828 register 14 bit binary val & press enter: ");
-    	in_val = get_number(BIN);
-    	temp2 = in_val>>8;		//MSB
-    	temp3 = in_val&0xff;	//LSB
-
-    	if (MAX2828_set_tegister_values(temp,in_val)==0b01011111)
-    	{
-    		dp_display_text("\r\n--->MAX2828 register ");
-    		dp_display_value(temp,DEC);
-    		dp_display_text(" is set to value: ");
-    		dp_display_value(temp2<<8|temp3,DEC);
-    		dp_display_text(" = ");
-    		dp_display_value(temp2<<8|temp3,BIN);
-    	}
-    	else
-    		display_error();
-    	break;
-
-    case get_phase_lck:
-    	dp_display_text("\r\n--->MAX282 phase lock: ");
-    	if (MAX2828_get_phase_lock_statuss())
-    		dp_display_text("Locked");
-    	else
-    		dp_display_text("not locked");
-    	break;
-
-    case stdby_low:
-    	//DAC STANDBY set to 0
-    	/*
-    	if (DAC_standby_set(0))
-    		dp_display_text("\r\n--->DAC STANDBY=0");
-    	else
-    		display_error();
-    		*/
-    	break;
-    case stdby_high:
-    	//DAC STANDBY set to 1
-    	/*
-    	if (DAC_standby_set(1))
-    		dp_display_text("\r\n--->DAC STANDBY=1");
-    	else
-    		display_error();
-    		*/
-    	break;
-    case reset_settings:
-    	dp_display_text("\r\nREG\tHEX\tBIN");
-		for(k=0;k<reg_count;k++){
-			if (MAX2828_set_tegister_values(k,default_reg[k])==0b01011111)
-			{
-				dp_display_text("\r\nR"); dp_display_value(k,DEC);
-				dp_display_text("\t");
-				dp_display_value(default_reg[k],DEC);
-				dp_display_text("\t");
-				print_bin(default_reg[k],14);
-				//dp_display_value(default_reg[k],BIN);
-			}
-			else{
-				display_error();
-			}
-		}
-    	dp_display_text("\r\n--->Default register settings restored.");
-    	dp_display_text("PS This function is not ready! a.o.");
-    	break;
-    case osc_dis:
-    	//Disable oscillator
-    	if (osc_set(0))
-    		dp_display_text("\r\n--->OSC DISABLED");
-    	else
-    		display_error();
-    	break;
-    case osc_en:
-    	//Enable oscillator
-    	if (osc_set(1))
-    		dp_display_text("\r\n--->OSC ENABLED");
-    	else
-    		display_error();
-    	break;
-    default:
-    	dp_display_text("\r\n--->Error");
-    	break;
-    }
-    action_code = 0;
-    temp2 = 0;
-    temp3 = 0;
+    	for(i=0; i < 0xFFFF; i++){
+    		counter++;
+    	};
+    	GPIO_Port_Write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, LOW);
+    	for(i=0; i < 0xFFFF; i++){
+    		counter++;
+    	};
+    	dp_display_text("\r\n\r\n\t\t--------Main menu--------");
     }
 }
-
-unsigned char UART_read_buffer (void)
-{
-	if (rx_a0_buffer_index)
-	{
-	unsigned char temp = UART_RX_BUFFER[0];
-	unsigned int i = 0;
-	for (i=0; i<UART_RX_BUFFER_SIZE; i++)
-		{UART_RX_BUFFER[i] = UART_RX_BUFFER[i+1];};
-	rx_a0_buffer_index--;
-	return  temp;
-	}
-	return UART_RX_BUFFER[0];
-}
-
-unsigned char UART_receive_byte_handle(unsigned char in_value)
-{
-	uart_a0_send_byte(in_value); //echo
-	//add byte to UART RX buffer
-	if ((rx_a0_buffer_index+1)==UART_RX_BUFFER_SIZE) rx_a0_buffer_index = 0;
-	UART_RX_BUFFER[rx_a0_buffer_index++] = in_value;
-	return 1;
-}
-
+/*
 #pragma vector=USCI_A0_VECTOR
 __interrupt void USCI_A0_ISR(void)
 {
@@ -315,70 +119,4 @@ __interrupt void USCI_A0_ISR(void)
 	    case USCI_UART_UCTXCPTIFG: break;
 	  }
 }
-
-void display_main_menu(void)
-{
-    dp_display_text("\r\n\r\n\t\t--------Main menu--------");
-    dp_display_text("\r\n---MAX2828 related---\t\t---DAC related---");
-    dp_display_text("\r\n01 ENABLE CHIP\t\t\t10 SET DAC REGISTER");
-    dp_display_text("\r\n02 DISABLE CHIP\t\t\t11 DAC: SET STANDBY HIGH");
-    dp_display_text("\r\n03 ENABLE TX\t\t\t12 DAC: SET STANDBY LOW");
-    dp_display_text("\r\n04 DISABLE TX\t\t\t13 DAC: SET GSET HIGH");
-    dp_display_text("\r\n05 ENABLE RX\t\t\t14 DAC: SET GSET LOW");
-    dp_display_text("\r\n06 DISABLE RX\t\t\t15 DAC: SET PDV HIGH");
-    dp_display_text("\r\n07 SET TX GAIN\t\t\t16 DAC: SET PDV LOW");
-    dp_display_text("\r\n08 SET REGISTERS\t\t17 DAC: SET PD HIGH");
-    dp_display_text("\r\n09 GET PHASE LOCK PIN STAT\t18 DAC: SET PD LOW");
-    dp_display_text("\r\n\t\t------Other------");
-    dp_display_text("\r\n\t\t19 READ ADC");
-    dp_display_text("\r\n\t\t20 ENABLE OSC");
-    dp_display_text("\r\n\t\t21 DISABLE OSC");
-    dp_display_text("\r\n\t\t99 RESTORE PREV SETTINGS");
-    dp_display_text("\r\n\t\t00 DISPLAY MAIN MENU\r\n");
-}
-
-void display_error(void)
-{
-	dp_display_text("\r\n--->Error");
-}
-
-uint16_t get_number(char mode)
-{
-	unsigned char j=0;
-    unsigned char input_array[16]={0};
-    //for (j=0;j<16;j++) input_array[j]=0;
-    unsigned char input_char = 0;
-    //j=0;
-
-	while(1)
-	{
-		_BIS_SR(LPM0_bits + GIE); 				//GOTO sleep
-	    input_char = UART_read_buffer();
-	    if (input_char != 13) input_array[j] = input_char; else
-	    {
-	    	input_array[j] = '\0';
-	    	break;
-	    }
-	    j++;
-	}
-	if (mode == DEC)
-		return atoi(input_array);
-	else
-		return bin_to_int(input_array);
-}
-
-//Convert char array representing binary number into uint16_t
-uint16_t  bin_to_int(unsigned char *array)
-{
-	uint16_t res = 0;
-	uint16_t weight = 1;
-	char size=0;
-	char index = 0;
-	while (array[index++]) size++;
-	for (index=size; index>0; index-- )
-	{
-		if (array[index-1]-48) res += weight;
-		weight=weight<<1;
-	}
-	return res;
-}
+*/

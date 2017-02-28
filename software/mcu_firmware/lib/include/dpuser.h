@@ -85,6 +85,10 @@ communications whether written or oral.
 #define LIB_INCLUDE_DPUSER_H
 
 #include <MSP430.h>
+//#include "dpalg.h"
+//#include "dputil.h"
+#include "stdint.h"
+
 /*************** Hardware related constants *****************************/
 /*
  * User Attention: 
@@ -169,9 +173,9 @@ void dp_delay(DPULONG microseconds);
 /******************************************************************************/
 /* users should define their own functions to replace the following functions */
 /******************************************************************************/
-void dp_display_text(DPCHAR *text);
+void dp_display_text(char *text);
 void dp_display_value(DPULONG value,DPUINT descriptive);
-void dp_display_array(DPUCHAR *value,DPUINT bytes, DPUINT descriptive);
+void dp_display_array(uint8_t *value,int16_t bytes, int16_t descriptive);
 
 void set_jtag_pins(void);
 void itoa(long unsigned int, char*, int);
