@@ -11,6 +11,8 @@
 #ifndef DRIVER_INCLUDE_UART_H_
 #define DRIVER_INCLUDE_UART_H_
 
+#define UART_RX_Buffer_Size     16  /*  Size of received data buffer size   */
+
 typedef enum uart_setting{
 	PARITY_ENABLE,	/*	Enable parity					*/
 	PARITY_DISABLE,	/*	Disable parity					*/
@@ -51,10 +53,11 @@ typedef enum uart_setting{
 	OVERSAMPLING_ENABLE,
 	OVERSAMPLING_DISABLE,
 	LOOPBACK_ENABLED,
-	LOOPBACK_DISABLED,
-
-
+	LOOPBACK_DISABLED
 }uart_setting;
+
+// Buffer for storing received UART data
+uint16_t UART_RX_Buffer[UART_RX_Buffer_Size] = {0};
 
 uint16_t UART_Parity        (uart_setting uart_parity);
 uint16_t UART_Parity_Mode   (uart_setting uart_parity);
@@ -79,7 +82,6 @@ uint16_t UART_Clock_Prescale    (uint16_t uart_prescale);
 
 uint16_t UART_Modulation_Stage_1    (uart_setting uart_modulation);
 uint16_t UART_Modulation_Stage_2    (uart_setting uart_modulation);
-
 uint16_t UART_Oversampling          (uart_setting uart_modulation);
 
 uint16_t UART_Loopback      (uart_setting uart_loopback);
@@ -93,7 +95,8 @@ uint16_t UART_RX_Address_Flag_Read      (void);
 uint16_t UART_EUSCI_Bussy_Flag_Read     (void);
 
 uint16_t UART_RX_Buffer_Read            (void);
-uint16_t UART_RX_Buffer_Read            (void);
 uint16_t UART_TX_Buffer_Write           (uint16_t data);
+
+uint16_t UART_Write_Byte(uint8_t byte);
 
 #endif /* DRIVER_INCLUDE_UART_H_ */

@@ -279,8 +279,148 @@ uint16_t UART_Clock_Prescale(uint16_t uart_prescale){
 /***************************************************
  *
  **************************************************/
-uint16_t UART_Modulation_Stage_1(uart_setting uart_modulation){
+uint16_t UART_Modulation_Stage_1(uint16_t uart_modulation){
+    MASK_SET(UCA0MCTLW, uart_modulation&(0x00F0));
+    return 0;
+}
 
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Modulation_Stage_2(uart_setting uart_modulation){
+    MASK_SET(UCA0MCTLW, uart_modulation&(0xFF00));
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Oversampling(uart_setting uart_modulation){
+    if(uart_modulation == OVERSAMPLING_ENABLE){
+        MASK_SET(UCA0MCTLW, UCOS16);
+    }
+    else if(uart_modulation == OVERSAMPLING_DISABLE){
+        MASK_CLEAR(UCA0MCTLW, UCOS16);
+    }
+    else{
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Loopback(uart_setting uart_loopback){
+    if(uart_loopback == LOOPBACK_ENABLED){
+        MASK_SET(UCA0STATW, UCLISTEN);
+    }
+    else if(uart_loopback == LOOPBACK_DISABLED){
+        MASK_CLEAR(UCA0STATW, UCLISTEN);
+    }
+    else{
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Error_Flag_Read(void){
+    if(MASK_CHECK(UCA0STATW, UCFE)){
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Buffer_Overrun_Flag_Read(void){
+    if(MASK_CHECK(UCA0STATW, UCOE)){
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Parity_Error_Flag_Read(void){
+    if(MASK_CHECK(UCA0STATW, UCPE)){
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Break_Flag_Read(void){
+    if(MASK_CHECK(UCA0STATW, UCBRK)){
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_RX_Error_Flag_Read(void){
+    if(MASK_CHECK(UCA0STATW, UCRXERR)){
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_RX_Address_Flag_Read(void){
+    if(MASK_CHECK(UCA0STATW, UCADDR)){
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_EUSCI_Bussy_Flag_Read(void){
+    if(MASK_CHECK(UCA0STATW, UCBUSY)){
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_RX_Buffer_Read(void){
+    return UCA0TXBUF;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_TX_Buffer_Write(uint16_t data){
+    UCA0TXBUF = (data & 0x00FF);
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Write_Byte(uint8_t byte){
+    UCA0TXBUF = byte;
+    while (!(UCA0IFG & UCTXCPTIFG)){};
+    UCA0IFG ^= UCTXCPTIFG;
+    return 0;
 }
 /*
 if(==){
