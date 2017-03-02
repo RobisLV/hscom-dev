@@ -525,4 +525,25 @@ uint16_t UART_TX_Interrupt(uart_setting uart_tx_int){
     return 0;
 }
 
+/***************************************************
+ *
+ **************************************************/
+/*
+#pragma vector=USCI_A0_VECTOR
+__interrupt void USCI_A0_ISR(void)
+{
+      switch(__even_in_range(UCA0IV, USCI_UART_UCTXCPTIFG))
+      {
+        case USCI_NONE: break;
+        case USCI_UART_UCRXIFG:
+          UART_receive_byte_handle(UCA0RXBUF);
+          __bic_SR_register_on_exit(LPM0_bits); //wakeup
+          break;
+        case USCI_UART_UCTXIFG: break;
+        case USCI_UART_UCSTTIFG: break;
+        case USCI_UART_UCTXCPTIFG: break;
+      }
+}
+*/
+
 /*********_END_OF_FILE_********/

@@ -3,6 +3,22 @@
 
 #include "RF_DB.h"
 
+//Menu command numbers:
+#define bin_mode        1
+#define enable_chip     1
+#define disable_chip    2
+#define enable_tx       3
+#define disable_tx      4
+#define set_pwr         7
+#define set_reg         8
+#define get_phase_lck   9
+#define stdby_high      11
+#define stdby_low       12
+#define osc_en          20
+#define osc_dis         21
+#define reset_settings  99
+#define menu            0
+
 unsigned char ADC_init(unsigned char pin){
 	/*
 	//Analogue inputs P1.0 and P1.1 are used

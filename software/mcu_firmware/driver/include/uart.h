@@ -69,6 +69,10 @@ typedef enum uart_setting{
 // Buffer for storing received UART data
 //uint16_t UART_RX_Buffer[UART_RX_Buffer_Size] = {0};
 
+//static    unsigned char rx_a0_buffer_index    = 0;
+//#pragma NOINIT(UART_RX_BUFFER)
+//unsigned char UART_RX_BUFFER[UART_RX_BUFFER_SIZE];
+
 uint16_t UART_Parity        (uart_setting uart_parity);
 uint16_t UART_Parity_Mode   (uart_setting uart_parity);
 uint16_t UART_Bit_Order     (uart_setting uart_first_bits);
