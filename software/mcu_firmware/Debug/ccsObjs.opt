@@ -1,1 +1,1 @@
-"./src/main.obj" "./plat/FPGA_MB.obj" "./plat/RF_DB.obj" "./lib/dpuser.obj" "./driver/clock.obj" "./driver/gpio.obj" "../link/lnk_msp430fr5969.cmd" -llibmpu_init.a -l"libmath.a" -l"libc.a" 
+"./driver/clock.obj" "./driver/gpio.obj" "./driver/uart.obj" "./lib/dpuser.obj" "./lib/sw_uart.obj" "./plat/RF_DB.obj" "./src/main.obj" "../link/lnk_msp430fr5969.cmd" -llibmpu_init.a -llibmath.a -llibc.a 

@@ -180,7 +180,7 @@ void dp_display_array(uint8_t *value,int16_t bytes, int16_t descriptive);
 void set_jtag_pins(void);
 void itoa(long unsigned int, char*, int);
 int atoi(unsigned char*);
-void uart_a0_init(void);
+//void uart_a0_init(void);
 void uart_a0_send_byte (DPCHAR);
 void uart_a1_read_file(long , unsigned char*, long);
 void dp_display_text_a1(char *);

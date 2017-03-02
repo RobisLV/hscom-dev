@@ -313,10 +313,14 @@ struct chip_conf test_struct =
 		.max2828_pwr = 0x45
 };
 
+/*****************************************
+ * Initialize GPIOs
+ ****************************************/
 uint8_t GPIO_Init(){
+    // Set MCU status LED pin as output
 	GPIO_Mode_Set(MCU_LED_STATUS_PIN, MCU_LED_STATUS_DIR, OUTPUT);
 
-	// Init SS pins for all SPI peripherals  as outputs
+	// Initialize SS pins for all SPI peripherals  as outputs
 	GPIO_Mode_Set(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_DIR, OUTPUT);
 	GPIO_Mode_Set(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_DIR, OUTPUT);
 	GPIO_Mode_Set(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_DIR, OUTPUT);
@@ -355,14 +359,14 @@ uint8_t GPIO_Init(){
 }
 
 /*****************************************
- * Clock select control registers
+ * Initialize Clock System (CS) registers
  ****************************************/
 uint16_t Clock_Init(void){
 	// Enable writing to CS registers
 	CS_Password(PWD_SET);
 	// Set DCO frequency
 	CS_DCO_Freq_Set(DCO_FSEL_8M);
-    // Set DCO as auxilary clock source
+    // Set LFMOD as auxilary clock source
 	CS_ACLK_Source_Set(LFMOD_CLK);
 	// Set DCO as master clock source
 	CS_MCLK_Source_Set(DCO_CLK);
@@ -377,6 +381,29 @@ uint16_t Clock_Init(void){
 	// Disable writing to CS registers
 	CS_Password(PWD_CLEAR);
 	return 0;
+}
+
+uint16_t UART_A0_Init(void){
+    // Set pin functions that are used by USCI_A0 UART
+    GPIO_Function_Set(MCU_RS485_RE_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, FUNCTION2);
+    GPIO_Function_Set(MCU_RS485_RO_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, FUNCTION2);
+    // Put eUSCI in reset
+    UART_Reset(RESET_ENABLE);
+    // Select EUSCI clock source
+    UART_EUSCI_Clock(SOURCE_SMCLK);
+    // Set deglitch time to 200ns
+    UART_Deglitch_Time(DEGLITCH_200NS);
+    // Set modulation stage values ???
+    UART_Modulation_Stage_1(0x01 << 4);
+    UART_Modulation_Stage_2(0x49 << 8);
+    // Prescale clock to select baudrate
+    UART_Clock_Prescale(52); // TODO: pie 8MHz clk jabut 52 lai dabutu 9600, bet realitate jaliek 13 (/4)
+    UART_Oversampling(OVERSAMPLING_ENABLE);
+    // Enable RX interrupt
+    UART_RX_Interrupt(RX_INTERRUPT_ENABLE);
+    // Release eUSCI reset
+    UART_Reset(RESET_DISABLE);
+    return 0;
 }
 
 unsigned char osc_set (unsigned char val)

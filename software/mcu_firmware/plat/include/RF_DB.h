@@ -3,13 +3,15 @@
 
 #ifndef PLAT_INCLUDE_RF_MB_H_
 #define PLAT_INCLUDE_RF_MB_H_
-
+// Standard libraries
 #include <msp430.h>
 #include <stdint.h>
 #include "pinmap.h"
 #include "dpuser.h"
+// Peripheral libraries
 #include "gpio.h"
 #include "clock.h"
+#include "uart.h"
 
 unsigned char	ADC_init		(unsigned char);
 uint16_t		ADC_get_sample	(unsigned char);
@@ -37,6 +39,7 @@ unsigned char	MAX2828_set_registers_stored	(void);
 
 unsigned char 	GPIO_Init						(void);					//Init MCU pins
 uint16_t 		Clock_Init						(void);
+uint16_t        UART_A0_Init                    (void);
 unsigned char 	osc_set 						(unsigned char);
 unsigned char	SPI_RCS_init					(void);					//Init SPI realised by eUSCI B0
 unsigned char	SPI_RCS_send_byte				(unsigned char);

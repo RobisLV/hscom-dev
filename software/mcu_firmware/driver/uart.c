@@ -287,7 +287,7 @@ uint16_t UART_Modulation_Stage_1(uint16_t uart_modulation){
 /***************************************************
  *
  **************************************************/
-uint16_t UART_Modulation_Stage_2(uart_setting uart_modulation){
+uint16_t UART_Modulation_Stage_2(uint16_t uart_modulation){
     MASK_SET(UCA0MCTLW, uart_modulation&(0xFF00));
     return 0;
 }
@@ -412,25 +412,101 @@ uint16_t UART_TX_Buffer_Write(uint16_t data){
 /***************************************************
  *
  **************************************************/
-
-/***************************************************
- *
- **************************************************/
-uint16_t UART_Write_Byte(uint8_t byte){
+uint16_t UART_Byte_Write(uint8_t byte){
     UCA0TXBUF = byte;
     while (!(UCA0IFG & UCTXCPTIFG)){};
     UCA0IFG ^= UCTXCPTIFG;
     return 0;
 }
-/*
-if(==){
-    MASK_SET(, );
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Break_Sync_Length(uart_setting uart_delimiter_length){
+    if(uart_delimiter_length == DELIMITER_1BIT){
+        MASK_CLEAR(UCA0ABCTL, UCDELIM0|UCDELIM1);
+    }
+    else if(uart_delimiter_length == DELIMITER_2BIT){
+        MASK_CLEAR(UCA0ABCTL, UCDELIM1);
+        MASK_SET(UCA0ABCTL, UCDELIM0);
+    }
+    else if(uart_delimiter_length == DELIMITER_3BIT){
+        MASK_CLEAR(UCA0ABCTL, UCDELIM0);
+        MASK_SET(UCA0ABCTL, UCDELIM1);
+    }
+    else if(uart_delimiter_length == DELIMITER_4BIT){
+        MASK_SET(UCA0ABCTL, UCDELIM0|UCDELIM1);
+    }
+    else{
+        return 1;
+    }
+    return 0;
 }
-else if(==){
-    MASK_CLEAR(, );
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Sync_Timeout(void){
+    if(MASK_CHECK(UCA0ABCTL, UCSTOE)){
+        return 1;
+    }
+    return 0;
 }
-else{
-    return 1;
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Break_Timeout(void){
+    if(MASK_CHECK(UCA0ABCTL, UCBTOE)){
+        return 1;
+    }
+    return 0;
 }
-return 0;
-*/
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_Autobaud(uart_setting uart_autobaud){
+    if(uart_autobaud == BAUD_DET_ENABLE){
+        MASK_SET(UCA0ABCTL, UCABDEN);
+    }
+    else if(uart_autobaud == BAUD_DET_DISABLE){
+        MASK_CLEAR(UCA0ABCTL, UCABDEN);
+    }
+    else{
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+// IRDA functions not yet implemented!!!
+
+/***************************************************
+ *
+ **************************************************/
+// UCBxIE I2C Control not yet implemented!!!
+
+/***************************************************
+ *
+ **************************************************/
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_RX_Interrupt(uart_setting uart_rx_int){
+    if(uart_rx_int == RX_INTERRUPT_ENABLE){
+        MASK_SET(UCA0ABCTL, UCA0IE);
+    }
+    else if(uart_rx_int == RX_INTERRUPT_DISABLE){
+        MASK_CLEAR(UCA0ABCTL, UCA0IE);
+    }
+    else{
+        return 1;
+    }
+    return 0;
+}
+
+/*********_END_OF_FILE_********/

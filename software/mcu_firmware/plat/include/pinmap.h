@@ -22,9 +22,13 @@
 
 #define MCU_RS485_RO_DIR	ADDRESS_OF(P2DIR)
 #define MCU_RS485_RE_DIR	ADDRESS_OF(P2DIR)
-#define MCU_RS485_DI_DIR	P1DIR
-#define MCU_RS485_DE_DIR	P1DIR
+#define MCU_RS485_DI_DIR	ADDRESS_OF(P1DIR)
+#define MCU_RS485_DE_DIR	ADDRESS_OF(P1DIR)
 
+#define MCU_RS485_RO_FUNC1   ADDRESS_OF(P2SEL1)
+#define MCU_RS485_RO_FUNC0   ADDRESS_OF(P2SEL0)
+#define MCU_RS485_RE_FUNC1   ADDRESS_OF(P2SEL1)
+#define MCU_RS485_RE_FUNC0   ADDRESS_OF(P2SEL0)
 /***** IGLOO2 M2GL060 (FPGA) ******/
 // Hard reset input pin
 #define FPGA_RST_PIN	BIT5
@@ -45,10 +49,10 @@
 #define FPGA_JTAG_TRST_PORT	ADDRESS_OF(P1OUT)
 
 #define FPGA_JTAG_TDO_DIR	ADDRESS_OF(P4DIR)
-#define FPGA_JTAG_TDI_DIR	P1DIR
+#define FPGA_JTAG_TDI_DIR	ADDRESS_OF(P1DIR)
 #define FPGA_JTAG_TCK_DIR	ADDRESS_OF(P4DIR)
-#define FPGA_JTAG_TMS_DIR	P1DIR
-#define FPGA_JTAG_TRST_DIR	P1DIR
+#define FPGA_JTAG_TMS_DIR	ADDRESS_OF(P1DIR)
+#define FPGA_JTAG_TRST_DIR	ADDRESS_OF(P1DIR)
 
 //***** 5V and 3.3V current measument analog input pins *****/
 #define PWR_5V_ISENSE_PIN	BIT0
@@ -64,12 +68,12 @@
 // Enable control digital input pin
 #define PA_EN_PIN		BIT0
 #define PA_EN_PORT		ADDRESS_OF(P1OUT)
-#define PA_EN_DIR		P1DIR
+#define PA_EN_DIR		ADDRESS_OF(P1DIR)
 
 // Output power detector analog output pin
 #define PA_DET_PIN		BIT2
 #define PA_DET_PORT		ADDRESS_OF(P1OUT)
-#define PA_DET_DIR		P1DIR
+#define PA_DET_DIR		ADDRESS_OF(P1DIR)
 
 // Antenna switch control digital input pins
 #define PA_SW_C0_PIN	BIT5
@@ -89,7 +93,7 @@
 // Hi/L linearity control digital input pin
 #define PA_HL_LIN_PIN	BIT1
 #define PA_HL_LIN_PORT	ADDRESS_OF(P1OUT)
-#define PA_HL_LIN_DIR	P1DIR
+#define PA_HL_LIN_DIR	ADDRESS_OF(P1DIR)
 
 /***** MAX2828 transceiver (TXRX) *****/
 // Oscialtor enable/disable pin

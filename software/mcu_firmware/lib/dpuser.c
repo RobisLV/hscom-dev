@@ -70,6 +70,7 @@ int atoi(unsigned char* p)
 }
 
 //Init UART A0, default baud 9600	
+/*
 void uart_a0_init(void)
 {
 	//Baud: 9600 at 1 Mhz master clock!
@@ -85,7 +86,7 @@ void uart_a0_init(void)
     UCA0IE = UCRXIE;
     UCA0CTLW0 &= ~UCSWRST;			// Initialize eUSCI
 }
-
+*/
 //Init UART A1, default baud 9600
 void uart_a1_init(void)
 {

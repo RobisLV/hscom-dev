@@ -13,7 +13,7 @@ Roberts Trops
 */
 #include <msp430.h>
 #include "RF_DB.h"
-#include "dpuser.h"
+//#include "dpuser.h"
 
 #define bin_mode		1
 
@@ -31,7 +31,7 @@ Roberts Trops
 #define osc_dis			21
 #define reset_settings	99
 #define menu			0
-#define UART_RX_BUFFER_SIZE		16
+//#define UART_RX_BUFFER_SIZE		16
 /*
 typedef enum selection{
 	enable_chip,
@@ -48,10 +48,11 @@ typedef enum selection{
 
 //Define UART RX buffer and its size
 //static	unsigned char rx_a0_buffer_index 	= 0;
-#pragma NOINIT(UART_RX_BUFFER)
-unsigned char UART_RX_BUFFER[UART_RX_BUFFER_SIZE];
+//#pragma NOINIT(UART_RX_BUFFER)
+//unsigned char UART_RX_BUFFER[UART_RX_BUFFER_SIZE];
 
 // Default register values of max2828
+/*
 uint16_t default_reg[reg_count]=
 {
     0b01000101000000, // R0
@@ -68,9 +69,9 @@ uint16_t default_reg[reg_count]=
     0b00000001111111, // R11
     0b00000000000000  // R12
 };
-
+*/
 // Registers defined by user
-uint16_t user_reg[reg_count] = {0};
+// uint16_t user_reg[reg_count] = {0};
 
 int main(void){
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
@@ -82,8 +83,9 @@ int main(void){
     PM5CTL0 &= ~LOCKLPM5;
     GPIO_Init();
 	dp_delay(500);
-	uart_a0_init();
-    //Board specific assigment
+	//uart_a0_init();
+	UART_A0_Init();
+	//Board specific assigment
     //PJDIR &= ~BIT5;
     volatile uint16_t counter = 0;
     //

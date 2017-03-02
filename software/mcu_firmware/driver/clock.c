@@ -526,6 +526,6 @@ uint16_t CS_ACLK_Request(cs_setting clock_request){
 	return 0;
 }
 
-/******	END OF FILE	*****/
+/*********_END_OF_FILE_********/
 
 

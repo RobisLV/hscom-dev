@@ -53,11 +53,19 @@ typedef enum uart_setting{
 	OVERSAMPLING_ENABLE,
 	OVERSAMPLING_DISABLE,
 	LOOPBACK_ENABLED,
-	LOOPBACK_DISABLED
+	LOOPBACK_DISABLED,
+	DELIMITER_1BIT,
+	DELIMITER_2BIT,
+	DELIMITER_3BIT,
+	DELIMITER_4BIT,
+	BAUD_DET_ENABLE,
+	BAUD_DET_DISABLE,
+	RX_INTERRUPT_ENABLE,
+	RX_INTERRUPT_DISABLE,
 }uart_setting;
 
 // Buffer for storing received UART data
-uint16_t UART_RX_Buffer[UART_RX_Buffer_Size] = {0};
+//uint16_t UART_RX_Buffer[UART_RX_Buffer_Size] = {0};
 
 uint16_t UART_Parity        (uart_setting uart_parity);
 uint16_t UART_Parity_Mode   (uart_setting uart_parity);
@@ -80,8 +88,8 @@ uint16_t UART_Reset             (uart_setting uart_reset);
 uint16_t UART_Deglitch_Time     (uart_setting uart_deglitch);
 uint16_t UART_Clock_Prescale    (uint16_t uart_prescale);
 
-uint16_t UART_Modulation_Stage_1    (uart_setting uart_modulation);
-uint16_t UART_Modulation_Stage_2    (uart_setting uart_modulation);
+uint16_t UART_Modulation_Stage_1    (uint16_t uart_modulation);
+uint16_t UART_Modulation_Stage_2    (uint16_t uart_modulation);
 uint16_t UART_Oversampling          (uart_setting uart_modulation);
 
 uint16_t UART_Loopback      (uart_setting uart_loopback);
@@ -96,7 +104,12 @@ uint16_t UART_EUSCI_Bussy_Flag_Read     (void);
 
 uint16_t UART_RX_Buffer_Read            (void);
 uint16_t UART_TX_Buffer_Write           (uint16_t data);
+uint16_t UART_Byte_Write                (uint8_t byte);
 
-uint16_t UART_Write_Byte(uint8_t byte);
+uint16_t UART_Break_Sync_Length     (uart_setting uart_delimiter_length);
+uint16_t UART_Sync_Timeout          (void);
+uint16_t UART_Break_Timeout         (void);
+uint16_t UART_Autobaud              (uart_setting uart_autobaud);
 
+uint16_t UART_RX_Interrupt   (uart_setting uart_rx_int);
 #endif /* DRIVER_INCLUDE_UART_H_ */
