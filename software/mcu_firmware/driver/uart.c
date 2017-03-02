@@ -498,10 +498,26 @@ uint16_t UART_Autobaud(uart_setting uart_autobaud){
  **************************************************/
 uint16_t UART_RX_Interrupt(uart_setting uart_rx_int){
     if(uart_rx_int == RX_INTERRUPT_ENABLE){
-        MASK_SET(UCA0ABCTL, UCA0IE);
+        MASK_SET(UCA0IE, UCRXIE);
     }
     else if(uart_rx_int == RX_INTERRUPT_DISABLE){
-        MASK_CLEAR(UCA0ABCTL, UCA0IE);
+        MASK_CLEAR(UCA0IE, UCRXIE);
+    }
+    else{
+        return 1;
+    }
+    return 0;
+}
+
+/***************************************************
+ *
+ **************************************************/
+uint16_t UART_TX_Interrupt(uart_setting uart_tx_int){
+    if(uart_tx_int == TX_INTERRUPT_ENABLE){
+        MASK_SET(UCA0IE, UCTXIE);
+    }
+    else if(uart_tx_int == TX_INTERRUPT_DISABLE){
+        MASK_CLEAR(UCA0IE, UCTXIE);
     }
     else{
         return 1;

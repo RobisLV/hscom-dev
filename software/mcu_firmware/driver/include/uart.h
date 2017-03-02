@@ -62,6 +62,8 @@ typedef enum uart_setting{
 	BAUD_DET_DISABLE,
 	RX_INTERRUPT_ENABLE,
 	RX_INTERRUPT_DISABLE,
+	TX_INTERRUPT_ENABLE,
+	TX_INTERRUPT_DISABLE
 }uart_setting;
 
 // Buffer for storing received UART data
@@ -91,8 +93,7 @@ uint16_t UART_Clock_Prescale    (uint16_t uart_prescale);
 uint16_t UART_Modulation_Stage_1    (uint16_t uart_modulation);
 uint16_t UART_Modulation_Stage_2    (uint16_t uart_modulation);
 uint16_t UART_Oversampling          (uart_setting uart_modulation);
-
-uint16_t UART_Loopback      (uart_setting uart_loopback);
+uint16_t UART_Loopback              (uart_setting uart_loopback);
 
 uint16_t UART_Error_Flag_Read           (void);
 uint16_t UART_Buffer_Overrun_Flag_Read  (void);
@@ -112,4 +113,5 @@ uint16_t UART_Break_Timeout         (void);
 uint16_t UART_Autobaud              (uart_setting uart_autobaud);
 
 uint16_t UART_RX_Interrupt   (uart_setting uart_rx_int);
+uint16_t UART_TX_Interrupt   (uart_setting uart_rx_int);
 #endif /* DRIVER_INCLUDE_UART_H_ */
