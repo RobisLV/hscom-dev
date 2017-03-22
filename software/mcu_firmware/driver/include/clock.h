@@ -72,38 +72,38 @@ typedef volatile enum {
 /********************************
  * Clock System functions
  *******************************/
-uint16_t CS_Password            (cs_setting clock_password);
-uint16_t CS_DCO_Freq_Set        (cs_setting clock_frequency);
-uint16_t CS_HFXT_Freq_Set       (cs_setting clock_frequency);
+uint16_t CS_password            (cs_setting clock_password);
+uint16_t CS_DCO_freq_set        (cs_setting clock_frequency);
+uint16_t CS_HFXT_freq_set       (cs_setting clock_frequency);
 
-uint16_t CS_ACLK_Source_Set     (cs_setting clock_source);
-uint16_t CS_MCLK_Source_Set     (cs_setting clock_source);
-uint16_t CS_SMCLK_Source_Set    (cs_setting clock_source);
+uint16_t CS_ACLK_source_set     (cs_setting clock_source);
+uint16_t CS_MCLK_source_set     (cs_setting clock_source);
+uint16_t CS_SMCLK_source_set    (cs_setting clock_source);
 
-uint16_t CS_ACLK_Divider_Set    (cs_setting clock_divider);
-uint16_t CS_MCLK_Divider_Set    (cs_setting clock_divider);
-uint16_t CS_SMCLK_Divider_Set   (cs_setting clock_divider);
+uint16_t CS_ACLK_divider_set    (cs_setting clock_divider);
+uint16_t CS_MSCLK_divider_set    (cs_setting clock_divider);
+uint16_t CS_SMCLK_divider_set   (cs_setting clock_divider);
 
-uint16_t CS_LFXT_Onoff          (cs_setting clock_onoff);
-uint16_t CS_SMCLK_Onoff         (cs_setting clock_onoff);
-uint16_t CS_VLO_Onoff           (cs_setting clock_onoff);
-uint16_t CS_HFXT_Onoff          (cs_setting clock_onoff);
+uint16_t CS_LFXT                (cs_setting clock_onoff);
+uint16_t CS_SMCLK               (cs_setting clock_onoff);
+uint16_t CS_VLO                 (cs_setting clock_onoff);
+uint16_t CS_HFXT                (cs_setting clock_onoff);
 
-uint16_t CS_LFXT_Drive          (cs_setting clock_drive);
-uint16_t CS_HFXT_Drive          (cs_setting clock_drive);
+uint16_t CS_LFXT_drive          (cs_setting clock_drive);
+uint16_t CS_HFXT_drive          (cs_setting clock_drive);
 
-uint16_t CS_LFXT_Bypass         (cs_setting clock_bypass);
-uint16_t CS_HFXT_Bypass         (cs_setting clock_bypass);
+uint16_t CS_LFXT_bypass         (cs_setting clock_bypass);
+uint16_t CS_HFXT_bypass         (cs_setting clock_bypass);
 
-uint16_t CS_HFXT_Fault_Cnt_Onoff    (cs_setting clock_counter);
-uint16_t CS_LFXT_Fault_Cnt_Onoff    (cs_setting clock_counter);
+uint16_t CS_HFXT_fault_counter  (cs_setting clock_counter);
+uint16_t CS_LFXT_fault_counter  (cs_setting clock_counter);
 
-uint16_t CS_HFXT_Fault_Flag_Read    (void);
-uint16_t CS_LFXT_Fault_Flag_Read    (void);
+uint16_t CS_HFXT_fault_flag_read    (void);
+uint16_t CS_LFXT_fault_flag_read    (void);
 
-uint16_t CS_MODCLK_Request      (cs_setting clock_request);
-uint16_t CS_SMCLK_Request       (cs_setting clock_request);
-uint16_t CS_MCLK_Request        (cs_setting clock_request);
-uint16_t CS_ACLK_Request        (cs_setting clock_request);
+uint16_t CS_MODCLK_request      (cs_setting clock_request);
+uint16_t CS_SMCLK_request       (cs_setting clock_request);
+uint16_t CS_MCLK_request        (cs_setting clock_request);
+uint16_t CS_ACLK_request        (cs_setting clock_request);
 
 #endif

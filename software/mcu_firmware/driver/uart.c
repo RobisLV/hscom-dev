@@ -9,7 +9,7 @@
 /***************************************************
  *
  **************************************************/
-uint16_t uart_parity(uart_setting uart_parity){
+uint16_t UART_A0_parity(uart_setting uart_parity){
     if(uart_parity == UART_PARITY_ENABLE){
         MASK_SET(UCA0CTLW0, UCPEN);
     }
@@ -25,7 +25,7 @@ uint16_t uart_parity(uart_setting uart_parity){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_parity_mode(uart_setting uart_parity){
+uint16_t UART_A0_parity_mode(uart_setting uart_parity){
     if(uart_parity == UART_PARITY_ODD){
         MASK_SET(UCA0CTLW0, UCPAR);
     }
@@ -41,7 +41,7 @@ uint16_t uart_a0_parity_mode(uart_setting uart_parity){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_bit_order(uart_setting uart_first_bits){
+uint16_t UART_A0_bit_order(uart_setting uart_first_bits){
     if(uart_first_bits == UART_MSB_FIRST){
         MASK_SET(UCA0CTLW0, UCMSB);
     }
@@ -57,7 +57,7 @@ uint16_t uart_a0_bit_order(uart_setting uart_first_bits){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_char_length(uart_setting uart_char_length){
+uint16_t UART_A0_char_length(uart_setting uart_char_length){
     if(uart_char_length == UART_CHAR_8BIT){
         MASK_SET(UCA0CTLW0, UC7BIT);
     }
@@ -73,7 +73,7 @@ uint16_t uart_a0_char_length(uart_setting uart_char_length){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_stop_bits(uart_setting uart_stop_bits){
+uint16_t UART_A0_stop_bits(uart_setting uart_stop_bits){
     if(uart_stop_bits==UART_STOP_2BIT){
         MASK_SET(UCA0CTLW0, UCSPB);
     }
@@ -89,7 +89,7 @@ uint16_t uart_a0_stop_bits(uart_setting uart_stop_bits){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_eusci_mode(uart_setting uart_eusci_mode){
+uint16_t UART_A0_EUSCI_mode(uart_setting uart_eusci_mode){
     // Clear any previusly set bits
     MASK_CLEAR(UCA0CTLW0, UCMODE0|UCMODE1);
 
@@ -114,7 +114,7 @@ uint16_t uart_a0_eusci_mode(uart_setting uart_eusci_mode){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_sync_mode(uart_setting uart_eusci_sync){
+uint16_t UART_A0_sync_mode(uart_setting uart_eusci_sync){
     if(uart_eusci_sync == UART_MODE_ASYNC){
         MASK_SET(UCA0CTLW0, UCSYNC);
     }
@@ -130,7 +130,7 @@ uint16_t uart_a0_sync_mode(uart_setting uart_eusci_sync){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_eusci_clock(uart_setting uart_eusci_clock){
+uint16_t UART_A0_EUSCI_clock(uart_setting uart_eusci_clock){
     // Clear any previously set bits
     MASK_CLEAR(UCA0CTLW0, UCSSEL0|UCSSEL1);
     if(uart_eusci_clock == UART_SOURCE_ACLK){
@@ -151,7 +151,7 @@ uint16_t uart_a0_eusci_clock(uart_setting uart_eusci_clock){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_error_interrupt(uart_setting uart_error){
+uint16_t UART_A0_error_interrupt(uart_setting uart_error){
     if(uart_error == UART_ERROR_INT_ENABLE){
         MASK_SET(UCA0CTLW0, UCRXEIE);
     }
@@ -167,7 +167,7 @@ uint16_t uart_a0_error_interrupt(uart_setting uart_error){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_break_interrupt(uart_setting uart_break){
+uint16_t UART_A0_break_interrupt(uart_setting uart_break){
     if(uart_break == UART_BREAK_INT_ENABLE){
         MASK_SET(UCA0CTLW0, UCBRKIE);
     }
@@ -183,7 +183,7 @@ uint16_t uart_a0_break_interrupt(uart_setting uart_break){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_eusci_sleep(uart_setting uart_sleep){
+uint16_t UART_A0_EUSCI_sleep(uart_setting uart_sleep){
     if(uart_sleep == UART_SLEEP_ENABLE){
         MASK_SET(UCA0CTLW0, UCDORM);
     }
@@ -199,7 +199,7 @@ uint16_t uart_a0_eusci_sleep(uart_setting uart_sleep){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_tx_address(uart_setting uart_adress){
+uint16_t UART_A0_transmit_address(uart_setting uart_adress){
     if(uart_adress == UART_TX_ADDRESS){
         MASK_SET(UCA0CTLW0, UCTXADDR);
     }
@@ -215,7 +215,7 @@ uint16_t uart_a0_tx_address(uart_setting uart_adress){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_frame_break(uart_setting uart_break){
+uint16_t UART_A0_frame_break(uart_setting uart_break){
     if(uart_break == UART_TX_BREAK){
         MASK_SET(UCA0CTLW0, UCTXBRK);
     }
@@ -231,7 +231,7 @@ uint16_t uart_a0_frame_break(uart_setting uart_break){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_reset(uart_setting uart_reset){
+uint16_t UART_A0_reset(uart_setting uart_reset){
     if(uart_reset == UART_RESET_ENABLE){
         MASK_SET(UCA0CTLW0, UCSWRST);
     }
@@ -247,7 +247,7 @@ uint16_t uart_a0_reset(uart_setting uart_reset){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_deglitch_time(uart_setting uart_deglitch){
+uint16_t UART_A0_deglitch_time(uart_setting uart_deglitch){
     MASK_CLEAR(UCA0CTLW1, UCGLIT0|UCGLIT1);
     if(uart_deglitch == UART_DEGLITCH_2NS){
         MASK_SET(UCA0CTLW1, UCGLIT_0);
@@ -270,7 +270,7 @@ uint16_t uart_a0_deglitch_time(uart_setting uart_deglitch){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_clock_prescale(uint16_t uart_prescale){
+uint16_t UART_A0_clock_prescale(uint16_t uart_prescale){
     UCA0BRW = uart_prescale;
     return 0;
 }
@@ -278,7 +278,7 @@ uint16_t uart_a0_clock_prescale(uint16_t uart_prescale){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_modulation_stage_1(uint16_t uart_modulation){
+uint16_t UART_A0_modulation_stage_1(uint16_t uart_modulation){
     MASK_SET(UCA0MCTLW, uart_modulation&(0x00F0));
     return 0;
 }
@@ -286,7 +286,7 @@ uint16_t uart_a0_modulation_stage_1(uint16_t uart_modulation){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_modulation_stage_2(uint16_t uart_modulation){
+uint16_t UART_A0_modulation_stage_2(uint16_t uart_modulation){
     MASK_SET(UCA0MCTLW, uart_modulation&(0xFF00));
     return 0;
 }
@@ -294,7 +294,7 @@ uint16_t uart_a0_modulation_stage_2(uint16_t uart_modulation){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_oversampling(uart_setting uart_modulation){
+uint16_t UART_A0_oversampling(uart_setting uart_modulation){
     if(uart_modulation == UART_OVERSAMPLE_ENABLE){
         MASK_SET(UCA0MCTLW, UCOS16);
     }
@@ -310,7 +310,7 @@ uint16_t uart_a0_oversampling(uart_setting uart_modulation){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_loopback(uart_setting uart_loopback){
+uint16_t UART_A0_loopback(uart_setting uart_loopback){
     if(uart_loopback == UART_LOOPBACK_ENABLED){
         MASK_SET(UCA0STATW, UCLISTEN);
     }
@@ -326,7 +326,7 @@ uint16_t uart_a0_loopback(uart_setting uart_loopback){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_error_flag_read(void){
+uint16_t UART_A0_error_flag_read(void){
     if(MASK_CHECK(UCA0STATW, UCFE)){
         return 1;
     }
@@ -336,7 +336,7 @@ uint16_t uart_a0_error_flag_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_buffer_overrun_flag_read(void){
+uint16_t UART_A0_buffer_overrun_flag_read(void){
     if(MASK_CHECK(UCA0STATW, UCOE)){
         return 1;
     }
@@ -346,7 +346,7 @@ uint16_t uart_a0_buffer_overrun_flag_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_parity_error_flag_read(void){
+uint16_t UART_A0_parity_error_flag_read(void){
     if(MASK_CHECK(UCA0STATW, UCPE)){
         return 1;
     }
@@ -356,7 +356,7 @@ uint16_t uart_a0_parity_error_flag_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_break_flag_read(void){
+uint16_t UART_A0_break_flag_read(void){
     if(MASK_CHECK(UCA0STATW, UCBRK)){
         return 1;
     }
@@ -366,7 +366,7 @@ uint16_t uart_a0_break_flag_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_rx_error_flag_read(void){
+uint16_t UART_A0_RX_error_flag_read(void){
     if(MASK_CHECK(UCA0STATW, UCRXERR)){
         return 1;
     }
@@ -376,7 +376,7 @@ uint16_t uart_a0_rx_error_flag_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_tx_address_flag_read(void){
+uint16_t UART_A0_TX_address_flag_read(void){
     if(MASK_CHECK(UCA0STATW, UCADDR)){
         return 1;
     }
@@ -386,7 +386,7 @@ uint16_t uart_a0_tx_address_flag_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_eusci_busy_flag_read(void){
+uint16_t UART_A0_EUSCI_busy_flag_read(void){
     if(MASK_CHECK(UCA0STATW, UCBUSY)){
         return 1;
     }
@@ -396,14 +396,14 @@ uint16_t uart_a0_eusci_busy_flag_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_rx_buffer_read(void){
+uint16_t UART_A0_RX_buffer_read(void){
     return UCA0TXBUF;
 }
 
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_tx_buffer_write(uint16_t data){
+uint16_t UART_A0_TX_buffer_write(uint16_t data){
     UCA0TXBUF = (data & 0x00FF);
     return 0;
 }
@@ -411,7 +411,7 @@ uint16_t uart_a0_tx_buffer_write(uint16_t data){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_byte_write(uint8_t byte){
+uint16_t UART_A0_byte_write(uint8_t byte){
     UCA0TXBUF = byte;
     while (!(UCA0IFG & UCTXCPTIFG)){};
     UCA0IFG ^= UCTXCPTIFG;
@@ -421,7 +421,7 @@ uint16_t uart_a0_byte_write(uint8_t byte){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_break_sync_length(uart_setting uart_delimiter_length){
+uint16_t UART_A0_break_sync_length(uart_setting uart_delimiter_length){
     if(uart_delimiter_length == UART_DELIMITER_1BIT){
         MASK_CLEAR(UCA0ABCTL, UCDELIM0|UCDELIM1);
     }
@@ -445,7 +445,7 @@ uint16_t uart_a0_break_sync_length(uart_setting uart_delimiter_length){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_sync_timeout(void){
+uint16_t UART_A0_sync_timeout(void){
     if(MASK_CHECK(UCA0ABCTL, UCSTOE)){
         return 1;
     }
@@ -455,7 +455,7 @@ uint16_t uart_a0_sync_timeout(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_break_timeout(void){
+uint16_t UART_A0_break_timeout(void){
     if(MASK_CHECK(UCA0ABCTL, UCBTOE)){
         return 1;
     }
@@ -465,7 +465,7 @@ uint16_t uart_a0_break_timeout(void){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_autobaud(uart_setting uart_autobaud){
+uint16_t UART_A0_autobaud(uart_setting uart_autobaud){
     if(uart_autobaud == UART_BAUD_DET_ENABLE){
         MASK_SET(UCA0ABCTL, UCABDEN);
     }
@@ -495,7 +495,7 @@ uint16_t uart_a0_autobaud(uart_setting uart_autobaud){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_rx_interrupt(uart_setting uart_rx_int){
+uint16_t UART_A0_RX_interrupt(uart_setting uart_rx_int){
     if(uart_rx_int == UART_INTERRUPT_ENABLE){
         MASK_SET(UCA0IE, UCRXIE);
     }
@@ -511,7 +511,7 @@ uint16_t uart_a0_rx_interrupt(uart_setting uart_rx_int){
 /***************************************************
  *
  **************************************************/
-uint16_t uart_a0_tx_interrupt(uart_setting uart_tx_int){
+uint16_t UART_A0_TX_interrupt(uart_setting uart_tx_int){
     if(uart_tx_int == UART_INTERRUPT_ENABLE){
         MASK_SET(UCA0IE, UCTXIE);
     }

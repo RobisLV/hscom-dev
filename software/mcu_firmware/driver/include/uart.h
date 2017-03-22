@@ -73,47 +73,48 @@ typedef volatile enum {
 //unsigned char UART_RX_BUFFER[UART_RX_BUFFER_SIZE];
 
 /* Functions for configuring UART settings  */
-uint16_t uart_a0_parity                (uart_setting uart_parity);
-uint16_t uart_a0_parity_mode           (uart_setting uart_parity);
-uint16_t uart_a0_bit_order             (uart_setting uart_first_bits);
-uint16_t uart_a0_char_length           (uart_setting uart_char_length);
-uint16_t uart_a0_stop_bits             (uart_setting uart_stop_bits);
-uint16_t uart_a0_eusci_mode            (uart_setting uart_eusci_mode);
-uint16_t uart_a0_sync_mode             (uart_setting uart_eusci_sync);
-uint16_t uart_a0_eusci_clock           (uart_setting uart_eusci_clock);
-uint16_t uart_a0_error_interrupt       (uart_setting uart_error);
-uint16_t uart_a0_break_interrupt       (uart_setting uart_break);
-uint16_t uart_a0_eusci_sleep           (uart_setting uart_sleep);
-uint16_t uart_a0_tx_address            (uart_setting uart_adress);
-uint16_t uart_a0_frame_break           (uart_setting uart_break);
-uint16_t uart_a0_reset                 (uart_setting uart_reset);
-uint16_t uart_a0_deglitch_time         (uart_setting uart_deglitch);
-uint16_t uart_a0_clock_prescale        (uint16_t uart_a0_prescale);
-uint16_t uart_a0_modulation_stage_1    (uint16_t uart_a0_modulation);
-uint16_t uart_a0_modulation_stage_2    (uint16_t uart_a0_modulation);
-uint16_t uart_a0_oversampling          (uart_setting uart_modulation);
-uint16_t uart_a0_loopback              (uart_setting uart_loopback);
+uint16_t UART_A0_parity                (uart_setting uart_parity);
+uint16_t UART_A0_parity_mode           (uart_setting uart_parity);
+uint16_t UART_A0_bit_order             (uart_setting uart_first_bits);
+uint16_t UART_A0_char_length           (uart_setting uart_char_length);
+uint16_t UART_A0_stop_bits             (uart_setting uart_stop_bits);
+uint16_t UART_A0_EUSCI_mode            (uart_setting uart_eusci_mode);
+uint16_t UART_A0_sync_mode             (uart_setting uart_eusci_sync);
+uint16_t UART_A0_EUSCI_clock           (uart_setting uart_eusci_clock);
+uint16_t UART_A0_error_interrupt       (uart_setting uart_error);
+uint16_t UART_A0_break_interrupt       (uart_setting uart_break);
+uint16_t UART_A0_EUSCI_sleep           (uart_setting uart_sleep);
+uint16_t UART_A0_transmit_address      (uart_setting uart_adress);
+uint16_t UART_A0_frame_break           (uart_setting uart_break);
+uint16_t UART_A0_reset                 (uart_setting uart_reset);
+uint16_t UART_A0_deglitch_time         (uart_setting uart_deglitch);
+uint16_t UART_A0_clock_prescale          (uint16_t UART_A0_prescale);
+uint16_t UART_A0_modulation_stage_1    (uint16_t UART_A0_modulation);
+uint16_t UART_A0_modulation_stage_2    (uint16_t UART_A0_modulation);
+uint16_t UART_A0_oversampling          (uart_setting uart_modulation);
+uint16_t UART_A0_loopback              (uart_setting uart_loopback);
 
 /* Functions for reading UART flags  */
-uint16_t uart_a0_error_flag_read           (void);
-uint16_t uart_a0_buffer_overrun_flag_read  (void);
-uint16_t uart_a0_parity_error_flag_read    (void);
-uint16_t uart_a0_break_flag_read           (void);
-uint16_t uart_a0_rx_error_flag_read        (void);
-uint16_t uart_a0_tx_address_flag_read      (void);
-uint16_t uart_a0_eusci_busy_flag_read      (void);
+uint16_t UART_A0_error_flag_read           (void);
+uint16_t UART_A0_buffer_overrun_flag_read  (void);
+uint16_t UART_A0_parity_error_flag_read    (void);
+uint16_t UART_A0_break_flag_read           (void);
+uint16_t UART_A0_RX_error_flag_read        (void);
+uint16_t UART_A0_TX_address_flag_read      (void);
+uint16_t UART_A0_EUSCI_busy_flag_read      (void);
 
 /* Functions for reading and writing data to/from UART */
-uint16_t uart_a0_rx_buffer_read            (void);
-uint16_t uart_a0_tx_buffer_write           (uint16_t data);
-uint16_t uart_a0_byte_write                (uint8_t byte);
+uint16_t UART_A0_RX_buffer_read            (void);
+uint16_t UART_A0_TX_buffer_write           (uint16_t data);
+uint16_t UART_A0_byte_write                (uint8_t byte);
 
 /* Additionl UART functions */
-uint16_t uart_a0_break_sync_length     (uart_setting uart_delimiter_length);
-uint16_t uart_a0_sync_timeout          (void);
-uint16_t uart_a0_break_timeout         (void);
-uint16_t uart_a0_autobaud              (uart_setting uart_autobaud);
+uint16_t UART_A0_break_sync_length         (uart_setting uart_delimiter_length);
+uint16_t UART_A0_sync_timeout              (void);
+uint16_t UART_A0_break_timeout             (void);
+uint16_t UART_A0_autobaud                  (uart_setting uart_autobaud);
 
-uint16_t uart_a0_rx_interrupt   (uart_setting uart_rx_int);
-uint16_t uart_a0_tx_interrupt   (uart_setting uart_rx_int);
+/* Enable disable UART interrupts   */
+uint16_t UART_A0_RX_interrupt   (uart_setting uart_rx_int);
+uint16_t UART_A0_TX_interrupt   (uart_setting uart_rx_int);
 #endif /* DRIVER_INCLUDE_UART_H_ */

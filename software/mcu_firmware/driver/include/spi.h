@@ -37,26 +37,26 @@ typedef volatile enum {
 } spi_setting;
 
 /*  eUSCI A0 SPI functions  */
-uint16_t spi_a0_clk_phase      (spi_setting spi_phase);
-uint16_t spi_a0_clk_polarity   (spi_setting spi_polarity);
-uint16_t spi_a0_bit_order      (spi_setting spi_bitorder);
-uint16_t spi_a0_char_length    (spi_setting spi_charlength);
-uint16_t spi_a0_mode           (spi_setting spi_mode);
-uint16_t spi_a0_eusci_mode     (spi_setting spi_eusci_mode);
-uint16_t spi_a0_sync           (spi_setting spi_sync);
-uint16_t spi_a0_clk_source     (spi_setting spi_clk);
-uint16_t spi_a0_ste_pin        (spi_setting spi_ste);
-uint16_t spi_a0_soft_reset     (spi_setting spi_reset);
-uint16_t spi_a0_loopback       (spi_setting spi_loopback);
+uint16_t SPI_A0_clock_phase         (spi_setting spi_phase);
+uint16_t SPI_A0_clock_polarity      (spi_setting spi_polarity);
+uint16_t SPI_A0_bit_order           (spi_setting spi_bitorder);
+uint16_t SPI_A0_char_length         (spi_setting spi_charlength);
+uint16_t SPI_A0_mode                (spi_setting spi_mode);
+uint16_t SPI_A0_EUSCI_mode          (spi_setting spi_eusci_mode);
+uint16_t SPI_A0_sync                (spi_setting spi_sync);
+uint16_t SPI_A0_clock_source        (spi_setting spi_clk);
+uint16_t SPI_A0_STE_pin             (spi_setting spi_ste);
+uint16_t SPI_A0_soft_reset          (spi_setting spi_reset);
+uint16_t SPI_A0_loopback            (spi_setting spi_loopback);
 /* SPI flag read functions  */
-uint16_t spi_a0_frame_error_flag_read      (void);
-uint16_t spi_a0_overrun_error_flag_read    (void);
-uint16_t spi_a0_busy_flag_read             (void);
+uint16_t SPI_A0_frame_error_flag_read      (void);
+uint16_t SPI_A0_overrun_error_flag_read    (void);
+uint16_t SPI_A0_busy_flag_read             (void);
 /* SPI data write and read functions    */
-uint16_t spi_a0_rx_buffer_read             (void);
-uint16_t spi_a0_tx_buffer_read             (uint16_t spi_byte);
+uint16_t SPI_A0_RX_buffer_read             (void);
+uint16_t SPI_A0_TX_buffer_read             (uint16_t spi_byte);
 /* */
-uint16_t spi_a0_rx_interrupt_read          (void);
-uint16_t spi_a0_tx_interrupt_read          (void);
+uint16_t SPI_A0_RX_interrupt_read          (void);
+uint16_t SPI_A0_TX_interrupt_read          (void);
 
 #endif /* DRIVER_INCLUDE_SPI_H_ */
