@@ -20,20 +20,17 @@ typedef volatile enum {
 	DCO_FSEL_16M,	/*	16MHz	*/
 	DCO_FSEL_21M,	/*	21MHz	*/
 	DCO_FSEL_24M,	/*	24MHz	*/
-	/*	Clock source selection			*/
 	LFXT_CLK,		/* Low frequency clock 	*/
 	VLO_CLK,		/* Internal Very-Low-Power Low-Frequency Oscillator	*/
 	LFMOD_CLK,		/* Module Oscillator 	*/
 	DCO_CLK,		/* Digitally Controlled Oscillator			*/
 	HFXT_CLK,		/* High frequency crystal oscilator clock	*/
-	/*	Clock divider selection	*/
-	DIV_1,
-	DIV_2,
-	DIV_4,
-	DIV_8,
-	DIV_16,
-	DIV_32,
-	/* Clock source control	*/
+	DIV_1,          /* Clock dividet set to 1                   */
+	DIV_2,          /* Clock dividet set to 2                   */
+	DIV_4,          /* Clock dividet set to 4                   */
+	DIV_8,          /* Clock dividet set to 8                   */
+	DIV_16,         /* Clock dividet set to 16                  */
+	DIV_32,         /* Clock dividet set to 32                  */
 	LFXT_ON,
 	LFXT_OFF,
 	SMCLK_ON,

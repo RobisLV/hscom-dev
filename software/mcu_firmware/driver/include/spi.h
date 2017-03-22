@@ -8,56 +8,55 @@
 #ifndef DRIVER_INCLUDE_SPI_H_
 #define DRIVER_INCLUDE_SPI_H_
 
+/*  Configuration settings used in eUSCIA0 SPI mode         */
 typedef volatile enum {
-    /*  CLock phase select      */
-    CLK_RISING,
-    CLK_FALLING,
-    /* Clock polarity select    */
-    CLK_ACTIVE_HIGH,
-    CLK_ACTIVE_LOW,
-    /* Bit order select         */
-    MSB_FIRST,
-    LSB_FIRST,
-    /*  Character length        */
-    CHAR_8BIT,
-    CHAR_7BIT,
-    /*  Master mode select      */
-    SLAVE,
-    MASTER,
-    /*  eUSCI mode select       */
-    MODE_3PIN_SPI,
-    MODE_4PIN_SPI_ACTIVE_HIGH,
-    MODE_4PIN_SPI_ACTIVE_LOW,
-    MODE_I2C,
-    /*  Syncronus mode select   */
-    MODE_ASYNC,
-    MODE_SYNC,
-    /*  Clock source select     */
-    CLK_SOURCE_UCXCLK,
-    CLK_SOURCE_SMCLK,
-    /*  STE mode select         */
-    STE_DISABLE,
-    STE_ENABLE,
-    /*  Loopback mode select    */
-    LOOPBACK_ENABLE,
-    LOOPBACK_DISABLE,
-    /*  Transmit interrupt select   */
-    TX_INTERRUPT_ENABLE,
-    TX_INTERRUPT_DISABLE,
-    /*  Receive interrupt select    */
-    RX_INTERRUPT_ENABLE,
-    RX_INTERRUPT_DISABLE,
+    SPI_CLK_RISING,         /* Clock phase rising edge      */
+    SPI_CLK_FALLING,        /* Clock phase falling edge     */
+    SPI_CLK_ACTIVE_HIGH,    /* Clock polarity active high   */
+    SPI_CLK_ACTIVE_LOW,     /* Clock polarity active low    */
+    SPI_MSB_FIRST,          /* Bit order MSB is sent first  */
+    SPI_LSB_FIRST,          /* Bit order LSB is sent first  */
+    SPI_CHAR_8BIT,          /* Char length is 8 bits        */
+    SPI_CHAR_7BIT,          /* CHar length is 7 bits        */
+    SPI_SLAVE,              /* MCU SPI configured as slave  */
+    SPI_MASTER,             /* MCU SPI configured as master */
+    SPI_MODE_3PIN_SPI,      /* SPI set to 3-pin mode        */
+    SPI_MODE_4PIN_SPI_ACTIVE_HIGH,  /* SPI set to 4-pin mode, active high   */
+    SPI_MODE_4PIN_SPI_ACTIVE_LOW,   /* SPI set to 4-pin mode active low     */
+    SPI_MODE_ASYNC,         /* Asyncronus mode - UART       */
+    SPI_MODE_SYNC,          /* Syncronus mode - SPI         */
+    SPI_CLK_SOURCE_UCXCLK,  /* Clock source UCXCLK          */
+    SPI_CLK_SOURCE_ACLK,    /* Clock source ACLK            */
+    SPI_CLK_SOURCE_SMCLK,   /* Clock source SMCLK           */
+    SPI_STE_DISABLE,        /* STE mode enabled             */
+    SPI_STE_ENABLE,         /* STE mode disabled            */
+    SPI_RESET_ENABLE,       /* Set SPI reset state          */
+    SPI_RESET_DISABLE,      /* Set SPI set state            */
+    SPI_LOOPBACK_ENABLE,    /* Enable loopback mode         */
+    SPI_LOOPBACK_DISABLE,   /* Disable loopback mode        */
 } spi_setting;
 
-uint16_t SPI_CLK_Phase(spi_setting spi_phase){
-    if(){
-
-    }
-    else if(){
-
-    }
-
-}
-
+/*  eUSCI A0 SPI functions  */
+uint16_t spi_a0_clk_phase      (spi_setting spi_phase);
+uint16_t spi_a0_clk_polarity   (spi_setting spi_polarity);
+uint16_t spi_a0_bit_order      (spi_setting spi_bitorder);
+uint16_t spi_a0_char_length    (spi_setting spi_charlength);
+uint16_t spi_a0_mode           (spi_setting spi_mode);
+uint16_t spi_a0_eusci_mode     (spi_setting spi_eusci_mode);
+uint16_t spi_a0_sync           (spi_setting spi_sync);
+uint16_t spi_a0_clk_source     (spi_setting spi_clk);
+uint16_t spi_a0_ste_pin        (spi_setting spi_ste);
+uint16_t spi_a0_soft_reset     (spi_setting spi_reset);
+uint16_t spi_a0_loopback       (spi_setting spi_loopback);
+/* SPI flag read functions  */
+uint16_t spi_a0_frame_error_flag_read      (void);
+uint16_t spi_a0_overrun_error_flag_read    (void);
+uint16_t spi_a0_busy_flag_read             (void);
+/* SPI data write and read functions    */
+uint16_t spi_a0_rx_buffer_read             (void);
+uint16_t spi_a0_tx_buffer_read             (uint16_t spi_byte);
+/* */
+uint16_t spi_a0_rx_interrupt_read          (void);
+uint16_t spi_a0_tx_interrupt_read          (void);
 
 #endif /* DRIVER_INCLUDE_SPI_H_ */

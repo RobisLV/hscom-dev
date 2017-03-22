@@ -400,25 +400,25 @@ uint16_t Clock_Init(void){
 }
 
 uint16_t UART_A0_Init(void){
+    // Put eUSCI in reset
+    uart_a0_reset(UART_RESET_ENABLE);
     // Set pin functions that are used by USCI_A0 UART
     GPIO_Function_Set(MCU_RS485_RE_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, FUNCTION2);
     GPIO_Function_Set(MCU_RS485_RO_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, FUNCTION2);
-    // Put eUSCI in reset
-    UART_Reset(RESET_ENABLE);
     // Select EUSCI clock source
-    UART_EUSCI_Clock(SOURCE_SMCLK);
+    uart_a0_eusci_clock(UART_SOURCE_SMCLK);
     // Set deglitch time to 200ns
-    UART_Deglitch_Time(DEGLITCH_200NS);
+    uart_a0_deglitch_time(UART_DEGLITCH_200NS);
     // Set modulation stage values ???
-    UART_Modulation_Stage_1(0x01 << 4);
-    UART_Modulation_Stage_2(0x49 << 8);
+    uart_a0_modulation_stage_1(0x01 << 4);
+    uart_a0_modulation_stage_2(0x49 << 8);
     // Prescale clock to select baudrate
-    UART_Clock_Prescale(52); // TODO: pie 8MHz clk jabut 52 lai dabutu 9600, bet realitate jaliek 13 (/4)
-    UART_Oversampling(OVERSAMPLING_ENABLE);
+    uart_a0_clock_prescale(52); // TODO: pie 8MHz clk jabut 52 lai dabutu 9600, bet realitate jaliek 13 (/4)
+    uart_a0_oversampling(UART_OVERSAMPLE_ENABLE);
     // Enable RX interrupt
-    UART_RX_Interrupt(RX_INTERRUPT_ENABLE);
+    uart_a0_rx_interrupt(UART_INTERRUPT_ENABLE);
     // Release eUSCI reset
-    UART_Reset(RESET_DISABLE);
+    uart_a0_reset(UART_RESET_DISABLE);
     return 0;
 }
 
