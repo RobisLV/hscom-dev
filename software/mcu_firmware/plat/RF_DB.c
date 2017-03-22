@@ -334,42 +334,42 @@ struct chip_conf test_struct =
  ****************************************/
 uint8_t GPIO_Init(){
     // Set MCU status LED pin as output
-	GPIO_Mode_Set(MCU_LED_STATUS_PIN, MCU_LED_STATUS_DIR, OUTPUT);
+	GPIO_mode_set(MCU_LED_STATUS_PIN, MCU_LED_STATUS_DIR, GPIO_OUTPUT);
 
 	// Initialize SS pins for all SPI peripherals  as outputs
-	GPIO_Mode_Set(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_DIR, OUTPUT);
-	GPIO_Mode_Set(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_DIR, OUTPUT);
-	GPIO_Mode_Set(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_DIR, OUTPUT);
-	GPIO_Mode_Set(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_DIR, OUTPUT);
+	GPIO_mode_set(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_DIR, GPIO_OUTPUT);
+	GPIO_mode_set(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_DIR, GPIO_OUTPUT);
+	GPIO_mode_set(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_DIR, GPIO_OUTPUT);
+	GPIO_mode_set(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_DIR, GPIO_OUTPUT);
 
-	GPIO_Mode_Set(INT_SPI_MOSI_PIN, INT_SPI_MOSI_DIR, OUTPUT);
-	GPIO_Mode_Set(INT_SPI_SCK_PIN, INT_SPI_SCK_DIR, OUTPUT);
+	GPIO_mode_set(INT_SPI_MOSI_PIN, INT_SPI_MOSI_DIR, GPIO_OUTPUT);
+	GPIO_mode_set(INT_SPI_SCK_PIN, INT_SPI_SCK_DIR, GPIO_OUTPUT);
 
 	// Set all SS pins as 1's (default - not active)
-	GPIO_Port_Write(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_PORT, HIGH);
-	GPIO_Port_Write(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_PORT, HIGH);
-	GPIO_Port_Write(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_PORT, HIGH);
-	GPIO_Port_Write(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_PORT, HIGH);
+	GPIO_port_write(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_PORT, GPIO_HIGH);
+	GPIO_port_write(INT_SPI_FPGA_SS_PIN, INT_SPI_FPGA_SS_PORT, GPIO_HIGH);
+	GPIO_port_write(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_PORT, GPIO_HIGH);
+	GPIO_port_write(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_PORT, GPIO_HIGH);
 
 	// Default state of SPI data and clock lines is 0
-	GPIO_Port_Write(INT_SPI_MOSI_PIN, INT_SPI_MOSI_PORT, LOW);
-	GPIO_Port_Write(INT_SPI_SCK_PIN, INT_SPI_SCK_PORT, LOW);
+	GPIO_port_write(INT_SPI_MOSI_PIN, INT_SPI_MOSI_PORT, GPIO_LOW);
+	GPIO_port_write(INT_SPI_SCK_PIN, INT_SPI_SCK_PORT, GPIO_LOW);
 
 	// Set MAX2828 lock-detect pin as input
-	GPIO_Mode_Set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_DIR, INPUT);
-	GPIO_Pull_Set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_PULL, PULL_DISABLE);
+	GPIO_mode_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_DIR, GPIO_INPUT);
+	GPIO_pull_set(TXRX_LOCK_DET_PIN, TXRX_LOCK_DET_PULL, GPIO_PULL_DISABLE);
 
 	// Other MAX2828 related pins settings
-	GPIO_Mode_Set(TXRX_TX_EN_PIN, TXRX_TX_EN_DIR, OUTPUT);
-	GPIO_Mode_Set(TXRX_RX_EN_PIN, TXRX_RX_EN_DIR, OUTPUT);
-	GPIO_Mode_Set(TXRX_SHDN_PIN, TXRX_SHDN_DIR, OUTPUT);
-	GPIO_Mode_Set(TXRX_OSC_EN_PIN, TXRX_OSC_EN_DIR, OUTPUT);
+	GPIO_mode_set(TXRX_TX_EN_PIN, TXRX_TX_EN_DIR, GPIO_OUTPUT);
+	GPIO_mode_set(TXRX_RX_EN_PIN, TXRX_RX_EN_DIR, GPIO_OUTPUT);
+	GPIO_mode_set(TXRX_SHDN_PIN, TXRX_SHDN_DIR, GPIO_OUTPUT);
+	GPIO_mode_set(TXRX_OSC_EN_PIN, TXRX_OSC_EN_DIR, GPIO_OUTPUT);
 
 	// Keep the following pins low
-	GPIO_Port_Write(TXRX_TX_EN_PIN, TXRX_TX_EN_PORT, LOW);
-	GPIO_Port_Write(TXRX_RX_EN_PIN, TXRX_RX_EN_PORT, LOW);
-	GPIO_Port_Write(TXRX_SHDN_PIN, TXRX_SHDN_PORT, LOW);
-	GPIO_Port_Write(TXRX_OSC_EN_PIN, TXRX_OSC_EN_PORT, LOW);
+	GPIO_port_write(TXRX_TX_EN_PIN, TXRX_TX_EN_PORT, GPIO_LOW);
+	GPIO_port_write(TXRX_RX_EN_PIN, TXRX_RX_EN_PORT, GPIO_LOW);
+	GPIO_port_write(TXRX_SHDN_PIN, TXRX_SHDN_PORT, GPIO_LOW);
+	GPIO_port_write(TXRX_OSC_EN_PIN, TXRX_OSC_EN_PORT, GPIO_LOW);
 
 	return 0;
 }
@@ -379,46 +379,46 @@ uint8_t GPIO_Init(){
  ****************************************/
 uint16_t Clock_Init(void){
 	// Enable writing to CS registers
-	CS_Password(PWD_SET);
+	CS_password(CS_PWD_SET);
 	// Set DCO frequency
-	CS_DCO_Freq_Set(DCO_FSEL_8M);
+	CS_DCO_freq_set(CS_DCO_FSEL_8M);
     // Set LFMOD as auxilary clock source
-	CS_ACLK_Source_Set(LFMOD_CLK);
+	CS_ACLK_source_set(CS_LFMOD_CLK);
 	// Set DCO as master clock source
-	CS_MCLK_Source_Set(DCO_CLK);
+	CS_MCLK_source_set(CS_DCO_CLK);
 	// Set DCO as subsystem clock source
-	CS_SMCLK_Source_Set(DCO_CLK);
+	CS_SMCLK_source_set(CS_DCO_CLK);
 	// Set auxilary clock divider to 1
-	CS_ACLK_Divider_Set(DIV_1);
+	CS_ACLK_divider_set(CS_DIV_1);
 	// Set master clock divider to 1
-	CS_MCLK_Divider_Set(DIV_1);
+	CS_MCLK_divider_set(CS_DIV_1);
 	// Set subsystem clock divider to 1
-	CS_SMCLK_Divider_Set(DIV_1);
+	CS_SMCLK_divider_set(CS_DIV_1);
 	// Disable writing to CS registers
-	CS_Password(PWD_CLEAR);
+	CS_password(CS_PWD_CLEAR);
 	return 0;
 }
 
 uint16_t UART_A0_Init(void){
     // Put eUSCI in reset
-    uart_a0_reset(UART_RESET_ENABLE);
+    UART_A0_reset(UART_RESET_ENABLE);
     // Set pin functions that are used by USCI_A0 UART
-    GPIO_Function_Set(MCU_RS485_RE_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, FUNCTION2);
-    GPIO_Function_Set(MCU_RS485_RO_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, FUNCTION2);
+    GPIO_function_set(MCU_RS485_RE_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, GPIO_FUNCTION2);
+    GPIO_function_set(MCU_RS485_RO_PIN , MCU_RS485_RO_FUNC0, MCU_RS485_RO_FUNC1, GPIO_FUNCTION2);
     // Select EUSCI clock source
-    uart_a0_eusci_clock(UART_SOURCE_SMCLK);
+    UART_A0_EUSCI_clock(UART_SOURCE_SMCLK);
     // Set deglitch time to 200ns
-    uart_a0_deglitch_time(UART_DEGLITCH_200NS);
+    UART_A0_deglitch_time(UART_DEGLITCH_200NS);
     // Set modulation stage values ???
-    uart_a0_modulation_stage_1(0x01 << 4);
-    uart_a0_modulation_stage_2(0x49 << 8);
+    UART_A0_modulation_stage_1(0x01 << 4);
+    UART_A0_modulation_stage_2(0x49 << 8);
     // Prescale clock to select baudrate
-    uart_a0_clock_prescale(52); // TODO: pie 8MHz clk jabut 52 lai dabutu 9600, bet realitate jaliek 13 (/4)
-    uart_a0_oversampling(UART_OVERSAMPLE_ENABLE);
+    UART_A0_clock_prescale(52); // TODO: pie 8MHz clk jabut 52 lai dabutu 9600, bet realitate jaliek 13 (/4)
+    UART_A0_oversampling(UART_OVERSAMPLE_ENABLE);
     // Enable RX interrupt
-    uart_a0_rx_interrupt(UART_INTERRUPT_ENABLE);
+    UART_A0_RX_interrupt(UART_INTERRUPT_ENABLE);
     // Release eUSCI reset
-    uart_a0_reset(UART_RESET_DISABLE);
+    UART_A0_reset(UART_RESET_DISABLE);
     return 0;
 }
 

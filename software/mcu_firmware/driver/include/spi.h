@@ -4,6 +4,9 @@
  *  Created on: 2017. gada 2. marts
  *      Author: Roberts
  */
+#include <msp430.h>
+#include <stdint.h>
+#include "macros.h"
 
 #ifndef DRIVER_INCLUDE_SPI_H_
 #define DRIVER_INCLUDE_SPI_H_

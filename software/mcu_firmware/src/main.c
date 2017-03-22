@@ -33,12 +33,12 @@ uint16_t main(void){
 
     while(1){
     	//counter1++;
-    	GPIO_Port_Write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, HIGH);
+    	GPIO_port_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_HIGH);
 
     	for(i=0; i < 0xFFFF; i++){
     		counter++;
     	};
-    	GPIO_Port_Write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, LOW);
+    	GPIO_port_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_LOW);
     	for(i=0; i < 0xFFFF; i++){
     		counter++;
     	};
