@@ -403,16 +403,16 @@ uint16_t UART_A0_RX_buffer_read(void){
 /***************************************************
  *
  **************************************************/
-uint16_t UART_A0_TX_buffer_write(uint16_t data){
-    UCA0TXBUF = (data & 0x00FF);
+uint16_t UART_A0_TX_buffer_write(uint8_t uart_byte){
+    UCA0TXBUF = uart_byte;
     return 0;
 }
 
 /***************************************************
  *
  **************************************************/
-uint16_t UART_A0_byte_write(uint8_t byte){
-    UCA0TXBUF = byte;
+uint16_t UART_A0_byte_write(uint8_t uart_byte){
+    UCA0TXBUF = uart_byte;
     while (!(UCA0IFG & UCTXCPTIFG)){};
     UCA0IFG ^= UCTXCPTIFG;
     return 0;

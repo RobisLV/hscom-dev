@@ -37,6 +37,8 @@ typedef volatile enum {
     SPI_RESET_DISABLE,      /* Set SPI set state            */
     SPI_LOOPBACK_ENABLE,    /* Enable loopback mode         */
     SPI_LOOPBACK_DISABLE,   /* Disable loopback mode        */
+    SPI_INTERRUPT_ENABLE,   /* Enable RX or TX interrupt    */
+    SPI_INTERRUPT_DISABLE   /* Disable RX or TX interrupt   */
 } spi_setting;
 
 /*  eUSCI A0 SPI functions  */
@@ -51,14 +53,18 @@ uint16_t SPI_A0_clock_source        (spi_setting spi_clk);
 uint16_t SPI_A0_STE_pin             (spi_setting spi_ste);
 uint16_t SPI_A0_soft_reset          (spi_setting spi_reset);
 uint16_t SPI_A0_loopback            (spi_setting spi_loopback);
+uint16_t SPI_A0_clock_prescale      (uint16_t spi_clk_prescale);
 /* SPI flag read functions  */
 uint16_t SPI_A0_frame_error_flag_read      (void);
 uint16_t SPI_A0_overrun_error_flag_read    (void);
 uint16_t SPI_A0_busy_flag_read             (void);
 /* SPI data write and read functions    */
 uint16_t SPI_A0_RX_buffer_read             (void);
-uint16_t SPI_A0_TX_buffer_read             (uint16_t spi_byte);
+uint16_t SPI_A0_TX_buffer_read             (uint8_t spi_byte);
+
 /* */
+uint16_t SPI_A0_RX_interrupt               (spi_setting spi_interrupt);
+uint16_t SPI_A0_TX_interrupt               (spi_setting spi_interrupt);
 uint16_t SPI_A0_RX_interrupt_read          (void);
 uint16_t SPI_A0_TX_interrupt_read          (void);
 

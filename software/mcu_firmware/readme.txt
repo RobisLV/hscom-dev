@@ -13,6 +13,8 @@ source
 link
 target
 
-Function and variable naming convention:
- * all the names are lowercase, except for acronyms (GPIO, SPI, etc.)
+Naming convention:
+ * all the function and variable names are lowercase, except for acronyms (GPIO, SPI, etc.)
+ * Function arguments in function definitions are all lowercase
  * words are seperated by underscore
+ * all defines and global variables are uppercase
