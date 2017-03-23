@@ -162,12 +162,4 @@
 #define INT_SPI_TXRX_SS_DIR		ADDRESS_OF(P3DIR)
 #define INT_SPI_AF_SS_DIR		ADDRESS_OF(P3DIR)
 
-#define index_dac_msb		0
-#define index_dac_lsb		1
-#define index_max2828_pwr	2
-#define index_max2828_gpio	3
-#define index_max2828_reg1	4
-
-#define conf_block_size		17
-
 #endif 

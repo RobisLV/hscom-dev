@@ -18,11 +18,11 @@ Roberts Trops
 uint16_t main(void){
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	// Initialize clock system
-    Clock_Init();
+    CS_init();
     // Initialize GPIOs
-    GPIO_Init();
+    GPIO_init();
     // Initialize UART A0
-    UART_A0_Init();
+    UART_A0_init();
     // Disable the GPIO power-on default high-impedance mode to activate previously configured port settings
     PM5CTL0 &= ~LOCKLPM5;
 

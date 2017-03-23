@@ -141,178 +141,6 @@ unsigned char DAC_standby_set (unsigned char val)
 	return 1;
 }
 */
-unsigned char MAX2828_get_phase_lock_statuss(void)
-{
-	if (TXRX_LOCK_DET_PORT & TXRX_LOCK_DET_PIN) return 1;
-	return 0;
-}
-
-unsigned char MAX2828_TX_set(unsigned char val)
-{
-	if (val == 1)
-	{
-		*TXRX_TX_EN_PORT |= TXRX_TX_EN_PIN;
-		store_max2828_gpio_settings(1,1);
-		return 0b01001101;
-	} else
-	if (val == 0)
-	{
-		*TXRX_TX_EN_PORT &= ~TXRX_TX_EN_PIN;
-		store_max2828_gpio_settings(1,0);
-		return 0b01001011;
-	} else
-	return 0;
-}
-
-//unsigned char MAX2828_RX_set(unsigned char val)
-//{
-//	if (val == 1)
-//	{
-//		TXRX_RX_EN_PORT |= TXRX_RX_EN_PIN;
-//		//store_max2828_gpio_settings(1,1);
-//		return 0b01001101;
-//	} else
-//	if (val == 0)
-//	{
-//		TXRX_RX_EN_PORT &= ~TXRX_RX_EN_PIN;
-//		//store_max2828_gpio_settings(1,0);
-//		return 0b01001011;
-//	} else
-//	return 0;
-//}
-
-unsigned char MAX2828_enable_set(unsigned char val)
-{
-	if (val == 1)
-	{
-		*TXRX_SHDN_PORT |= TXRX_SHDN_PIN;
-		store_max2828_gpio_settings(2,1);
-		return 0b01001001;
-	} else
-	if (val == 0)
-	{
-		*TXRX_SHDN_PORT &= ~TXRX_SHDN_PIN;
-		store_max2828_gpio_settings(2,0);
-		return 0b01001011;
-	} else
-	return 0;
-}
-/*
-unsigned char MAX2828_TX_set_power(unsigned char value)
-{
-	unsigned char status_code = 0;
-	if (value>127){
-		status_code = 0b01000110;
-	}
-	else{
-		if (value &0x1) MAX2828_pwr_set_port1 |= MAX2828_pwr_set_pin1; else MAX2828_pwr_set_port1 &= ~MAX2828_pwr_set_pin1;
-		value = value>>1;
-		if (value &0x1) MAX2828_pwr_set_port2 |= MAX2828_pwr_set_pin2; else MAX2828_pwr_set_port2 &= ~MAX2828_pwr_set_pin2;
-		value = value>>1;
-		if (value &0x1) MAX2828_pwr_set_port3 |= MAX2828_pwr_set_pin3; else MAX2828_pwr_set_port3 &= ~MAX2828_pwr_set_pin3;
-		value = value>>1;
-		if (value &0x1) MAX2828_pwr_set_port4 |= MAX2828_pwr_set_pin4; else MAX2828_pwr_set_port4 &= ~MAX2828_pwr_set_pin4;
-		value = value>>1;
-		if (value &0x1) MAX2828_pwr_set_port5 |= MAX2828_pwr_set_pin5; else MAX2828_pwr_set_port5 &= ~MAX2828_pwr_set_pin5;
-		value = value>>1;
-		if (value &0x1) MAX2828_pwr_set_port6 |= MAX2828_pwr_set_pin6; else MAX2828_pwr_set_port6 &= ~MAX2828_pwr_set_pin6;
-		value = value>>1;
-		if (value &0x1) MAX2828_pwr_set_port7 |= MAX2828_pwr_set_pin7; else MAX2828_pwr_set_port7 &= ~MAX2828_pwr_set_pin7;
-		store_max2828_power_settings(&value);
-		status_code = 0b01000111;
-	}
-	return status_code;
-}
-*/
-//unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned char data_msb,unsigned char data_lsb)
-unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned long int data)
-{
-	int i=0;
-	unsigned char temp[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-//	if (adress>12 || data_msb>63) return 0b01011110;
-	if (adress>12 || data>16383) return 0b01011110;
-	data = data << 4;
-	data |= adress;
-	for (i=17;i>=0;i--){
-			temp[17-i]=(data >> i) & 1;
-	}
-	*INT_SPI_TXRX_SS_PORT &= ~INT_SPI_TXRX_SS_PIN;
-//	TA1CCR1 = 19;
-//	unsigned char byte1 = (data_msb&0b110000)>>4;
-//	unsigned char byte2 = ((data_msb&0b1111)<<4) | ((data_lsb&0b11110000)>>4);
-//	unsigned char byte3 = ((data_lsb&0b1111)<<4) | (adress&0b1111);
-	for (i=0;i<18;i++){
-		if(temp[i]) *INT_SPI_MOSI_PORT |= INT_SPI_MOSI_PIN;
-		else *INT_SPI_MOSI_PORT &= ~INT_SPI_MOSI_PIN;
-		*INT_SPI_SCK_PORT ^= INT_SPI_SCK_PIN;
-		if(temp[i]) *INT_SPI_MOSI_PORT |= INT_SPI_MOSI_PIN;
-		else *INT_SPI_MOSI_PORT &= ~INT_SPI_MOSI_PIN;
-		*INT_SPI_SCK_PORT ^= INT_SPI_SCK_PIN;
-	}
-
-//	SPI_RCS_send_byte(byte1);
-//	SPI_RCS_send_byte(byte2);
-//	SPI_RCS_send_byte(byte3);
-
-	*INT_SPI_TXRX_SS_PORT |= INT_SPI_TXRX_SS_PIN;
-//	TA1CCR1 = 0;
-	*INT_SPI_MOSI_PORT &= ~INT_SPI_MOSI_PIN;
-
-//	store_max2828_registers (&adress,&data_msb,&data_lsb);
-	store_max2828_registers (&adress,&data);
-	return 0b01011111;
-}
-
-unsigned char MAX2828_set_GPIO_stored (void)
-{
-	unsigned char temp = get_stored_settings(index_max2828_gpio);
-	MAX2828_TX_set(temp&0x1);
-	MAX2828_enable_set(temp&0b10>>1);
-	return 1;
-}
-/*
-unsigned char MAX2828_pwr_set_stored (void)
-{
-	MAX2828_TX_set_power(get_stored_settings(index_max2828_pwr));
-	return 1;
-}
-*/
-unsigned char MAX2828_set_registers_stored (void)
-{
-	unsigned char i = 0;
-	for (i=0;i<13; i++)
-	{
-//	MAX2828_set_tegister_values(i,
-//			get_stored_settings(index_max2828_reg1+i*2),
-//			get_stored_settings(index_max2828_reg2+i*2));
-	MAX2828_set_tegister_values(i, get_stored_settings(index_max2828_reg1+i*2));
-	}
-	return 1;
-}
-
-//Array in MCU's non-volatile FRAM memory to sotre RCS settings
-#pragma PERSISTENT(default_settings)
-#pragma NOINIT(userdef_settings)
-uint16_t default_settings[conf_block_size] = {
-	    0b01000101000000, // R0
-	    0b00000011001010, // R1
-	    0b01000000000111, // R2
-	    0b11000011101000, // R3
-	    0b00110011001100, // R4
-	    0b01111101100011, // R5
-	    0b01110000000000, // R6
-	    0b00000000101010, // R7
-	    0b00000000100101, // R8
-	    0b00001000000000, // R9
-	    0b00001111000000, // R10
-	    0b00000001111111, // R11
-	    0b00000000000000, // R12
-		0x00,
-		0x00,
-		0x00,
-		0x00
-};
-uint16_t userdef_settings[conf_block_size];
 
 struct chip_conf
 {
@@ -332,7 +160,7 @@ struct chip_conf test_struct =
 /*****************************************
  * Initialize GPIOs
  ****************************************/
-uint8_t GPIO_Init(){
+uint16_t GPIO_init(void){
     // Set MCU status LED pin as output
 	GPIO_mode_set(MCU_LED_STATUS_PIN, MCU_LED_STATUS_DIR, GPIO_OUTPUT);
 
@@ -377,7 +205,7 @@ uint8_t GPIO_Init(){
 /*****************************************
  * Initialize Clock System (CS) registers
  ****************************************/
-uint16_t Clock_Init(void){
+uint16_t CS_init(void){
 	// Enable writing to CS registers
 	CS_password(CS_PWD_SET);
 	// Set DCO frequency
@@ -399,7 +227,7 @@ uint16_t Clock_Init(void){
 	return 0;
 }
 
-uint16_t UART_A0_Init(void){
+uint16_t UART_A0_init(void){
     // Put eUSCI in reset
     UART_A0_reset(UART_RESET_ENABLE);
     // Set pin functions that are used by USCI_A0 UART
@@ -408,7 +236,7 @@ uint16_t UART_A0_Init(void){
     // Select EUSCI clock source
     UART_A0_EUSCI_clock(UART_SOURCE_SMCLK);
     // Set deglitch time to 200ns
-    UART_A0_deglitch_time(UART_DEGLITCH_200NS);
+    UART_A0_deglitch_time(UART_DEGLITCH_100NS);
     // Set modulation stage values ???
     UART_A0_modulation_stage_1(0x01 << 4);
     UART_A0_modulation_stage_2(0x49 << 8);
@@ -458,49 +286,9 @@ unsigned char SPI_RCS_send_byte(unsigned char data)
 	return 1;
 }
 
-unsigned char store_dac(unsigned char* data_msb, unsigned char* data_lsb)
-{
-	default_settings[index_dac_msb] = *data_msb;
-	default_settings[index_dac_lsb] = *data_lsb;
-	return 1;
-}
-
-unsigned char store_max2828_power_settings (unsigned char* data)
-{
-	default_settings[index_max2828_pwr] = *data;
-	return 1;
-}
-
-unsigned char store_max2828_gpio_settings (unsigned char bit_no, unsigned char state)
-{
-	//Clears or sets specified bit in register
-	if (state) default_settings[index_max2828_gpio] |= (1<<bit_no); else default_settings[3] &= ~(1<<bit_no);
-	return 1;
-}
-
-//unsigned char store_max2828_registers (unsigned char* register_no, unsigned char* data_msb, unsigned char* data_lsb)
-unsigned char store_max2828_registers (unsigned char* register_no, unsigned long int* data)
-{
-	unsigned int offset = *register_no;
-	default_settings[index_max2828_reg1+offset]	=  *data;
-	return 1;
-}
-
-signed char get_stored_settings (unsigned char requested_byte)
-{
-	if (requested_byte > conf_block_size-1)
-		{
-			#ifdef ENABLE_DISPLAY
-			dp_display_text("Incorrect index!");
-			#endif
-			return -1;
-		}
-	return default_settings[requested_byte];
-}
-
 
 //Timer B0 counts up to 10; needed for timing of the pause in
-unsigned char init_timer_b0 (void)
+uint16_t TMR_B0_init (void)
 {
 	TB0R = 0;
 	TB0CTL = TBSSEL_1 | MC_1 | ID_3 ; //Clk - ACLK, DIV 8
