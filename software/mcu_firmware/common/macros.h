@@ -8,7 +8,11 @@
 #ifndef COMMON_MARCOS_H_
 #define COMMON_MARCOS_H_
 
-/*	Bit Configuration Macros	*/
+/* Function return values   */
+#define EXIT_SUCCESS 0
+#define EXIT_FAILURE 1
+
+/* Bit Configuration Macros	*/
 #define MASK_SET(REG,BIT) 			REG |= BIT	/* Sets the particular bit(s)		*/
 #define MASK_CLEAR(REG,BIT) 		REG &=~BIT	/* Sets the particular bit(s)		*/
 #define MASK_CHECK(REG,BIT)			REG & BIT	/* Checks the particular bit(s)		*/

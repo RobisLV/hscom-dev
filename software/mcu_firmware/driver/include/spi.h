@@ -23,9 +23,9 @@ typedef volatile enum {
     SPI_CHAR_7BIT,          /* CHar length is 7 bits        */
     SPI_SLAVE,              /* MCU SPI configured as slave  */
     SPI_MASTER,             /* MCU SPI configured as master */
-    SPI_MODE_3PIN_SPI,      /* SPI set to 3-pin mode        */
-    SPI_MODE_4PIN_SPI_ACTIVE_HIGH,  /* SPI set to 4-pin mode, active high   */
-    SPI_MODE_4PIN_SPI_ACTIVE_LOW,   /* SPI set to 4-pin mode active low     */
+    SPI_MODE_3PIN,          /* SPI set to 3-pin mode        */
+    SPI_MODE_4PIN_AH,       /* SPI set to 4-pin mode, active high   */
+    SPI_MODE_4PIN_AL,       /* SPI set to 4-pin mode active low     */
     SPI_MODE_ASYNC,         /* Asyncronus mode - UART       */
     SPI_MODE_SYNC,          /* Syncronus mode - SPI         */
     SPI_CLK_SOURCE_UCXCLK,  /* Clock source UCXCLK          */
@@ -62,7 +62,7 @@ uint16_t SPI_A0_overrun_error_flag_read    (void);
 uint16_t SPI_A0_busy_flag_read             (void);
 /* SPI data write and read functions    */
 uint16_t SPI_A0_RX_buffer_read             (void);
-uint16_t SPI_A0_TX_buffer_read             (uint8_t spi_byte);
+uint16_t SPI_A0_TX_buffer_write            (uint8_t spi_byte);
 /* Interrupt read and set functions     */
 uint16_t SPI_A0_RX_interrupt               (spi_setting spi_interrupt);
 uint16_t SPI_A0_TX_interrupt               (spi_setting spi_interrupt);
@@ -90,7 +90,7 @@ uint16_t SPI_A1_overrun_error_flag_read    (void);
 uint16_t SPI_A1_busy_flag_read             (void);
 /* SPI data write and read functions    */
 uint16_t SPI_A1_RX_buffer_read             (void);
-uint16_t SPI_A1_TX_buffer_read             (uint8_t spi_byte);
+uint16_t SPI_A1_TX_buffer_write            (uint8_t spi_byte);
 /* Interrupt read and set functions     */
 uint16_t SPI_A1_RX_interrupt               (spi_setting spi_interrupt);
 uint16_t SPI_A1_TX_interrupt               (spi_setting spi_interrupt);

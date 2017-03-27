@@ -9,7 +9,7 @@
 /***************************************************
  *
  **************************************************/
-uint16_t GPIO_port_read(uint16_t gpio_pin, uint16_t gpio_input_reg){
+uint16_t GPIO_port_read(uint16_t gpio_pin, uint8_t gpio_input_reg){
 	if(gpio_input_reg & gpio_pin){
 		return 1;
 	}
@@ -27,9 +27,9 @@ uint16_t GPIO_port_write(uint16_t gpio_pin, volatile uint8_t *gpio_output_reg, g
 		*gpio_output_reg|=gpio_pin;
 	}
 	else{
-		return 1;
+		return EXIT_FAILURE;
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 /***************************************************
@@ -43,9 +43,9 @@ uint16_t GPIO_mode_set(uint16_t gpio_pin, volatile uint8_t *gpio_dir_reg, gpio_s
 		*gpio_dir_reg &= ~gpio_pin;
 	}
 	else{
-		return 1;
+		return EXIT_FAILURE;
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 /***************************************************
@@ -59,15 +59,15 @@ uint16_t GPIO_pull_set(uint16_t gpio_pin, volatile uint8_t *gpio_pullup_reg, gpi
 		*gpio_pullup_reg &= ~gpio_pin;
 	}
 	else{
-		return 1;
+		return EXIT_FAILURE;
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 /***************************************************
  *
  **************************************************/
-uint16_t GPIO_function_set(uint16_t gpio_pin,volatile uint8_t *gpio_function0_sel, volatile uint8_t *gpio_function1_sel, gpio_setting gpio_function){
+uint16_t GPIO_function_set(uint16_t gpio_pin, volatile uint8_t *gpio_function0_sel, volatile uint8_t *gpio_function1_sel, gpio_setting gpio_function){
 	if(gpio_function == GPIO_FUNCTION0){
 		*gpio_function0_sel &= ~gpio_pin;
 		*gpio_function1_sel &= ~gpio_pin;
@@ -85,9 +85,9 @@ uint16_t GPIO_function_set(uint16_t gpio_pin,volatile uint8_t *gpio_function0_se
 		*gpio_function1_sel |= gpio_pin;
 	}
 	else{
-		return 1;
+		return EXIT_FAILURE;
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 /*********_END_OF_FILE_********/

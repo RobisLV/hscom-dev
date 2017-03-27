@@ -10,6 +10,7 @@
 #include "gpio.h"
 #include "clock.h"
 #include "uart.h"
+#include "spi.h"
 #include "dpuser.h"
 #include "max2828.h"
 
@@ -25,13 +26,13 @@ unsigned char	DAC_set_stored_value	(void);
 //unsigned char 	DAC_pd_set 			(unsigned char);
 //unsigned char 	DAC_standby_set 	(unsigned char);
 
-uint16_t    GPIO_init               (void);
-uint16_t    CS_init				    (void);
-uint16_t    UART_A0_init            (void);
-uint16_t    TMR_B0_init             (void);
+uint16_t    GPIO_init       (void);     /* Initialize GPIOs             */
+uint16_t    CS_init			(void);     /* Initialize clock system      */
+uint16_t    UART_A0_init    (void);     /* Initialize eUSCI UART A0     */
+uint16_t    SPI_A1_init     (void);     /* Initialize eUSCI A1          */
+uint16_t    TMR_B0_init     (void);     /* Initialize timer B0          */
 
 unsigned char 	osc_set 						(unsigned char);
-unsigned char	SPI_RCS_init					(void);					//Init SPI realised by eUSCI B0
 unsigned char	SPI_RCS_send_byte				(unsigned char);
 
 //void 			    display_main_menu				(void);

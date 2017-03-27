@@ -17,15 +17,16 @@ Roberts Trops
 /*  Main routine    */
 uint16_t main(void){
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
-	// Initialize clock system
+	/* Initialize clock system  */
     CS_init();
-    // Initialize GPIOs
+    /* Initialize GPIOs     */
     GPIO_init();
-    // Initialize UART A0
+    /* Initialize UART A0   */
     UART_A0_init();
     // Disable the GPIO power-on default high-impedance mode to activate previously configured port settings
     PM5CTL0 &= ~LOCKLPM5;
-
+    /* Initialize SPI A1    */
+    SPI_A1_init();
 	dp_delay(500);
     volatile uint16_t counter = 0;
 	uint16_t i=0;
@@ -43,5 +44,6 @@ uint16_t main(void){
     		counter++;
     	};
     	dp_display_text("\r\n\r\n\t\t--------Main menu--------");
+    	SPI_A1_TX_buffer_write(0xAA);
     }
 }

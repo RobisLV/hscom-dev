@@ -77,13 +77,13 @@ uint16_t SPI_A0_mode(spi_setting spi_mode){
 uint16_t SPI_A0_EUSCI_mode(spi_setting spi_eusci_mode){
     // Clear previously set bits
     MASK_CLEAR(UCA0CTLW0, UCMODE0|UCMODE1);
-    if(spi_eusci_mode == SPI_MODE_3PIN_SPI){
+    if(spi_eusci_mode == SPI_MODE_3PIN){
         MASK_SET(UCA0CTLW0, UCMODE_0);
     }
-    else if(spi_eusci_mode == SPI_MODE_4PIN_SPI_ACTIVE_HIGH){
+    else if(spi_eusci_mode == SPI_MODE_4PIN_AH){
         MASK_SET(UCA0CTLW0, UCMODE_1);
     }
-    else if(spi_eusci_mode == SPI_MODE_4PIN_SPI_ACTIVE_LOW){
+    else if(spi_eusci_mode == SPI_MODE_4PIN_AL){
         MASK_SET(UCA0CTLW0, UCMODE_2);
     }
     else{
@@ -189,7 +189,7 @@ uint16_t SPI_A0_RX_buffer_read(void){
     return UCA0RXBUF;
 }
 
-uint16_t SPI_A0_TX_buffer_read(uint8_t spi_byte){
+uint16_t SPI_A0_TX_buffer_write(uint8_t spi_byte){
     UCA0TXBUF = spi_byte;
     return 0;
 }
@@ -304,13 +304,13 @@ uint16_t SPI_A1_mode(spi_setting spi_mode){
 uint16_t SPI_A1_EUSCI_mode(spi_setting spi_eusci_mode){
     // Clear previously set bits
     MASK_CLEAR(UCA1CTLW0, UCMODE0|UCMODE1);
-    if(spi_eusci_mode == SPI_MODE_3PIN_SPI){
+    if(spi_eusci_mode == SPI_MODE_3PIN){
         MASK_SET(UCA1CTLW0, UCMODE_0);
     }
-    else if(spi_eusci_mode == SPI_MODE_4PIN_SPI_ACTIVE_HIGH){
+    else if(spi_eusci_mode == SPI_MODE_4PIN_AH){
         MASK_SET(UCA1CTLW0, UCMODE_1);
     }
-    else if(spi_eusci_mode == SPI_MODE_4PIN_SPI_ACTIVE_LOW){
+    else if(spi_eusci_mode == SPI_MODE_4PIN_AL){
         MASK_SET(UCA1CTLW0, UCMODE_2);
     }
     else{
@@ -387,7 +387,7 @@ uint16_t SPI_A1_loopback(spi_setting spi_loopback){
     return 0;
 }
 uint16_t SPI_A1_clock_prescale(uint16_t spi_clk_prescale){
-    UCA0BRW = spi_clk_prescale;
+    UCA1BRW = spi_clk_prescale;
     return 0;
 }
 
@@ -416,7 +416,7 @@ uint16_t SPI_A1_RX_buffer_read(void){
     return UCA1RXBUF;
 }
 
-uint16_t SPI_A1_TX_buffer_read(uint8_t spi_byte){
+uint16_t SPI_A1_TX_buffer_write(uint8_t spi_byte){
     UCA1TXBUF = spi_byte;
     return 0;
 }

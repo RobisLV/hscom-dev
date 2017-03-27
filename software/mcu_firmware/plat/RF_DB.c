@@ -170,6 +170,8 @@ uint16_t GPIO_init(void){
 	GPIO_mode_set(INT_SPI_TXRX_SS_PIN, INT_SPI_TXRX_SS_DIR, GPIO_OUTPUT);
 	GPIO_mode_set(INT_SPI_AF_SS_PIN, INT_SPI_AF_SS_DIR, GPIO_OUTPUT);
 
+	// Set SPI A1 pins as inputs or outputs respectively
+	GPIO_mode_set(INT_SPI_MISO_PIN, INT_SPI_MISO_DIR, GPIO_INPUT);
 	GPIO_mode_set(INT_SPI_MOSI_PIN, INT_SPI_MOSI_DIR, GPIO_OUTPUT);
 	GPIO_mode_set(INT_SPI_SCK_PIN, INT_SPI_SCK_DIR, GPIO_OUTPUT);
 
@@ -199,7 +201,7 @@ uint16_t GPIO_init(void){
 	GPIO_port_write(TXRX_SHDN_PIN, TXRX_SHDN_PORT, GPIO_LOW);
 	GPIO_port_write(TXRX_OSC_EN_PIN, TXRX_OSC_EN_PORT, GPIO_LOW);
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 /*****************************************
@@ -224,7 +226,7 @@ uint16_t CS_init(void){
 	CS_SMCLK_divider_set(CS_DIV_1);
 	// Disable writing to CS registers
 	CS_password(CS_PWD_CLEAR);
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 uint16_t UART_A0_init(void){
@@ -247,7 +249,42 @@ uint16_t UART_A0_init(void){
     UART_A0_RX_interrupt(UART_INTERRUPT_ENABLE);
     // Release eUSCI reset
     UART_A0_reset(UART_RESET_DISABLE);
-    return 0;
+    return EXIT_SUCCESS;
+}
+
+uint16_t SPI_A1_init(void){
+    // enable reset to allow configuration of SPI
+    SPI_A1_soft_reset(SPI_RESET_ENABLE);
+    // MISO     P2.6
+    // MOSI     P2.5
+    // CS/STE   P2.3
+    // CLOCK    P2.4
+    //P1SEL1 |= BIT6;
+    //P1SEL0 &= ~BIT6;
+    GPIO_function_set(INT_SPI_MISO_PIN,INT_SPI_MISO_FUNC0,INT_SPI_MISO_FUNC1,GPIO_FUNCTION2);
+    GPIO_function_set(INT_SPI_MOSI_PIN,INT_SPI_MOSI_FUNC0,INT_SPI_MOSI_FUNC1,GPIO_FUNCTION2);
+    GPIO_function_set(INT_SPI_SCK_PIN,INT_SPI_SCK_FUNC0,INT_SPI_SCK_FUNC1,GPIO_FUNCTION2);
+    GPIO_function_set(INT_SPI_FLASH_SS_PIN,INT_SPI_FLASH_SS_FUNC0,INT_SPI_FLASH_SS_FUNC1,GPIO_FUNCTION2);
+    //P1DIR |= BIT6;
+    //UCB0CTLW0 |=UCSWRST;
+    //UCB0CTLW0 |= UCSYNC;
+    // set eUSCI to synchronus (SPI) mode
+    SPI_A1_sync(SPI_MODE_SYNC);
+    // SPI in master
+    SPI_A1_mode(SPI_MASTER);
+    // set SPI to 3-pin mode
+    SPI_A1_EUSCI_mode(SPI_MODE_3PIN);
+    // select SMCLK as SPI clock source
+    SPI_A1_clock_source(SPI_CLK_SOURCE_SMCLK);
+    // most significant bit first
+    SPI_A1_bit_order(SPI_MSB_FIRST);
+    // prescale the SPI clock
+    SPI_A1_clock_prescale(100);
+    //UCB0CTLW0 = UCMST | UCMODE_0 | UCSSEL_2 | UCMSB;
+    //UCB0BRW = 100;
+    //UCB0CTLW0 &= ~UCSWRST;
+    SPI_A1_soft_reset(SPI_RESET_DISABLE);
+    return EXIT_SUCCESS;
 }
 
 unsigned char osc_set (unsigned char val)
@@ -255,24 +292,6 @@ unsigned char osc_set (unsigned char val)
 	if (val == 1) *TXRX_OSC_EN_PORT |= TXRX_OSC_EN_PIN; else
 		if (val==0 )*TXRX_OSC_EN_PORT &= ~ TXRX_OSC_EN_PIN; else
 			return 0;
-	return 1;
-}
-
-unsigned char SPI_RCS_init()
-{
-	P1SEL1 |= BIT6;
-	P1SEL0 &= ~BIT6;
-
-	P2SEL1 |= BIT2;
-	P2SEL0 &= ~BIT2;
-	P1DIR |= BIT6;
-
-	UCB0CTLW0 |=UCSWRST;
-	UCB0CTLW0 |= UCSYNC;
-	UCB0CTLW0 = UCMST | UCMODE_0 | UCSSEL_2 | UCMSB;
-	UCB0BRW = 100;
-	UCB0CTLW0 &= ~UCSWRST;
-
 	return 1;
 }
 

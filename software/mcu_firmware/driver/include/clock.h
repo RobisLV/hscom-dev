@@ -37,10 +37,10 @@ typedef volatile enum {
     CS_VLO_OFF,
     CS_HFXT_ON,
     CS_HFXT_OFF,
-    CS_HFXT_FSEL_0_4M,		/*	0 to 4 MHz		*/
-    CS_HFXT_FSEL_4_8M,		/* 	4 to 8 MHz		*/
-    CS_HFXT_FSEL_8_16M,	    /*	8 to 16 MHz		*/
-    CS_HFXT_FSEL_16_24M,	/* 	16 to 24 MHz	*/
+    CS_HFXT_FSEL_0_4M,      /* 0 to 4 MHz		*/
+    CS_HFXT_FSEL_4_8M,	    /* 4 to 8 MHz		*/
+    CS_HFXT_FSEL_8_16M,	    /* 8 to 16 MHz		*/
+    CS_HFXT_FSEL_16_24M,    /* 16 to 24 MHz	    */
     CS_HFXT_DRIVE_LOWEST,
     CS_HFXT_DRIVE_LOW,
     CS_HFXT_DRIVE_HIGH,
@@ -67,9 +67,9 @@ typedef volatile enum {
     CS_ACLK_REQ_DISABLE,
 } cs_setting;
 
-/********************************
- * Clock System functions
- *******************************/
+/***************************************************
+ * Clock system functions
+ **************************************************/
 uint16_t CS_password            (cs_setting clock_password);
 uint16_t CS_DCO_freq_set        (cs_setting clock_frequency);
 uint16_t CS_HFXT_freq_set       (cs_setting clock_frequency);
