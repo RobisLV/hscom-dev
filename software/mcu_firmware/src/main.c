@@ -44,6 +44,14 @@ uint16_t main(void){
     		counter++;
     	};
     	dp_display_text("\r\n\r\n\t\t--------Main menu--------");
-    	SPI_A1_TX_buffer_write(0xAA);
+    	GPIO_port_write(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_PORT, GPIO_LOW);
+    	SPI_A1_byte_write(0x0B);
+    	SPI_A1_byte_write(0x00);
+    	SPI_A1_byte_write(0x00);
+    	SPI_A1_byte_write(0x01);
+    	SPI_A1_byte_write(0xFF);
+    	SPI_A1_byte_write(0x00);
+    	SPI_A1_byte_write(0x00);
+    	GPIO_port_write(INT_SPI_FLASH_SS_PIN, INT_SPI_FLASH_SS_PORT, GPIO_HIGH);
     }
 }

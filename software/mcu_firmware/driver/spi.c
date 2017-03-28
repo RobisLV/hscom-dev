@@ -9,17 +9,18 @@
 /***************************************************
 *   eUSCI A0 SPI function implementations
  **************************************************/
+/* Selects if the data are captured on leading or trailing clock edge   */
 uint16_t SPI_A0_clock_phase(spi_setting spi_phase){
-    if(spi_phase == SPI_CLK_RISING){
+    if(spi_phase == SPI_CLK_LEADING){
         MASK_SET(UCA0CTLW0, UCCKPH);
     }
-    else if(spi_phase == SPI_CLK_FALLING){
+    else if(spi_phase == SPI_CLK_TRAILING){
         MASK_CLEAR(UCA0CTLW0, UCCKPH);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_clock_polarity(spi_setting spi_polarity){
@@ -30,9 +31,9 @@ uint16_t SPI_A0_clock_polarity(spi_setting spi_polarity){
         MASK_CLEAR(UCA0CTLW0, UCCKPL);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_bit_order(spi_setting spi_bitorder){
@@ -43,9 +44,9 @@ uint16_t SPI_A0_bit_order(spi_setting spi_bitorder){
         MASK_CLEAR(UCA0CTLW0, UCMSB);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_char_length(spi_setting spi_charlength){
@@ -56,9 +57,9 @@ uint16_t SPI_A0_char_length(spi_setting spi_charlength){
         MASK_CLEAR(UCA0CTLW0, UC7BIT);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_mode(spi_setting spi_mode){
@@ -69,9 +70,9 @@ uint16_t SPI_A0_mode(spi_setting spi_mode){
         MASK_SET(UCA0CTLW0, UCMST);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_EUSCI_mode(spi_setting spi_eusci_mode){
@@ -87,9 +88,9 @@ uint16_t SPI_A0_EUSCI_mode(spi_setting spi_eusci_mode){
         MASK_SET(UCA0CTLW0, UCMODE_2);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_sync(spi_setting spi_sync){
@@ -100,9 +101,9 @@ uint16_t SPI_A0_sync(spi_setting spi_sync){
         MASK_CLEAR(UCA0CTLW0, UCSYNC);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 uint16_t SPI_A0_clock_source(spi_setting spi_clk){
     // Clear previously set bits
@@ -117,9 +118,9 @@ uint16_t SPI_A0_clock_source(spi_setting spi_clk){
         MASK_SET(UCA0CTLW0, UCSSEL__UCLK);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 uint16_t SPI_A0_STE_pin(spi_setting spi_ste){
     if(spi_ste == SPI_STE_DISABLE){
@@ -129,9 +130,9 @@ uint16_t SPI_A0_STE_pin(spi_setting spi_ste){
         MASK_CLEAR(UCA0CTLW0, UCSTEM);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_soft_reset(spi_setting spi_reset){
@@ -142,9 +143,9 @@ uint16_t SPI_A0_soft_reset(spi_setting spi_reset){
         MASK_CLEAR(UCA0CTLW0, UCSWRST);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_loopback(spi_setting spi_loopback){
@@ -155,13 +156,13 @@ uint16_t SPI_A0_loopback(spi_setting spi_loopback){
         MASK_CLEAR(UCA0STATW, UCLISTEN);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 uint16_t SPI_A0_clock_prescale(uint16_t spi_clk_prescale){
     UCA0BRW = spi_clk_prescale;
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_frame_error_flag_read(void){
@@ -191,33 +192,33 @@ uint16_t SPI_A0_RX_buffer_read(void){
 
 uint16_t SPI_A0_TX_buffer_write(uint8_t spi_byte){
     UCA0TXBUF = spi_byte;
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_RX_interrupt(spi_setting spi_interrupt){
-    if(spi_interrupt == SPI_INTERRUPT_ENABLE){
+    if(spi_interrupt == SPI_INT_ENABLE){
         MASK_SET(UCA0IFG, UCRXIE);
     }
-    else if(spi_interrupt == SPI_INTERRUPT_DISABLE){
+    else if(spi_interrupt == SPI_INT_DISABLE){
         MASK_CLEAR(UCA0IFG, UCRXIE);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_TX_interrupt(spi_setting spi_interrupt){
-    if(spi_interrupt == SPI_INTERRUPT_ENABLE){
+    if(spi_interrupt == SPI_INT_ENABLE){
         MASK_SET(UCA0IFG, UCTXIE);
     }
-    else if(spi_interrupt == SPI_INTERRUPT_DISABLE){
+    else if(spi_interrupt == SPI_INT_DISABLE){
         MASK_CLEAR(UCA0IFG, UCTXIE);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A0_RX_interrupt_read(void){
@@ -237,16 +238,17 @@ uint16_t SPI_A0_TX_interrupt_read(void){
 *   eUSCI A1 SPI function implementations
  **************************************************/
 uint16_t SPI_A1_clock_phase(spi_setting spi_phase){
-    if(spi_phase == SPI_CLK_RISING){
+/* selects if the data are captured on leading or trailing clock edge   */
+    if(spi_phase == SPI_CLK_LEADING){
         MASK_SET(UCA1CTLW0, UCCKPH);
     }
-    else if(spi_phase == SPI_CLK_FALLING){
+    else if(spi_phase == SPI_CLK_TRAILING){
         MASK_CLEAR(UCA1CTLW0, UCCKPH);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_clock_polarity(spi_setting spi_polarity){
@@ -257,9 +259,9 @@ uint16_t SPI_A1_clock_polarity(spi_setting spi_polarity){
         MASK_CLEAR(UCA1CTLW0, UCCKPL);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_bit_order(spi_setting spi_bitorder){
@@ -270,9 +272,9 @@ uint16_t SPI_A1_bit_order(spi_setting spi_bitorder){
         MASK_CLEAR(UCA1CTLW0, UCMSB);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_char_length(spi_setting spi_charlength){
@@ -283,9 +285,9 @@ uint16_t SPI_A1_char_length(spi_setting spi_charlength){
         MASK_CLEAR(UCA1CTLW0, UC7BIT);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_mode(spi_setting spi_mode){
@@ -296,9 +298,9 @@ uint16_t SPI_A1_mode(spi_setting spi_mode){
         MASK_SET(UCA1CTLW0, UCMST);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_EUSCI_mode(spi_setting spi_eusci_mode){
@@ -314,9 +316,9 @@ uint16_t SPI_A1_EUSCI_mode(spi_setting spi_eusci_mode){
         MASK_SET(UCA1CTLW0, UCMODE_2);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_sync(spi_setting spi_sync){
@@ -327,9 +329,9 @@ uint16_t SPI_A1_sync(spi_setting spi_sync){
         MASK_CLEAR(UCA1CTLW0, UCSYNC);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 uint16_t SPI_A1_clock_source(spi_setting spi_clk){
     // Clear previously set bits
@@ -344,21 +346,21 @@ uint16_t SPI_A1_clock_source(spi_setting spi_clk){
         MASK_SET(UCA1CTLW0, UCSSEL__UCLK);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 uint16_t SPI_A1_STE_pin(spi_setting spi_ste){
-    if(spi_ste == SPI_STE_DISABLE){
+    if(spi_ste == SPI_STE_ENABLE){
         MASK_SET(UCA1CTLW0, UCSTEM);
     }
-    else if(spi_ste == SPI_STE_ENABLE){
+    else if(spi_ste == SPI_STE_DISABLE){
         MASK_CLEAR(UCA1CTLW0, UCSTEM);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_soft_reset(spi_setting spi_reset){
@@ -369,9 +371,9 @@ uint16_t SPI_A1_soft_reset(spi_setting spi_reset){
         MASK_CLEAR(UCA1CTLW0, UCSWRST);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_loopback(spi_setting spi_loopback){
@@ -382,13 +384,13 @@ uint16_t SPI_A1_loopback(spi_setting spi_loopback){
         MASK_CLEAR(UCA1STATW, UCLISTEN);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 uint16_t SPI_A1_clock_prescale(uint16_t spi_clk_prescale){
     UCA1BRW = spi_clk_prescale;
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_frame_error_flag_read(void){
@@ -418,33 +420,39 @@ uint16_t SPI_A1_RX_buffer_read(void){
 
 uint16_t SPI_A1_TX_buffer_write(uint8_t spi_byte){
     UCA1TXBUF = spi_byte;
-    return 0;
+    return EXIT_SUCCESS;
+}
+
+uint16_t SPI_A1_byte_write(uint8_t spi_byte){
+    while (SPI_A1_busy_flag_read()) {};
+    UCA1TXBUF = spi_byte;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_RX_interrupt(spi_setting spi_interrupt){
-    if(spi_interrupt == SPI_INTERRUPT_ENABLE){
+    if(spi_interrupt == SPI_INT_ENABLE){
         MASK_SET(UCA1IFG, UCRXIE);
     }
-    else if(spi_interrupt == SPI_INTERRUPT_DISABLE){
+    else if(spi_interrupt == SPI_INT_DISABLE){
         MASK_CLEAR(UCA1IFG, UCRXIE);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_TX_interrupt(spi_setting spi_interrupt){
-    if(spi_interrupt == SPI_INTERRUPT_ENABLE){
+    if(spi_interrupt == SPI_INT_ENABLE){
         MASK_SET(UCA1IFG, UCTXIE);
     }
-    else if(spi_interrupt == SPI_INTERRUPT_DISABLE){
+    else if(spi_interrupt == SPI_INT_DISABLE){
         MASK_CLEAR(UCA1IFG, UCTXIE);
     }
     else{
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t SPI_A1_RX_interrupt_read(void){
@@ -460,4 +468,16 @@ uint16_t SPI_A1_TX_interrupt_read(void){
     return 0;
 }
 
+uint16_t SPI_A1_TX_complete_interrupt(spi_setting spi_interrupt){
+    if(spi_interrupt == SPI_INT_ENABLE){
+        MASK_SET(UCA1IE, UCTXCPTIE);
+    }
+    else if(spi_interrupt == SPI_INT_DISABLE){
+        MASK_CLEAR(UCA1IE, UCTXCPTIE);
+    }
+    else{
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
+}
 /*********_END_OF_FILE_********/

@@ -68,7 +68,9 @@ uint16_t GPIO_pull_set(uint16_t gpio_pin, volatile uint8_t *gpio_pullup_reg, gpi
  *
  **************************************************/
 uint16_t GPIO_function_set(uint16_t gpio_pin, volatile uint8_t *gpio_function0_sel, volatile uint8_t *gpio_function1_sel, gpio_setting gpio_function){
-	if(gpio_function == GPIO_FUNCTION0){
+    MASK_CLEAR(*gpio_function0_sel, gpio_pin);
+    MASK_CLEAR(*gpio_function1_sel, gpio_pin);
+    if(gpio_function == GPIO_FUNCTION0){
 		*gpio_function0_sel &= ~gpio_pin;
 		*gpio_function1_sel &= ~gpio_pin;
 	}

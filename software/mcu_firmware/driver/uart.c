@@ -732,7 +732,7 @@ uint16_t UART_A1_byte_write(uint8_t uart_byte){
     UCA1TXBUF = uart_byte;
     while (!(UCA0IFG & UCTXCPTIFG)){};
     UCA0IFG ^= UCTXCPTIFG;
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 uint16_t UART_A1_break_sync_length(uart_setting uart_delimiter_length){

@@ -13,8 +13,8 @@
 
 /*  Configuration settings used in eUSCIA0 SPI mode         */
 typedef volatile enum {
-    SPI_CLK_RISING,         /* Clock phase rising edge      */
-    SPI_CLK_FALLING,        /* Clock phase falling edge     */
+    SPI_CLK_LEADING,        /* Clock phase rising edge      */
+    SPI_CLK_TRAILING,       /* Clock phase falling edge     */
     SPI_CLK_ACTIVE_HIGH,    /* Clock polarity active high   */
     SPI_CLK_ACTIVE_LOW,     /* Clock polarity active low    */
     SPI_MSB_FIRST,          /* Bit order MSB is sent first  */
@@ -37,8 +37,8 @@ typedef volatile enum {
     SPI_RESET_DISABLE,      /* Set SPI set state            */
     SPI_LOOPBACK_ENABLE,    /* Enable loopback mode         */
     SPI_LOOPBACK_DISABLE,   /* Disable loopback mode        */
-    SPI_INTERRUPT_ENABLE,   /* Enable RX or TX interrupt    */
-    SPI_INTERRUPT_DISABLE   /* Disable RX or TX interrupt   */
+    SPI_INT_ENABLE,         /* Enable RX or TX interrupt    */
+    SPI_INT_DISABLE        /* Disable RX or TX interrupt   */
 } spi_setting;
 
 /***************************************************
@@ -91,10 +91,12 @@ uint16_t SPI_A1_busy_flag_read             (void);
 /* SPI data write and read functions    */
 uint16_t SPI_A1_RX_buffer_read             (void);
 uint16_t SPI_A1_TX_buffer_write            (uint8_t spi_byte);
+uint16_t SPI_A1_byte_write                 (uint8_t spi_byte);
 /* Interrupt read and set functions     */
 uint16_t SPI_A1_RX_interrupt               (spi_setting spi_interrupt);
 uint16_t SPI_A1_TX_interrupt               (spi_setting spi_interrupt);
 uint16_t SPI_A1_RX_interrupt_read          (void);
 uint16_t SPI_A1_TX_interrupt_read          (void);
+uint16_t SPI_A1_TX_complete_interrupt      (spi_setting spi_interrupt);
 
 #endif /* DRIVER_INCLUDE_SPI_H_ */
