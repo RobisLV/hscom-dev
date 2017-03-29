@@ -424,8 +424,9 @@ uint16_t SPI_A1_TX_buffer_write(uint8_t spi_byte){
 }
 
 uint16_t SPI_A1_byte_write(uint8_t spi_byte){
-    while (SPI_A1_busy_flag_read()) {};
+    while (!(UCA1IFG & UCTXIFG)){};
     UCA1TXBUF = spi_byte;
+    while (!(UCA1IFG & UCTXIFG)){};
     return EXIT_SUCCESS;
 }
 

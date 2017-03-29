@@ -253,41 +253,31 @@ uint16_t UART_A0_init(void){
 }
 
 uint16_t SPI_A1_init(void){
-    // enable reset to allow configuration of SPI
-    SPI_A1_soft_reset(SPI_RESET_ENABLE);
     // MISO     P2.6
     // MOSI     P2.5
     // CS/STE   P2.3
     // CLOCK    P2.4
-    //P1SEL1 |= BIT6;
-    //P1SEL0 &= ~BIT6;
+    // enable reset to allow configuration of SPI
+    SPI_A1_soft_reset(SPI_RESET_ENABLE);
     GPIO_function_set(INT_SPI_MISO_PIN,INT_SPI_MISO_FUNC0,INT_SPI_MISO_FUNC1,GPIO_FUNCTION2);
     GPIO_function_set(INT_SPI_MOSI_PIN,INT_SPI_MOSI_FUNC0,INT_SPI_MOSI_FUNC1,GPIO_FUNCTION2);
     GPIO_function_set(INT_SPI_SCK_PIN,INT_SPI_SCK_FUNC0,INT_SPI_SCK_FUNC1,GPIO_FUNCTION2);
     //GPIO_function_set(INT_SPI_FLASH_SS_PIN,INT_SPI_FLASH_SS_FUNC0,INT_SPI_FLASH_SS_FUNC1,GPIO_FUNCTION2);
-
-    //SPI_A1_STE_pin(SPI_STE_ENABLE);
-    //P1DIR |= BIT6;
-    //UCB0CTLW0 |=UCSWRST;
-    //UCB0CTLW0 |= UCSYNC;
     // set eUSCI to synchronus (SPI) mode
+    SPI_A1_STE_pin(SPI_STE_DISABLE);
     SPI_A1_clock_phase(SPI_CLK_LEADING);
     SPI_A1_sync(SPI_MODE_SYNC);
     // SPI in master
     SPI_A1_mode(SPI_MASTER);
     // set SPI to 3-pin mode
-    SPI_A1_EUSCI_mode(SPI_MODE_4PIN_AL);
+    SPI_A1_EUSCI_mode(SPI_MODE_3PIN);
     // select SMCLK as SPI clock source
     SPI_A1_clock_source(SPI_CLK_SOURCE_SMCLK);
     // most significant bit first
     SPI_A1_bit_order(SPI_MSB_FIRST);
     // prescale the SPI clock
     SPI_A1_clock_prescale(100);
-    //UCB0CTLW0 = UCMST | UCMODE_0 | UCSSEL_2 | UCMSB;
-    //UCB0BRW = 100;
-    //UCB0CTLW0 &= ~UCSWRST;
-    //SPI_A1_TX_interrupt(SPI_INT_ENABLE);
-    //SPI_A1_TX_complete_interrupt(SPI_INT_ENABLE);
+    // release reset
     SPI_A1_soft_reset(SPI_RESET_DISABLE);
     return EXIT_SUCCESS;
 }
