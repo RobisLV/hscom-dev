@@ -15,6 +15,7 @@ ORDERED_OBJS += \
 "./driver/spi.obj" \
 "./driver/uart.obj" \
 "./lib/dpuser.obj" \
+"./lib/flash.obj" \
 "./lib/max2828.obj" \
 "./lib/sw_uart.obj" \
 "./plat/RF_DB.obj" \
@@ -170,8 +171,8 @@ RCS_Test.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "driver\clock.obj" "driver\gpio.obj" "driver\spi.obj" "driver\uart.obj" "lib\dpuser.obj" "lib\max2828.obj" "lib\sw_uart.obj" "plat\RF_DB.obj" "src\main.obj" 
-	-$(RM) "driver\clock.d" "driver\gpio.d" "driver\spi.d" "driver\uart.d" "lib\dpuser.d" "lib\max2828.d" "lib\sw_uart.d" "plat\RF_DB.d" "src\main.d" 
+	-$(RM) "driver\clock.obj" "driver\gpio.obj" "driver\spi.obj" "driver\uart.obj" "lib\dpuser.obj" "lib\flash.obj" "lib\max2828.obj" "lib\sw_uart.obj" "plat\RF_DB.obj" "src\main.obj" 
+	-$(RM) "driver\clock.d" "driver\gpio.d" "driver\spi.d" "driver\uart.d" "lib\dpuser.d" "lib\flash.d" "lib\max2828.d" "lib\sw_uart.d" "plat\RF_DB.d" "src\main.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

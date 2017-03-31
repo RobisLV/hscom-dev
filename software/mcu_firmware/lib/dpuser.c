@@ -358,6 +358,7 @@ void uart_a1_rx_int_handle(unsigned char in_value)
 }
 
 //Interrupt vector for UART A1 data RX
+/*
 #pragma vector=USCI_A1_VECTOR
 __interrupt void USCI_A1_ISR(void)
 {
@@ -372,5 +373,5 @@ __interrupt void USCI_A1_ISR(void)
 	    case USCI_UART_UCTXCPTIFG: break;
 	  }
 }
-
+*/
 #endif

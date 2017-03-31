@@ -197,10 +197,10 @@ uint16_t SPI_A0_TX_buffer_write(uint8_t spi_byte){
 
 uint16_t SPI_A0_RX_interrupt(spi_setting spi_interrupt){
     if(spi_interrupt == SPI_INT_ENABLE){
-        MASK_SET(UCA0IFG, UCRXIE);
+        MASK_SET(UCA0IE, UCRXIE);
     }
     else if(spi_interrupt == SPI_INT_DISABLE){
-        MASK_CLEAR(UCA0IFG, UCRXIE);
+        MASK_CLEAR(UCA0IE, UCRXIE);
     }
     else{
         return EXIT_FAILURE;
@@ -210,10 +210,10 @@ uint16_t SPI_A0_RX_interrupt(spi_setting spi_interrupt){
 
 uint16_t SPI_A0_TX_interrupt(spi_setting spi_interrupt){
     if(spi_interrupt == SPI_INT_ENABLE){
-        MASK_SET(UCA0IFG, UCTXIE);
+        MASK_SET(UCA0IE, UCTXIE);
     }
     else if(spi_interrupt == SPI_INT_DISABLE){
-        MASK_CLEAR(UCA0IFG, UCTXIE);
+        MASK_CLEAR(UCA0IE, UCTXIE);
     }
     else{
         return EXIT_FAILURE;
@@ -418,24 +418,55 @@ uint16_t SPI_A1_RX_buffer_read(void){
     return UCA1RXBUF;
 }
 
-uint16_t SPI_A1_TX_buffer_write(uint8_t spi_byte){
-    UCA1TXBUF = spi_byte;
+uint16_t SPI_A1_byte_read(void){
+    // wait if data transmission is in progress
+    while (!(UCA1IFG & UCTXIFG)){};
+    SPI_A1_RX_buffer_read();
+    // load one dummy byte into transmit register
+    UCA1TXBUF = 0x00;
+    while (!(UCA1IFG & UCTXIFG)){};
+    // return the receive buffer contents
+    while (!(UCA1IFG & UCRXIFG)){};
+    return UCA1RXBUF;
+}
+
+uint16_t SPI_A1_byte_write(uint8_t tx_data){
+    // wait if data transmission is in progress
+    while (!(UCA1IFG & UCTXIFG)){};
+    // load one byte of data into transmit register
+    UCA1TXBUF = tx_data;
+    // wait for the data transmission to complete
+    while (!(UCA1IFG & UCTXIFG)){};
     return EXIT_SUCCESS;
 }
 
-uint16_t SPI_A1_byte_write(uint8_t spi_byte){
-    while (!(UCA1IFG & UCTXIFG)){};
-    UCA1TXBUF = spi_byte;
-    while (!(UCA1IFG & UCTXIFG)){};
-    return EXIT_SUCCESS;
+uint16_t SPI_A1_data_write(uint8_t *tx_data, uint8_t data_length){
+    // check if data length is sane
+    if(data_length > 0){
+        while(data_length){
+            // wait if data transmission is in progress
+            while (!(UCA1IFG & UCTXIFG)){};
+            // load one byte of data into transmit register
+            UCA1TXBUF = *tx_data;
+            // wait for the data transmission to complete
+            while (!(UCA1IFG & UCTXIFG)){};
+
+            data_length--;
+            tx_data++;
+        }
+        return EXIT_SUCCESS;
+    }
+    else{
+        return EXIT_FAILURE;
+    }
 }
 
 uint16_t SPI_A1_RX_interrupt(spi_setting spi_interrupt){
     if(spi_interrupt == SPI_INT_ENABLE){
-        MASK_SET(UCA1IFG, UCRXIE);
+        MASK_SET(UCA1IE, UCRXIE);
     }
     else if(spi_interrupt == SPI_INT_DISABLE){
-        MASK_CLEAR(UCA1IFG, UCRXIE);
+        MASK_CLEAR(UCA1IE, UCRXIE);
     }
     else{
         return EXIT_FAILURE;
@@ -445,10 +476,10 @@ uint16_t SPI_A1_RX_interrupt(spi_setting spi_interrupt){
 
 uint16_t SPI_A1_TX_interrupt(spi_setting spi_interrupt){
     if(spi_interrupt == SPI_INT_ENABLE){
-        MASK_SET(UCA1IFG, UCTXIE);
+        MASK_SET(UCA1IE, UCTXIE);
     }
     else if(spi_interrupt == SPI_INT_DISABLE){
-        MASK_CLEAR(UCA1IFG, UCTXIE);
+        MASK_CLEAR(UCA1IE, UCTXIE);
     }
     else{
         return EXIT_FAILURE;

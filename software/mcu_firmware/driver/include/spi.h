@@ -90,8 +90,9 @@ uint16_t SPI_A1_overrun_error_flag_read    (void);
 uint16_t SPI_A1_busy_flag_read             (void);
 /* SPI data write and read functions    */
 uint16_t SPI_A1_RX_buffer_read             (void);
-uint16_t SPI_A1_TX_buffer_write            (uint8_t spi_byte);
-uint16_t SPI_A1_byte_write                 (uint8_t spi_byte);
+uint16_t SPI_A1_byte_read                  (void);
+uint16_t SPI_A1_byte_write                 (uint8_t tx_data);
+uint16_t SPI_A1_data_write                 (uint8_t *tx_data, uint8_t data_length);
 /* Interrupt read and set functions     */
 uint16_t SPI_A1_RX_interrupt               (spi_setting spi_interrupt);
 uint16_t SPI_A1_TX_interrupt               (spi_setting spi_interrupt);
