@@ -147,8 +147,8 @@ typedef   signed int   DPINT;
 typedef   signed long  DPLONG;
 
 #define DPNULL ((void*)0)
-#define TRUE 1U
-#define FALSE 0U
+//#define TRUE 1U
+//#define FALSE 0U
 
 #define GPIO_SEL 1u
 #define IAP_SEL 2u

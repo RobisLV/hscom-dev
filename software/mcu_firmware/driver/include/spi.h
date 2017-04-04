@@ -39,22 +39,22 @@ typedef volatile enum {
     SPI_LOOPBACK_DISABLE,   /* Disable loopback mode        */
     SPI_INT_ENABLE,         /* Enable RX or TX interrupt    */
     SPI_INT_DISABLE        /* Disable RX or TX interrupt   */
-} spi_setting;
+} SpiSetting_t;
 
 /***************************************************
 *   eUSCI A0 SPI functions
  **************************************************/
-uint16_t SPI_A0_clock_phase         (spi_setting spi_phase);
-uint16_t SPI_A0_clock_polarity      (spi_setting spi_polarity);
-uint16_t SPI_A0_bit_order           (spi_setting spi_bitorder);
-uint16_t SPI_A0_char_length         (spi_setting spi_charlength);
-uint16_t SPI_A0_mode                (spi_setting spi_mode);
-uint16_t SPI_A0_EUSCI_mode          (spi_setting spi_eusci_mode);
-uint16_t SPI_A0_sync                (spi_setting spi_sync);
-uint16_t SPI_A0_clock_source        (spi_setting spi_clk);
-uint16_t SPI_A0_STE_pin             (spi_setting spi_ste);
-uint16_t SPI_A0_soft_reset          (spi_setting spi_reset);
-uint16_t SPI_A0_loopback            (spi_setting spi_loopback);
+uint16_t SPI_A0_clock_phase         (SpiSetting_t spi_phase);
+uint16_t SPI_A0_clock_polarity      (SpiSetting_t spi_polarity);
+uint16_t SPI_A0_bit_order           (SpiSetting_t spi_bitorder);
+uint16_t SPI_A0_char_length         (SpiSetting_t spi_charlength);
+uint16_t SPI_A0_mode                (SpiSetting_t spi_mode);
+uint16_t SPI_A0_EUSCI_mode          (SpiSetting_t spi_eusci_mode);
+uint16_t SPI_A0_sync                (SpiSetting_t spi_sync);
+uint16_t SPI_A0_clock_source        (SpiSetting_t spi_clk);
+uint16_t SPI_A0_STE_pin             (SpiSetting_t spi_ste);
+uint16_t SPI_A0_soft_reset          (SpiSetting_t spi_reset);
+uint16_t SPI_A0_oopback             (SpiSetting_t spi_loopback);
 uint16_t SPI_A0_clock_prescale      (uint16_t spi_clk_prescale);
 /* SPI flag read functions  */
 uint16_t SPI_A0_frame_error_flag_read      (void);
@@ -64,25 +64,25 @@ uint16_t SPI_A0_busy_flag_read             (void);
 uint16_t SPI_A0_RX_buffer_read             (void);
 uint16_t SPI_A0_TX_buffer_write            (uint8_t spi_byte);
 /* Interrupt read and set functions     */
-uint16_t SPI_A0_RX_interrupt               (spi_setting spi_interrupt);
-uint16_t SPI_A0_TX_interrupt               (spi_setting spi_interrupt);
+uint16_t SPI_A0_RX_interrupt               (SpiSetting_t spi_interrupt);
+uint16_t SPI_A0_TX_interrupt               (SpiSetting_t spi_interrupt);
 uint16_t SPI_A0_RX_interrupt_read          (void);
 uint16_t SPI_A0_TX_interrupt_read          (void);
 
 /***************************************************
 *   eUSCI A1 SPI functions
  **************************************************/
-uint16_t SPI_A1_clock_phase         (spi_setting spi_phase);
-uint16_t SPI_A1_clock_polarity      (spi_setting spi_polarity);
-uint16_t SPI_A1_bit_order           (spi_setting spi_bitorder);
-uint16_t SPI_A1_char_length         (spi_setting spi_charlength);
-uint16_t SPI_A1_mode                (spi_setting spi_mode);
-uint16_t SPI_A1_EUSCI_mode          (spi_setting spi_eusci_mode);
-uint16_t SPI_A1_sync                (spi_setting spi_sync);
-uint16_t SPI_A1_clock_source        (spi_setting spi_clk);
-uint16_t SPI_A1_STE_pin             (spi_setting spi_ste);
-uint16_t SPI_A1_soft_reset          (spi_setting spi_reset);
-uint16_t SPI_A1_loopback            (spi_setting spi_loopback);
+uint16_t SPI_A1_clock_phase         (SpiSetting_t spi_phase);
+uint16_t SPI_A1_clock_polarity      (SpiSetting_t spi_polarity);
+uint16_t SPI_A1_bit_order           (SpiSetting_t spi_bitorder);
+uint16_t SPI_A1_char_length         (SpiSetting_t spi_charlength);
+uint16_t SPI_A1_mode                (SpiSetting_t spi_mode);
+uint16_t SPI_A1_EUSCI_mode          (SpiSetting_t spi_eusci_mode);
+uint16_t SPI_A1_sync                (SpiSetting_t spi_sync);
+uint16_t SPI_A1_clock_source        (SpiSetting_t spi_clk);
+uint16_t SPI_A1_STE_pin             (SpiSetting_t spi_ste);
+uint16_t SPI_A1_soft_reset          (SpiSetting_t spi_reset);
+uint16_t SPI_A1_loopback            (SpiSetting_t spi_loopback);
 uint16_t SPI_A1_clock_prescale      (uint16_t spi_clk_prescale);
 /* SPI flag read functions  */
 uint16_t SPI_A1_frame_error_flag_read      (void);
@@ -94,10 +94,10 @@ uint16_t SPI_A1_byte_read                  (void);
 uint16_t SPI_A1_byte_write                 (uint8_t tx_data);
 uint16_t SPI_A1_data_write                 (uint8_t *tx_data, uint8_t data_length);
 /* Interrupt read and set functions     */
-uint16_t SPI_A1_RX_interrupt               (spi_setting spi_interrupt);
-uint16_t SPI_A1_TX_interrupt               (spi_setting spi_interrupt);
+uint16_t SPI_A1_RX_interrupt               (SpiSetting_t spi_interrupt);
+uint16_t SPI_A1_TX_interrupt               (SpiSetting_t spi_interrupt);
 uint16_t SPI_A1_RX_interrupt_read          (void);
 uint16_t SPI_A1_TX_interrupt_read          (void);
-uint16_t SPI_A1_TX_complete_interrupt      (spi_setting spi_interrupt);
+uint16_t SPI_A1_TX_complete_interrupt      (SpiSetting_t spi_interrupt);
 
 #endif /* DRIVER_INCLUDE_SPI_H_ */

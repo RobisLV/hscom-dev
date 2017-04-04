@@ -12,6 +12,7 @@
 #include "uart.h"
 #include "spi.h"
 #include "flash.h"
+#include "ringbuffer.h"
 #include "dpuser.h"
 #include "max2828.h"
 
@@ -32,6 +33,8 @@ uint16_t    CS_init			(void);     /* Initialize clock system      */
 uint16_t    UART_A0_init    (void);     /* Initialize eUSCI UART A0     */
 uint16_t    SPI_A1_init     (void);     /* Initialize eUSCI A1          */
 uint16_t    TMR_B0_init     (void);     /* Initialize timer B0          */
+
+uint16_t    MSP430_Init     (void);     /* Call all other MSP430 inits  */
 
 unsigned char 	osc_set 						(unsigned char);
 unsigned char	SPI_RCS_send_byte				(unsigned char);

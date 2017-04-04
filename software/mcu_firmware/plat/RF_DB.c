@@ -279,8 +279,29 @@ uint16_t SPI_A1_init(void){
     SPI_A1_clock_prescale(100);
     // release reset
     SPI_A1_soft_reset(SPI_RESET_DISABLE);
-    // enable receive interrupt
+    // enable receive and transmit interrupts
     SPI_A1_RX_interrupt(SPI_INT_ENABLE);
+    SPI_A1_TX_interrupt(SPI_INT_ENABLE);
+    return EXIT_SUCCESS;
+}
+
+uint16_t MSP430_Init(void){
+    // Stop watchdog timer
+    WDTCTL = WDTPW | WDTHOLD;
+    // initialize clock system
+    CS_init();
+    // initialize GPIOs
+    GPIO_init();
+    // initialize UART of eUSCI A0
+    UART_A0_init();
+    // initialize SPI of eUSCI A1
+    SPI_A1_init();
+    // Disable the GPIO power-on default high-impedance mode to activate previously configured port settings
+    PM5CTL0 &= ~LOCKLPM5;
+    // global interrupt enable
+    __bis_SR_register(GIE);
+    dp_delay(500);
+    // return success
     return EXIT_SUCCESS;
 }
 
