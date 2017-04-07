@@ -18,7 +18,7 @@
 /************************************************************
 * SPI flash control functions
 ************************************************************/
-uint16_t flash_read(uint32_t memory_address,uint16_t number_of_bytes);
+uint16_t flash_read(uint32_t memory_address,uint8_t *storage_buffer, uint16_t storage_buffer_size);
 uint16_t flash_erase_all();
 uint16_t flash_erase_block();
 

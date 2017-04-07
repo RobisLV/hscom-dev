@@ -20,4 +20,7 @@
 
 #define ADDRESS_OF(ADDR)            &ADDR       /* Convert value to address         */
 
+#define FALSE   0
+#define TRUE    !FALSE
+
 #endif /* COMMON_MARCOS_H_ */

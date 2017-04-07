@@ -9,7 +9,7 @@
 #include "gpio.h"
 #include "clock.h"
 #include "uart.h"
-//#include "spi.h"
+#include "spi.h"
 #include "flash.h"
 #include "dpuser.h"
 #include "max2828.h"

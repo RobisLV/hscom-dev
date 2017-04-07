@@ -281,7 +281,7 @@ uint16_t SPI_A1_init(void){
     SPI_A1_soft_reset(SPI_RESET_DISABLE);
     // enable receive and transmit interrupts
     SPI_A1_RX_interrupt(SPI_INT_ENABLE);
-    SPI_A1_TX_interrupt(SPI_INT_ENABLE);
+    //SPI_A1_TX_interrupt(SPI_INT_ENABLE);
     return EXIT_SUCCESS;
 }
 

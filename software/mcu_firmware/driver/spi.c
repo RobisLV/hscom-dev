@@ -432,9 +432,9 @@ uint16_t SPI_A1_overrun_error_flag_read(void){
 
 uint16_t SPI_A1_busy_flag_read(void){
     if(MASK_CHECK(UCA1STATW, UCBUSY)){
-        return 1;
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 uint16_t SPI_A1_RX_buffer_read(void){
@@ -443,18 +443,28 @@ uint16_t SPI_A1_RX_buffer_read(void){
 
 #ifdef USE_INTERRUPTS_EUSCI_A1
 
-    uint16_t SPI_A1_write(uint8_t tx_data){
+    uint16_t SPI_A1_byte_write(uint8_t tx_data){
         // declare a ring buffer status variable
-        RingBufferStatus status;
+        RingBufferStatus tx_status;
         // push TX data in ring buffer and save the status
-        status = ring_buffer_push(&SPI_A1_TX_buffer, tx_data);
+        tx_status = ring_buffer_push(&SPI_A1_TX_buffer, tx_data);
         // check if TX operation was successful
-        if(status == BUFFER_FULL){
+        if(tx_status == BUFFER_FULL){
             // if the buffer was full, return failure
             return EXIT_FAILURE;
         }
         // enable the TX intterupt and return with success
         SPI_A1_TX_interrupt(SPI_INT_ENABLE);
+        return EXIT_SUCCESS;
+    }
+
+    uint16_t SPI_A1_byte_read(uint8_t *rx_data){
+        // declare a ring buffer status variable
+        RingBufferStatus rx_status;
+        rx_status = ring_buffer_pop(&SPI_A1_RX_buffer, rx_data);
+        if(rx_status == BUFFER_EMPTY){
+            return EXIT_FAILURE;
+        }
         return EXIT_SUCCESS;
     }
 // used if interrupts are not used
@@ -543,21 +553,9 @@ uint16_t SPI_A1_TX_interrupt_read(void){
     return 0;
 }
 
-uint16_t SPI_A1_TX_complete_interrupt(SpiSetting_t spi_interrupt){
-    if(spi_interrupt == SPI_INT_ENABLE){
-        MASK_SET(UCA1IE, UCTXCPTIE);
-    }
-    else if(spi_interrupt == SPI_INT_DISABLE){
-        MASK_CLEAR(UCA1IE, UCTXCPTIE);
-    }
-    else{
-        return EXIT_FAILURE;
-    }
-    return EXIT_SUCCESS;
-}
-
 #pragma vector=USCI_A1_VECTOR
 __interrupt void USCI_A1_ISR(void){
+    RingBufferStatus spi_buffer_status;
     switch(__even_in_range(UCA1IV,4)){
         case 0x00:  /* No interrupt pending                 */
             break;
@@ -567,6 +565,10 @@ __interrupt void USCI_A1_ISR(void){
             break;
         case 0x04:  /* Transmit buffer empty, source: UCTXIFG flag  */
             ring_buffer_pop(&SPI_A1_TX_buffer, (uint8_t *)&UCA1TXBUF_L);
+            spi_buffer_status = ring_buffer_status(&SPI_A1_TX_buffer);
+            if(spi_buffer_status == BUFFER_EMPTY){
+                SPI_A1_TX_interrupt(SPI_INT_DISABLE);
+            }
             break;
         default:    /* Default case */
             break;
