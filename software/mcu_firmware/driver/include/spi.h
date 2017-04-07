@@ -4,12 +4,20 @@
  *  Created on: 2017. gada 2. marts
  *      Author: Roberts
  */
+#ifndef DRIVER_INCLUDE_SPI_H_
+#define DRIVER_INCLUDE_SPI_H_
+
 #include <msp430.h>
 #include <stdint.h>
 #include "macros.h"
+#include "ringbuffer.h"
 
-#ifndef DRIVER_INCLUDE_SPI_H_
-#define DRIVER_INCLUDE_SPI_H_
+// comment this line if eUSCI Rx/Tx interrupts are not used
+#define USE_INTERRUPTS_EUSCI_A1
+
+// define RX and Tx buffer length (size in bytes)
+#define RX_data_length  32
+#define TX_data_length  32
 
 /*  Configuration settings used in eUSCIA0 SPI mode         */
 typedef volatile enum {
@@ -89,10 +97,15 @@ uint16_t SPI_A1_frame_error_flag_read      (void);
 uint16_t SPI_A1_overrun_error_flag_read    (void);
 uint16_t SPI_A1_busy_flag_read             (void);
 /* SPI data write and read functions    */
-uint16_t SPI_A1_RX_buffer_read             (void);
-uint16_t SPI_A1_byte_read                  (void);
-uint16_t SPI_A1_byte_write                 (uint8_t tx_data);
-uint16_t SPI_A1_data_write                 (uint8_t *tx_data, uint8_t data_length);
+#ifdef  USE_INTERRUPTS_EUSCI_A1
+    uint16_t SPI_A1_byte_write                 (void);
+    uint16_t SPI_A1_byte_read                  (void);
+#else
+    uint16_t SPI_A1_RX_buffer_read             (void);
+    uint16_t SPI_A1_byte_read                  (void);
+    uint16_t SPI_A1_byte_write                 (uint8_t tx_data);
+    uint16_t SPI_A1_data_write                 (uint8_t *tx_data, uint8_t data_length);
+#endif
 /* Interrupt read and set functions     */
 uint16_t SPI_A1_RX_interrupt               (SpiSetting_t spi_interrupt);
 uint16_t SPI_A1_TX_interrupt               (SpiSetting_t spi_interrupt);

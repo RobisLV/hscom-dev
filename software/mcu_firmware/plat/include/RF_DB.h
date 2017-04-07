@@ -1,6 +1,5 @@
 //Arturs Orbidans, for Master's thesis
 //RF daughterboard's functions
-
 #ifndef PLAT_INCLUDE_RF_MB_H_
 #define PLAT_INCLUDE_RF_MB_H_
 // Standard libraries
@@ -10,9 +9,8 @@
 #include "gpio.h"
 #include "clock.h"
 #include "uart.h"
-#include "spi.h"
+//#include "spi.h"
 #include "flash.h"
-#include "ringbuffer.h"
 #include "dpuser.h"
 #include "max2828.h"
 

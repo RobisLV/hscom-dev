@@ -9,13 +9,13 @@
 /***************************************************
  * Ring buffer read/write/check functions
  **************************************************/
-uint16_t ring_buffer_push(RingBuffer_t *ring_buffer, uint8_t data){
+RingBufferStatus ring_buffer_push(RingBuffer_t *ring_buffer, uint8_t data){
     // next_address is where head will point to after this write
     uint16_t next_address = ring_buffer->head + 1;
     // check if circular buffer is full
     if (next_address == ring_buffer->tail){
         // return error if it is
-        return EXIT_FAILURE;
+        return BUFFER_FULL;
     }
     // check if next address does not exceed boundaries of buffer
     if (next_address >= ring_buffer->max_length){
@@ -27,16 +27,16 @@ uint16_t ring_buffer_push(RingBuffer_t *ring_buffer, uint8_t data){
     //
     ring_buffer->head = next_address;
     // return success to indicate successful push
-    return EXIT_SUCCESS;
+    return BUFFER_OK;
 }
 
-uint16_t ring_buffer_pop(RingBuffer_t *ring_buffer, uint8_t *data){
+RingBufferStatus ring_buffer_pop(RingBuffer_t *ring_buffer, uint8_t *data){
     // next is where tail will point to after this read.
     uint16_t next_address = ring_buffer->tail + 1;
     // check if buffer is empty (head and tail pointing to the same address)
     if (ring_buffer->head == ring_buffer->tail){
        // return failure to indicate that buffer is empty
-        return EXIT_FAILURE;
+        return BUFFER_EMPTY;
     }
     // check if next address is
     if(next_address >= ring_buffer->max_length){
@@ -48,24 +48,20 @@ uint16_t ring_buffer_pop(RingBuffer_t *ring_buffer, uint8_t *data){
     // set read pointer
     ring_buffer->tail = next_address;
     // return success to indicate successful push.
-    return EXIT_SUCCESS;
+    return BUFFER_OK;
 }
 
-uint16_t ring_buffer_empty(RingBuffer_t *ring_buffer){
-    if (ring_buffer->head == ring_buffer->tail){
-       // return failure to indicate that buffer is empty
-        return 1;
-    }
-    return 0;
-}
-
-uint16_t ring_buffer_full(RingBuffer_t *ring_buffer){
+RingBufferStatus ring_buffer_status(RingBuffer_t *ring_buffer){
     // next_address is where head will point to after this write
     uint16_t next_address = ring_buffer->head + 1;
-    // check if circular buffer is full
-    if (next_address == ring_buffer->tail){
-        // return error if it is
-        return 1;
+    if (ring_buffer->head == ring_buffer->tail){
+       // return failure to indicate that buffer is empty
+        return BUFFER_EMPTY;
     }
-    return 0;
+    // check if circular buffer is full
+    else if (next_address == ring_buffer->tail){
+        // return error if it is
+        return BUFFER_FULL;
+    }
+    return BUFFER_OK;
 }

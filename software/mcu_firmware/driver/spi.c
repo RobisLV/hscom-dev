@@ -6,6 +6,28 @@
  */
 #include "spi.h"
 
+// define and initialzie circular buffer objects
+#ifdef USE_INTERRUPTS_EUSCI_A1
+    // create Rx and TX arrays for storing data
+    static uint8_t RX_data[RX_data_length] = {0};
+    static uint8_t TX_data[TX_data_length] = {0};
+
+    // initialzie Rx buffer structure
+    static RingBuffer_t SPI_A1_RX_buffer = {
+        .buffer = RX_data,
+        .max_length = RX_data_length,
+        .head = 0,
+        .tail = 0,
+    };
+    // initialzie TX buffer structure
+    static RingBuffer_t SPI_A1_TX_buffer = {
+        .buffer = TX_data,
+        .max_length = TX_data_length,
+        .head = 0,
+        .tail = 0,
+    };
+#endif
+
 /***************************************************
 *   eUSCI A0 SPI function implementations
  **************************************************/
@@ -388,6 +410,7 @@ uint16_t SPI_A1_loopback(SpiSetting_t spi_loopback){
     }
     return EXIT_SUCCESS;
 }
+
 uint16_t SPI_A1_clock_prescale(uint16_t spi_clk_prescale){
     UCA1BRW = spi_clk_prescale;
     return EXIT_SUCCESS;
@@ -418,48 +441,68 @@ uint16_t SPI_A1_RX_buffer_read(void){
     return UCA1RXBUF;
 }
 
-uint16_t SPI_A1_byte_read(void){
-    // wait if data transmission is in progress
-    while (!(UCA1IFG & UCTXIFG)){};
-    SPI_A1_RX_buffer_read();
-    // load one dummy byte into transmit register
-    UCA1TXBUF = 0x00;
-    while (!(UCA1IFG & UCTXIFG)){};
-    // return the receive buffer contents
-    while (!(UCA1IFG & UCRXIFG)){};
-    return UCA1RXBUF;
-}
+#ifdef USE_INTERRUPTS_EUSCI_A1
 
-uint16_t SPI_A1_byte_write(uint8_t tx_data){
-    // wait if data transmission is in progress
-    while (!(UCA1IFG & UCTXIFG)){};
-    // load one byte of data into transmit register
-    UCA1TXBUF = tx_data;
-    // wait for the data transmission to complete
-    while (!(UCA1IFG & UCTXIFG)){};
-    return EXIT_SUCCESS;
-}
-
-uint16_t SPI_A1_data_write(uint8_t *tx_data, uint8_t data_length){
-    // check if data length is sane
-    if(data_length > 0){
-        while(data_length){
-            // wait if data transmission is in progress
-            while (!(UCA1IFG & UCTXIFG)){};
-            // load one byte of data into transmit register
-            UCA1TXBUF = *tx_data;
-            // wait for the data transmission to complete
-            while (!(UCA1IFG & UCTXIFG)){};
-
-            data_length--;
-            tx_data++;
+    uint16_t SPI_A1_write(uint8_t tx_data){
+        // declare a ring buffer status variable
+        RingBufferStatus status;
+        // push TX data in ring buffer and save the status
+        status = ring_buffer_push(&SPI_A1_TX_buffer, tx_data);
+        // check if TX operation was successful
+        if(status == BUFFER_FULL){
+            // if the buffer was full, return failure
+            return EXIT_FAILURE;
         }
+        // enable the TX intterupt and return with success
+        SPI_A1_TX_interrupt(SPI_INT_ENABLE);
         return EXIT_SUCCESS;
     }
-    else{
-        return EXIT_FAILURE;
+// used if interrupts are not used
+#else
+    // !!! This function should be used without TX/RX interrupts !!!
+    uint16_t SPI_A1_byte_read(void){
+        // wait if data transmission is in progress
+        while (!(UCA1IFG & UCTXIFG)){};
+        SPI_A1_RX_buffer_read();
+        // load one dummy byte into transmit register
+        UCA1TXBUF = 0x00;
+        while (!(UCA1IFG & UCTXIFG)){};
+        // return the receive buffer contents
+        while (!(UCA1IFG & UCRXIFG)){};
+        return UCA1RXBUF;
     }
-}
+
+    uint16_t SPI_A1_byte_write(uint8_t tx_data){
+        // wait if data transmission is in progress
+        while (!(UCA1IFG & UCTXIFG)){};
+        // load one byte of data into transmit register
+        UCA1TXBUF = tx_data;
+        // wait for the data transmission to complete
+        while (!(UCA1IFG & UCTXIFG)){};
+        return EXIT_SUCCESS;
+    }
+
+    uint16_t SPI_A1_data_write(uint8_t *tx_data, uint8_t data_length){
+        // check if data length is sane
+        if(data_length > 0){
+            while(data_length){
+                // wait if data transmission is in progress
+                //while (!(UCA1IFG & UCRXIFG)){};
+                // load one byte of data into transmit register
+                UCA1TXBUF = *tx_data;
+                // wait for the data transmission to complete
+                //while (!(UCA1IFG & UCRXIFG)){};
+
+                data_length--;
+                tx_data++;
+            }
+            return EXIT_SUCCESS;
+        }
+        else{
+            return EXIT_FAILURE;
+        }
+    }
+#endif
 
 uint16_t SPI_A1_RX_interrupt(SpiSetting_t spi_interrupt){
     if(spi_interrupt == SPI_INT_ENABLE){
@@ -511,5 +554,22 @@ uint16_t SPI_A1_TX_complete_interrupt(SpiSetting_t spi_interrupt){
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
+}
+
+#pragma vector=USCI_A1_VECTOR
+__interrupt void USCI_A1_ISR(void){
+    switch(__even_in_range(UCA1IV,4)){
+        case 0x00:  /* No interrupt pending                 */
+            break;
+        case 0x02:  /* Data received, source: UCRXIFG flag  */
+            // push the received SPI byte in to buffer
+            ring_buffer_push(&SPI_A1_RX_buffer, UCA1RXBUF);
+            break;
+        case 0x04:  /* Transmit buffer empty, source: UCTXIFG flag  */
+            ring_buffer_pop(&SPI_A1_TX_buffer, (uint8_t *)&UCA1TXBUF_L);
+            break;
+        default:    /* Default case */
+            break;
+    }
 }
 /*********_END_OF_FILE_********/
