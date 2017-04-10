@@ -243,7 +243,7 @@ uint16_t UART_A0_init(void){
     UART_A0_modulation_stage_1(0x01 << 4);
     UART_A0_modulation_stage_2(0x49 << 8);
     // Prescale clock to select baudrate
-    UART_A0_clock_prescale(52); // TODO: pie 8MHz clk jabut 52 lai dabutu 9600, bet realitate jaliek 13 (/4)
+    UART_A0_clock_prescale(13); // TODO: pie 8MHz clk jabut 52 lai dabutu 9600, bet realitate jaliek 13 (/4)
     UART_A0_oversampling(UART_OVERSAMPLE_ENABLE);
     // Enable RX interrupt
     UART_A0_RX_interrupt(UART_INTERRUPT_ENABLE);

@@ -28,6 +28,8 @@
     };
 #endif
 
+    volatile uint8_t i;
+
 /***************************************************
 *   eUSCI A0 SPI function implementations
  **************************************************/
@@ -553,25 +555,27 @@ uint16_t SPI_A1_TX_interrupt_read(void){
     return 0;
 }
 
-#pragma vector=USCI_A1_VECTOR
-__interrupt void USCI_A1_ISR(void){
-    RingBufferStatus spi_buffer_status;
-    switch(__even_in_range(UCA1IV,4)){
-        case 0x00:  /* No interrupt pending                 */
-            break;
-        case 0x02:  /* Data received, source: UCRXIFG flag  */
-            // push the received SPI byte in to buffer
-            ring_buffer_push(&SPI_A1_RX_buffer, UCA1RXBUF);
-            break;
-        case 0x04:  /* Transmit buffer empty, source: UCTXIFG flag  */
-            ring_buffer_pop(&SPI_A1_TX_buffer, (uint8_t *)&UCA1TXBUF_L);
-            spi_buffer_status = ring_buffer_status(&SPI_A1_TX_buffer);
-            if(spi_buffer_status == BUFFER_EMPTY){
-                SPI_A1_TX_interrupt(SPI_INT_DISABLE);
-            }
-            break;
-        default:    /* Default case */
-            break;
+#ifdef USE_INTERRUPTS_EUSCI_A1
+    #pragma vector=USCI_A1_VECTOR
+    __interrupt void USCI_A1_ISR(void){
+        RingBufferStatus spi_buffer_status;
+        switch(__even_in_range(UCA1IV,4)){
+            case 0x00:  /* No interrupt pending                 */
+                break;
+            case 0x02:  /* Data received, source: UCRXIFG flag  */
+                // push the received SPI byte in to buffer
+                ring_buffer_push(&SPI_A1_RX_buffer, UCA1RXBUF);
+                break;
+            case 0x04:  /* Transmit buffer empty, source: UCTXIFG flag  */
+                ring_buffer_pop(&SPI_A1_TX_buffer, (uint8_t *)&UCA1TXBUF_L);
+                spi_buffer_status = ring_buffer_status(&SPI_A1_TX_buffer);
+                if(spi_buffer_status == BUFFER_EMPTY){
+                    SPI_A1_TX_interrupt(SPI_INT_DISABLE);
+                }
+                break;
+            default:    /* Default case */
+                break;
+        }
     }
-}
+#endif
 /*********_END_OF_FILE_********/
