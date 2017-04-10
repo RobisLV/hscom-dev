@@ -9,7 +9,7 @@
 /***************************************************
  *
  **************************************************/
-uint16_t GPIO_port_read(uint16_t gpio_pin, uint8_t gpio_input_reg){
+uint16_t GPIO_read(uint16_t gpio_pin, uint8_t gpio_input_reg){
 	if(gpio_input_reg & gpio_pin){
 		return 1;
 	}
@@ -19,7 +19,7 @@ uint16_t GPIO_port_read(uint16_t gpio_pin, uint8_t gpio_input_reg){
 /***************************************************
  *
  **************************************************/
-uint16_t GPIO_port_write(uint16_t gpio_pin, volatile uint8_t *gpio_output_reg, gpio_setting gpio_write){
+uint16_t GPIO_write(uint16_t gpio_pin, volatile uint8_t *gpio_output_reg, gpio_setting gpio_write){
 	if(gpio_write == GPIO_LOW){
 		*gpio_output_reg&=~gpio_pin;
 	}

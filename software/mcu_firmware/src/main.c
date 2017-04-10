@@ -8,16 +8,23 @@
 #include "main.h"
 #define flash_mem_size 16
 /*  Main routine    */
+
+void toggle_mcu_status_led(){
+   GPIO_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_HIGH);
+   _delay_cycles(50000);
+   GPIO_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_LOW);
+   _delay_cycles(50000);
+}
+
 uint16_t main(void){
     MSP430_Init();
     uint8_t flash_memory[flash_mem_size] = {0};
-    //uint8_t spi_rx_byte = 0;
     uint8_t i;
+
+    // START OF LOOP
     while(1){
-    	GPIO_port_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_HIGH);
-    	_delay_cycles(50000);
-    	GPIO_port_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_LOW);
-    	_delay_cycles(50000);
+        toggle_mcu_status_led();
+
     	dp_display_text("HSCOM V1.0 Command Interface");
 
     	flash_read(0x00,flash_memory, flash_mem_size);
@@ -27,4 +34,5 @@ uint16_t main(void){
             flash_memory[i] = 0;
         }
     }
+    // END OF LOOP
 }
