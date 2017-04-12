@@ -27,6 +27,7 @@ typedef volatile struct {
 RingBufferStatus ring_buffer_push   (RingBuffer_t *ring_buffer, uint8_t data);
 RingBufferStatus ring_buffer_pop    (RingBuffer_t *ring_buffer, uint8_t *data);
 RingBufferStatus ring_buffer_status (RingBuffer_t *ring_buffer);
+RingBufferStatus ring_buffer_reset  (RingBuffer_t *ring_buffer);
 RingBufferStatus ring_buffer_peek   (RingBuffer_t *ring_buffer);
 
 #endif /* LIB_INCLUDE_RINGBUFFER_H_ */

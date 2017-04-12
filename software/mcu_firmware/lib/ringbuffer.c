@@ -9,6 +9,7 @@
 /***************************************************
  * Ring buffer read/write/check functions
  **************************************************/
+
 RingBufferStatus ring_buffer_push(RingBuffer_t *ring_buffer, uint8_t data){
     // next_address is where head will point to after this write
     uint16_t next_address = ring_buffer->head + 1;
@@ -64,4 +65,10 @@ RingBufferStatus ring_buffer_status(RingBuffer_t *ring_buffer){
         return BUFFER_FULL;
     }
     return BUFFER_OK;
+}
+
+RingBufferStatus ring_buffer_reset  (RingBuffer_t *ring_buffer){
+    ring_buffer->head = 0;
+    ring_buffer->tail = 0;
+    return BUFFER_EMPTY;
 }

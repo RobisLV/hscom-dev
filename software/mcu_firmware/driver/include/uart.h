@@ -114,6 +114,7 @@ uint16_t UART_A0_EUSCI_busy_flag_read      (void);
 uint16_t UART_A0_RX_buffer_read            (void);
 uint16_t UART_A0_TX_buffer_write           (uint8_t uart_byte);
 uint16_t UART_A0_byte_write                (uint8_t uart_byte);
+uint16_t UART_A0_array_write               (uint8_t *tx_array, uint8_t tx_array_size);
 
 /* Additionl UART functions */
 uint16_t UART_A0_break_sync_length         (uart_setting uart_delimiter_length);

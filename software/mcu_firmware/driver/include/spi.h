@@ -16,8 +16,8 @@
 #define USE_INTERRUPTS_EUSCI_A1
 
 // define RX and Tx buffer length (size in bytes)
-#define RX_data_length  32
-#define TX_data_length  32
+#define RX_data_length  64
+#define TX_data_length  64
 
 /*  Configuration settings used in eUSCIA0 SPI mode         */
 typedef volatile enum {
@@ -104,6 +104,9 @@ uint16_t SPI_A1_busy_flag_read             (void);
 #ifdef  USE_INTERRUPTS_EUSCI_A1
     uint16_t SPI_A1_byte_write             (uint8_t tx_data);
     uint16_t SPI_A1_byte_read              (uint8_t *rx_data);
+
+    uint16_t SPI_A1_TX_buffer_reset         (void);
+    uint16_t SPI_A1_RX_buffer_reset         (void);
 #else
     uint16_t SPI_A1_RX_buffer_read          (void);
     uint16_t SPI_A1_byte_read               (void);

@@ -210,6 +210,10 @@ uint16_t SPI_A0_busy_flag_read(void){
     return 0;
 }
 
+
+
+
+
 uint16_t SPI_A0_RX_buffer_read(void){
     return UCA0RXBUF;
 }
@@ -218,6 +222,51 @@ uint16_t SPI_A0_TX_buffer_write(uint8_t spi_byte){
     UCA0TXBUF = spi_byte;
     return EXIT_SUCCESS;
 }
+
+
+uint16_t SPI_A0_byte_read(void){
+    // wait if data transmission is in progress
+    while (!(UCA0IFG & UCTXIFG)){};
+    SPI_A0_RX_buffer_read();
+    // load one dummy byte into transmit register
+    UCA0TXBUF = 0x00;
+    while (!(UCA0IFG & UCTXIFG)){};
+    // return the receive buffer contents
+    while (!(UCA0IFG & UCRXIFG)){};
+    return UCA0RXBUF;
+}
+
+uint16_t SPI_A0_byte_write(uint8_t tx_data){
+    // wait if data transmission is in progress
+    while (!(UCA0IFG & UCTXIFG)){};
+    // load one byte of data into transmit register
+    UCA0TXBUF = tx_data;
+    // wait for the data transmission to complete
+    while (!(UCA0IFG & UCTXIFG)){};
+    return EXIT_SUCCESS;
+}
+
+uint16_t SPI_A0_data_write(uint8_t *tx_data, uint8_t data_length){
+    // check if data length is sane
+    if(data_length > 0){
+        while(data_length){
+            // wait if data transmission is in progress
+            //while (!(UCA1IFG & UCRXIFG)){};
+            // load one byte of data into transmit register
+            UCA0TXBUF = *tx_data;
+            // wait for the data transmission to complete
+            //while (!(UCA1IFG & UCRXIFG)){};
+
+            data_length--;
+            tx_data++;
+        }
+        return EXIT_SUCCESS;
+    }
+    else{
+        return EXIT_FAILURE;
+    }
+}
+
 
 uint16_t SPI_A0_RX_interrupt(SpiSetting_t spi_interrupt){
     if(spi_interrupt == SPI_INT_ENABLE){
@@ -467,6 +516,16 @@ uint16_t SPI_A1_RX_buffer_read(void){
         if(rx_status == BUFFER_EMPTY){
             return EXIT_FAILURE;
         }
+        return EXIT_SUCCESS;
+    }
+
+    uint16_t SPI_A1_TX_buffer_reset(void){
+        ring_buffer_reset(&SPI_A1_TX_buffer);
+        return EXIT_SUCCESS;
+    }
+
+    uint16_t SPI_A1_RX_buffer_reset(void){
+        ring_buffer_reset(&SPI_A1_RX_buffer);
         return EXIT_SUCCESS;
     }
 // used if interrupts are not used

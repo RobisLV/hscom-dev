@@ -331,6 +331,14 @@ uint16_t UART_A0_byte_write(uint8_t uart_byte){
     return 0;
 }
 
+uint16_t UART_A0_array_write(uint8_t *tx_array, uint8_t tx_array_size){
+    uint8_t index;
+    for(index=0; index < tx_array_size; index++){
+        UART_A0_byte_write(tx_array[index]);
+    }
+    return EXIT_SUCCESS;
+}
+
 uint16_t UART_A0_break_sync_length(uart_setting uart_delimiter_length){
     if(uart_delimiter_length == UART_DELIMITER_1BIT){
         MASK_CLEAR(UCA0ABCTL, UCDELIM0|UCDELIM1);
