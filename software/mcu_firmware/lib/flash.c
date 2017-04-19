@@ -19,10 +19,10 @@ uint16_t flash_data_read(uint32_t memory_address,uint8_t *storage_buffer, uint16
     SPI_A1_TX_buffer_reset();
     SPI_A1_RX_buffer_reset();
     // push "read" command to the SPI TX buffer
-    SPI_A1_byte_write(FLASH_OPCODE_DATA_READ);
-    SPI_A1_byte_write((uint8_t)memory_address);
-    SPI_A1_byte_write((uint8_t)(memory_address >>8));
+    SPI_A1_byte_write(FLASH_OPCODE_ARRAY_READ);
     SPI_A1_byte_write((uint8_t)(memory_address >>16));
+    SPI_A1_byte_write((uint8_t)(memory_address >>8));
+    SPI_A1_byte_write((uint8_t)memory_address);
     SPI_A1_byte_write(0xFF); // dummy byte
 
     // send 0's in order to keep CLK running
@@ -46,7 +46,7 @@ uint16_t flash_data_read(uint32_t memory_address,uint8_t *storage_buffer, uint16
     return EXIT_SUCCESS;
 }
 
-uint16_t flash_data_write(uint32_t memory_address,uint8_t *data_buffer, uint16_t data_buffer_size){
+uint16_t flash_data_write(uint32_t memory_address,uint8_t *data_buffer, uint8_t data_buffer_size){
     uint8_t index;
     // wait while TX and RX is complete
     while(SPI_A1_busy_flag_read()==TRUE){}
@@ -54,16 +54,14 @@ uint16_t flash_data_write(uint32_t memory_address,uint8_t *data_buffer, uint16_t
     SPI_A1_TX_buffer_reset();
     SPI_A1_RX_buffer_reset();
     // write the "flash write" command and address to TX buffer
-    SPI_A1_byte_write(FLASH_OPCODE_ENABLE_WRITE);
     SPI_A1_byte_write(FLASH_OPCODE_DATA_WRITE);
-    SPI_A1_byte_write((uint8_t)memory_address);
-    SPI_A1_byte_write((uint8_t)(memory_address >>8));
     SPI_A1_byte_write((uint8_t)(memory_address >>16));
+    SPI_A1_byte_write((uint8_t)(memory_address >>8));
+    SPI_A1_byte_write((uint8_t)memory_address);
     // write flash data to TX buffer
     for(index = 0;index < data_buffer_size; index++){
         SPI_A1_byte_write(data_buffer[index]);
     }
-    SPI_A1_byte_write(FLASH_OPCODE_DISABLE_WRITE);
     return EXIT_SUCCESS;
 }
 
@@ -113,7 +111,7 @@ uint16_t flash_write_enable(void){
     // clear the TX/RX SPI buffers
     SPI_A1_TX_buffer_reset();
     SPI_A1_RX_buffer_reset();
-    SPI_A1_byte_write(FLASH_OPCODE_ENABLE_WRITE);
+    SPI_A1_byte_write(FLASH_OPCODE_WRITE_ENABLE);
     return EXIT_SUCCESS;
 }
 
@@ -123,6 +121,34 @@ uint16_t flash_write_disable(void){
     // clear the TX/RX SPI buffers
     SPI_A1_TX_buffer_reset();
     SPI_A1_RX_buffer_reset();
-    SPI_A1_byte_write(FLASH_OPCODE_DISABLE_WRITE);
+    SPI_A1_byte_write(FLASH_OPCODE_WRITE_DISABLE);
     return EXIT_SUCCESS;
 }
+
+uint16_t flash_block_erase_4KB(uint32_t memory_address){
+    // wait while TX and RX is complete (CS is deaserted)
+    while(SPI_A1_busy_flag_read()==TRUE){}
+    // clear the TX/RX SPI buffers
+    SPI_A1_TX_buffer_reset();
+    SPI_A1_RX_buffer_reset();
+    // write 4KB block erase opcode and address to SPI
+    SPI_A1_byte_write(FLASH_OPCODE_BLOCK_ERASE_4KB);
+    SPI_A1_byte_write((uint8_t)(memory_address >>16));
+    SPI_A1_byte_write((uint8_t)(memory_address >>8));
+    SPI_A1_byte_write((uint8_t)memory_address);
+    return EXIT_SUCCESS;
+}
+
+uint16_t flash_sector_global_unprot(void){
+    // wait while TX and RX is complete (CS is deaserted)
+    while(SPI_A1_busy_flag_read()==TRUE){}
+    // clear the TX/RX SPI buffers
+    SPI_A1_TX_buffer_reset();
+    SPI_A1_RX_buffer_reset();
+    // write 4KB block erase opcode and address to SPI
+    SPI_A1_byte_write(FLASH_OPCODE_STATUS_1_WRITE);
+    SPI_A1_byte_write(0x00);
+    return EXIT_SUCCESS;
+}
+
+

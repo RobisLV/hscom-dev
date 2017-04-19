@@ -21,21 +21,21 @@
 //#define FLASH_OPCODE_ARRAY_READ       0x03    /* Fclk <= 50MHz            */
 //#define FLASH_OPCODE_ARRAY_READ       0x1B    /* Fclk <= 100MHz           */
 #define FLASH_OPCODE_DARRAY_READ        0x3B    /* Dual-Output Read Array   */
-#define FLASH_OPCODE_BLOCK_ERASE_4KB    0x20
-#define FLASH_OPCODE_BLOCK_ERASE_32KB   0x52
-#define FLASH_OPCODE_BLOCK_ERASE_64KB   0xD8
-#define FLASH_OPCODE_CHIP_ERASE         0x60
+#define FLASH_OPCODE_BLOCK_ERASE_4KB    0x20    /* Block Erase (4-KBytes)   */
+#define FLASH_OPCODE_BLOCK_ERASE_32KB   0x52    /* Block Erase (32-KBytes)  */
+#define FLASH_OPCODE_BLOCK_ERASE_64KB   0xD8    /* Block Erase (64-KBytes)  */
+#define FLASH_OPCODE_CHIP_ERASE         0x60    /* Chip Erase               */
 //#define FLASH_OPCODE_CHIP_ERASE       0xC7
-#define FLASH_OPCODE_DATA_WRITE         0x02
-#define FLASH_OPCODE_DDATA_WRITE        0xA2
-#define FLASH_OPCODE_WRITE_SUSPEND      0xB0
-#define FLASH_OPCODE_WRITE_RESUME       0xD0
+#define FLASH_OPCODE_DATA_WRITE         0x02    /*Byte/Page Program                */
+#define FLASH_OPCODE_DDATA_WRITE        0xA2    /* Dual-Input Byte/Page Program    */
+#define FLASH_OPCODE_WRITE_SUSPEND      0xB0    /* Program/Erase Suspend           */
+#define FLASH_OPCODE_WRITE_RESUME       0xD0    /* Program/Erase Resume            */
 
 /*  Protection commands                 */
-#define FLASH_OPCODE_ENABLE_WRITE       0x06
-#define FLASH_OPCODE_DISABLE_WRITE      0x04
-#define FLASH_OPCODE_SECTOR_PROTECT     0x36
-#define FLASH_OPCODE_SECTOR_UNPROTECT   0x39
+#define FLASH_OPCODE_WRITE_ENABLE       0x06    /* Write Enable                    */
+#define FLASH_OPCODE_WRITE_DISABLE      0x04    /* Write Disable                   */
+#define FLASH_OPCODE_SECTOR_PROTECT     0x36    /* Protect Sector                  */
+#define FLASH_OPCODE_SECTOR_UNPROTECT   0x39    /* Unprotect Sector                */
 #define FLASH_OPCODE_SECTOR_PROT_READ   0x3C    /* Read Sector Protection Regs     */
 
 /*  Security Commands                   */
@@ -79,16 +79,36 @@
 //#define FLASH_SREG2_RESERVED          0x40    /* Reserved for future use              */
 //#define FLASH_SREG2_RESERVED          0x80    /* Reserved for future use              */
 
+#define FLASH_SREG1_GLOBAL_SWP_BITS     0x3C
+
+/******************************************
+ *    AT25DF321A chip specific defines
+ ******************************************/
+#define PAGE_SIZE       256    /* Page size in bytes     */
+#define SECTOR_SIZE     64     /* Sector size in bytes   */
+#define SECTOR_COUNT    64     /* Number of sectors      */
+
+/* Status register struture */
+volatile struct {
+    uint8_t byte_1_write;   /* Status Write register 1  */
+    uint8_t byte_1_read;    /* Status read register 1   */
+    uint8_t byte_2_write;   /* Status Write register 1  */
+    uint8_t byte_2_read;    /* Status read register 1   */
+} FlashSREG;
+
 /************************************************************
 * SPI flash control functions
 ************************************************************/
 uint16_t flash_data_read        (uint32_t memory_address,uint8_t *storage_buffer, uint16_t storage_buffer_size);
 uint16_t flash_id_read          (uint8_t *storage_buffer, uint16_t storage_buffer_size);
-uint16_t flash_data_write       (uint32_t memory_address,uint8_t *data_buffer, uint16_t data_buffer_size);
+uint16_t flash_data_write       (uint32_t memory_address,uint8_t *data_buffer, uint8_t data_buffer_size);
 uint16_t flash_status_read      (void);
 uint16_t flash_write_enable     (void);
 uint16_t flash_write_disable    (void);
-uint16_t flash_erase_all        (void);
-uint16_t flash_erase_block      (void);
+uint16_t flash_chip_erase       (void);
+uint16_t flash_block_erase_4KB  (uint32_t memory_address);
+uint16_t flash_sector_global_unprot (void);
+
+/*  Miscellaneous functions              */
 
 #endif /* LIB_INCLUDE_FLASH_H_ */
