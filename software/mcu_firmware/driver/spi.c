@@ -6,7 +6,9 @@
  */
 #include "spi.h"
 
-// define and initialzie circular buffer objects
+/***************************************************
+*   Define and initialize eUSCI A1 SPI buffers
+ **************************************************/
 #ifdef USE_INTERRUPTS_EUSCI_A1
     // create Rx and TX arrays for storing data
     static uint8_t RX_data[RX_data_length] = {0};
@@ -27,8 +29,6 @@
         .tail = 0,
     };
 #endif
-
-    volatile uint8_t i;
 
 /***************************************************
 *   eUSCI A0 SPI function implementations

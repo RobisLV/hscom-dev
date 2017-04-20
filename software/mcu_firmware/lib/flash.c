@@ -125,6 +125,17 @@ uint16_t flash_write_disable(void){
     return EXIT_SUCCESS;
 }
 
+uint16_t flash_chip_erase(void){
+    // wait while TX and RX is complete (CS is deaserted)
+    while(SPI_A1_busy_flag_read()==TRUE){}
+    // clear the TX/RX SPI buffers
+    SPI_A1_TX_buffer_reset();
+    SPI_A1_RX_buffer_reset();
+    // write 4KB block erase opcode and address to SPI
+    SPI_A1_byte_write(FLASH_OPCODE_CHIP_ERASE);
+    return EXIT_SUCCESS;
+}
+
 uint16_t flash_block_erase_4KB(uint32_t memory_address){
     // wait while TX and RX is complete (CS is deaserted)
     while(SPI_A1_busy_flag_read()==TRUE){}
@@ -139,6 +150,35 @@ uint16_t flash_block_erase_4KB(uint32_t memory_address){
     return EXIT_SUCCESS;
 }
 
+uint16_t flash_block_erase_32KB(uint32_t memory_address){
+    // wait while TX and RX is complete (CS is deaserted)
+    while(SPI_A1_busy_flag_read()==TRUE){}
+    // clear the TX/RX SPI buffers
+    SPI_A1_TX_buffer_reset();
+    SPI_A1_RX_buffer_reset();
+    // write 4KB block erase opcode and address to SPI
+    SPI_A1_byte_write(FLASH_OPCODE_BLOCK_ERASE_32KB);
+    SPI_A1_byte_write((uint8_t)(memory_address >>16));
+    SPI_A1_byte_write((uint8_t)(memory_address >>8));
+    SPI_A1_byte_write((uint8_t)memory_address);
+    return EXIT_SUCCESS;
+}
+
+uint16_t flash_block_erase_64KB(uint32_t memory_address){
+    // wait while TX and RX is complete (CS is deaserted)
+    while(SPI_A1_busy_flag_read()==TRUE){}
+    // clear the TX/RX SPI buffers
+    SPI_A1_TX_buffer_reset();
+    SPI_A1_RX_buffer_reset();
+    // write 4KB block erase opcode and address to SPI
+    SPI_A1_byte_write(FLASH_OPCODE_BLOCK_ERASE_64KB);
+    SPI_A1_byte_write((uint8_t)(memory_address >>16));
+    SPI_A1_byte_write((uint8_t)(memory_address >>8));
+    SPI_A1_byte_write((uint8_t)memory_address);
+    return EXIT_SUCCESS;
+}
+
+
 uint16_t flash_sector_global_unprot(void){
     // wait while TX and RX is complete (CS is deaserted)
     while(SPI_A1_busy_flag_read()==TRUE){}
@@ -148,6 +188,7 @@ uint16_t flash_sector_global_unprot(void){
     // write 4KB block erase opcode and address to SPI
     SPI_A1_byte_write(FLASH_OPCODE_STATUS_1_WRITE);
     SPI_A1_byte_write(0x00);
+    // this command will reset the WP bit in SREG to '0'
     return EXIT_SUCCESS;
 }
 

@@ -79,21 +79,25 @@
 //#define FLASH_SREG2_RESERVED          0x40    /* Reserved for future use              */
 //#define FLASH_SREG2_RESERVED          0x80    /* Reserved for future use              */
 
-#define FLASH_SREG1_GLOBAL_SWP_BITS     0x3C
+#define FLASH_SREG1_GLOBAL_PROT         0x7F    /* Global protect all sectors           */
+#define FLASH_SREG1_GLOBAL_UNPROT       0x00    /* Global Unprotect all sectors         */
+#define FLASH_SREG1_SECTOR_PROT_LOCK    0xFF    /* Sector Protection Registers Locked   */
+#define FLASH_SREG1_SECTOR_PROT_UNLOCK  0x00    /* Sector Protection Registers unlocked */
 
 /******************************************
  *    AT25DF321A chip specific defines
  ******************************************/
-#define PAGE_SIZE       256    /* Page size in bytes     */
-#define SECTOR_SIZE     64     /* Sector size in bytes   */
-#define SECTOR_COUNT    64     /* Number of sectors      */
+#define PAGE_SIZE       256         /* Page size in bytes                 */
+#define SECTOR_SIZE     64          /* Sector size in bytes               */
+#define SECTOR_COUNT    64          /* Number of sectors                  */
+#define END_ADDRESS     0x3FFFFF    /* The last address in flash memory   */
 
 /* Status register struture */
 volatile struct {
     uint8_t byte_1_write;   /* Status Write register 1  */
     uint8_t byte_1_read;    /* Status read register 1   */
-    uint8_t byte_2_write;   /* Status Write register 1  */
-    uint8_t byte_2_read;    /* Status read register 1   */
+    uint8_t byte_2_write;   /* Status Write register 2  */
+    uint8_t byte_2_read;    /* Status read register 2   */
 } FlashSREG;
 
 /************************************************************
@@ -105,8 +109,12 @@ uint16_t flash_data_write       (uint32_t memory_address,uint8_t *data_buffer, u
 uint16_t flash_status_read      (void);
 uint16_t flash_write_enable     (void);
 uint16_t flash_write_disable    (void);
+
 uint16_t flash_chip_erase       (void);
 uint16_t flash_block_erase_4KB  (uint32_t memory_address);
+uint16_t flash_block_erase_32KB (uint32_t memory_address);
+uint16_t flash_block_erase_64KB (uint32_t memory_address);
+
 uint16_t flash_sector_global_unprot (void);
 
 /*  Miscellaneous functions              */

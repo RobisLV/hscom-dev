@@ -27,6 +27,7 @@ uint16_t main(void){
 
     flash_status_read();
     flash_sector_global_unprot();
+    flash_status_read();
     flash_write_enable();
     flash_status_read();
     //flash_block_erase_4KB(read_address);
