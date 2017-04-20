@@ -95,7 +95,7 @@ uint16_t UART_A0_transmit_address      (uart_setting uart_adress);
 uint16_t UART_A0_frame_break           (uart_setting uart_break);
 uint16_t UART_A0_reset                 (uart_setting uart_reset);
 uint16_t UART_A0_deglitch_time         (uart_setting uart_deglitch);
-uint16_t UART_A0_clock_prescale          (uint16_t UART_A0_prescale);
+uint16_t UART_A0_clock_prescale        (uint16_t UART_A0_prescale);
 uint16_t UART_A0_modulation_stage_1    (uint16_t UART_A0_modulation);
 uint16_t UART_A0_modulation_stage_2    (uint16_t UART_A0_modulation);
 uint16_t UART_A0_oversampling          (uart_setting uart_modulation);

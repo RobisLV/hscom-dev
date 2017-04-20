@@ -17,15 +17,15 @@
  *         AT25DF321A OP-CODES
  ******************************************/
 /*  Program (write) and Erase Commands  */
-#define FLASH_OPCODE_ARRAY_READ         0x0B    /* Fclk <= 85MHz            */
-//#define FLASH_OPCODE_ARRAY_READ       0x03    /* Fclk <= 50MHz            */
-//#define FLASH_OPCODE_ARRAY_READ       0x1B    /* Fclk <= 100MHz           */
-#define FLASH_OPCODE_DARRAY_READ        0x3B    /* Dual-Output Read Array   */
-#define FLASH_OPCODE_BLOCK_ERASE_4KB    0x20    /* Block Erase (4-KBytes)   */
-#define FLASH_OPCODE_BLOCK_ERASE_32KB   0x52    /* Block Erase (32-KBytes)  */
-#define FLASH_OPCODE_BLOCK_ERASE_64KB   0xD8    /* Block Erase (64-KBytes)  */
-#define FLASH_OPCODE_CHIP_ERASE         0x60    /* Chip Erase               */
-//#define FLASH_OPCODE_CHIP_ERASE       0xC7
+#define FLASH_OPCODE_ARRAY_READ         0x0B    /* Fclk <= 85MHz                   */
+//#define FLASH_OPCODE_ARRAY_READ       0x03    /* Fclk <= 50MHz                   */
+//#define FLASH_OPCODE_ARRAY_READ       0x1B    /* Fclk <= 100MHz                  */
+#define FLASH_OPCODE_DARRAY_READ        0x3B    /* Dual-Output Read Array          */
+#define FLASH_OPCODE_BLOCK_ERASE_4KB    0x20    /* Block Erase (4-KBytes)          */
+#define FLASH_OPCODE_BLOCK_ERASE_32KB   0x52    /* Block Erase (32-KBytes)         */
+#define FLASH_OPCODE_BLOCK_ERASE_64KB   0xD8    /* Block Erase (64-KBytes)         */
+#define FLASH_OPCODE_CHIP_ERASE         0x60    /* Chip Erase                      */
+//#define FLASH_OPCODE_CHIP_ERASE       0xC7    /* Alternative opcode              */
 #define FLASH_OPCODE_DATA_WRITE         0x02    /*Byte/Page Program                */
 #define FLASH_OPCODE_DDATA_WRITE        0xA2    /* Dual-Input Byte/Page Program    */
 #define FLASH_OPCODE_WRITE_SUSPEND      0xB0    /* Program/Erase Suspend           */
@@ -42,8 +42,8 @@
 #define FLASH_OPCODE_SECTOR_LOCK        0x33    /* Sector Lockdown                 */
 #define FLASH_OPCODE_FREEZ_LOCK_STATE   0x34    /* Freeze Sector Lockdown State    */
 #define FLASH_OPCODE_SECTOR_LOCK_READ   0x35    /* Read Sector Lockdown Registers  */
-#define FLASH_OPCODE_OTP_WRITE          0x3C    /* Program OTP Security Register   */
-#define FLASH_OPCODE_OTP_READ           0x3C    /* Read OTP Security Registe       */
+#define FLASH_OPCODE_OTP_WRITE          0x9B    /* Program OTP Security Register   */
+#define FLASH_OPCODE_OTP_READ           0x77    /* Read OTP Security Registe       */
 
 /*  Status Register Commands            */
 #define FLASH_OPCODE_STATUS_READ        0x05    /* Read Status Register            */

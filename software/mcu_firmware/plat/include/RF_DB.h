@@ -13,6 +13,7 @@
 #include "flash.h"
 #include "dpuser.h"
 #include "max2828.h"
+#include "scheduler.h"
 
 unsigned char	ADC_init		(unsigned char);
 uint16_t		ADC_get_sample	(unsigned char);
