@@ -32,7 +32,7 @@ typedef volatile enum{
  **************************************************/
 uint16_t    GPIO_read     (uint16_t gpio_pin, uint8_t gpio_input_reg);
 uint16_t    GPIO_write    (uint16_t gpio_pin, volatile uint8_t *gpio_output_reg, gpio_setting gpio_write);
-uint16_t    GPIO_toggle   (uint16_t gpio_pin, uint8_t gpio_input_reg);
+uint16_t    GPIO_toggle   (uint16_t gpio_pin, volatile uint8_t *gpio_output_reg, uint8_t gpio_input_reg);
 
 uint16_t    GPIO_mode_set      (uint16_t gpio_pin, volatile uint8_t *gpio_dir_reg, gpio_setting gpio_mode);
 uint16_t    GPIO_pull_set      (uint16_t gpio_pin, volatile uint8_t *gpio_pullup_reg, gpio_setting gpio_write);

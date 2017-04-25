@@ -32,6 +32,18 @@ uint16_t GPIO_write(uint16_t gpio_pin, volatile uint8_t *gpio_output_reg, gpio_s
 	return EXIT_SUCCESS;
 }
 
+uint16_t GPIO_toggle(uint16_t gpio_pin, volatile uint8_t *gpio_output_reg, uint8_t gpio_input_reg){
+    // if the pin is high, set it to low
+    if(gpio_input_reg & gpio_pin){
+        *gpio_output_reg&=~gpio_pin;
+    }
+    // if it is low, set it to high
+    else{
+        *gpio_output_reg|=gpio_pin;
+    }
+    return EXIT_SUCCESS;
+}
+
 /***************************************************
  *
  **************************************************/

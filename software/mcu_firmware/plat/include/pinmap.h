@@ -7,6 +7,7 @@
 // Status LED (D1)
 #define MCU_LED_STATUS_PIN	BIT2
 #define MCU_LED_STATUS_PORT	ADDRESS_OF(P2OUT)
+#define MCU_LED_STATUS_IN   P2IN
 #define MCU_LED_STATUS_DIR	ADDRESS_OF(P2DIR)
 
 // RS485 connection to bus communication line

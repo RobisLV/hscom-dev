@@ -23,4 +23,9 @@
 #define FALSE   0
 #define TRUE    !FALSE
 
+/* Non-blocking code state machine macros   */
+#define NON_BLOCKING_CODE_BEGIN     static uint8_t state = 0; switch(state){ case 0:
+#define NON_BLOCKING_CODE_WAIT(x)   state++; case 1: if(x == 0){break;} state++; case 2:
+#define NON_BLOCKING_CODE_END       state = 0; break; default: break;}
+
 #endif /* COMMON_MARCOS_H_ */

@@ -1,7 +1,7 @@
 //Arturs Orbidans, for Master's thesis
 //Functions to control ADC (get current sensor output) 
 
-#include "RF_DB.h"
+#include <hscom.h>
 
 //Menu command numbers:
 #define bin_mode        1
@@ -285,6 +285,21 @@ uint16_t SPI_A1_init(void){
     return EXIT_SUCCESS;
 }
 
+uint16_t timer_A0_init(void){
+    timer_A0_clock_source(TIMER_CLK_SOURCE_ACLK);
+    // select timer clock divider
+    timer_A0_clock_divider(TIMER_CLK_DIV_1);
+    // select the operating mode of timer
+    timer_A0_mode(TIMER_MODE_COUNT_UP_CONT);
+    // set timer capture/compare value
+    timer_A0_CC_value_write(0x00FF);
+    // enable capture/compare interrupts on TA0
+    timer_A0_CC_interrupt(TIMER_INT_ENABLE);
+    // set extended clock divider value
+    timer_A0_clock_divider_exp(TIMER_EXTENDED_DIV_1);
+    return EXIT_SUCCESS;
+}
+
 uint16_t MSP430_Init(void){
     // Stop watchdog timer
     WDTCTL = WDTPW | WDTHOLD;
@@ -298,11 +313,18 @@ uint16_t MSP430_Init(void){
     SPI_A1_init();
     // Disable the GPIO power-on default high-impedance mode to activate previously configured port settings
     PM5CTL0 &= ~LOCKLPM5;
+    // initialize timer A0
+    timer_A0_init();
     // global interrupt enable
     __bis_SR_register(GIE);
     dp_delay(500);
     // return success
     return EXIT_SUCCESS;
+}
+
+void MCU_LED_status_toggle(void){
+   GPIO_toggle(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, MCU_LED_STATUS_IN);
+   _delay_cycles(50000);
 }
 
 unsigned char osc_set (unsigned char val)
@@ -319,19 +341,6 @@ unsigned char SPI_RCS_send_byte(unsigned char data)
 	while (UCB0STATW & UCBUSY) {};
 	UCB0TXBUF = data;
 	while (UCB0STATW & UCBUSY) {};
-
-	return 1;
-}
-
-
-//Timer B0 counts up to 10; needed for timing of the pause in
-uint16_t TMR_B0_init (void)
-{
-	TB0R = 0;
-	TB0CTL = TBSSEL_1 | MC_1 | ID_3 ; //Clk - ACLK, DIV 8
-	TB0CCR0 = 10;
-	TB0CCTL0 = CCIE;				 //Enale interrupts
-	TB0EX0 = TBIDEX_7;				 //Clk DIV 8
 
 	return 1;
 }

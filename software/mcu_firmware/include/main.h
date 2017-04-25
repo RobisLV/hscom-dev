@@ -9,7 +9,6 @@
 #define INCLUDE_MAIN_H_
 
 #include <msp430.h>
-#include "RF_DB.h"
-#include "spi.h"
+#include "../plat/include/hscom.h"
 
 #endif /* INCLUDE_MAIN_H_ */

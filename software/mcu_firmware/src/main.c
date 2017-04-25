@@ -10,12 +10,14 @@
 #define FLASH_ID_SIZE 4
 /*  Main routine    */
 
-void toggle_mcu_status_led(){
-   GPIO_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_HIGH);
-   _delay_cycles(50000);
-   GPIO_write(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, GPIO_LOW);
-   _delay_cycles(50000);
+void blinker(void){
+    int x=0;
+    NON_BLOCKING_CODE_BEGIN
+    NON_BLOCKING_CODE_WAIT(x)
+    GPIO_toggle(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, MCU_LED_STATUS_IN);
+    NON_BLOCKING_CODE_END
 }
+
 
 uint16_t main(void){
     MSP430_Init();
@@ -23,7 +25,7 @@ uint16_t main(void){
     uint8_t flash_id[FLASH_ID_SIZE] = {0};
     uint8_t flash_write_data[] = {0xAA,0xE3,0xF1,0xAB};
     uint32_t read_address = 0;
-    uint32_t write_address = 0;
+    //uint32_t write_address = 0;
 
     flash_status_read();
     flash_sector_global_unprot();
@@ -35,7 +37,7 @@ uint16_t main(void){
     flash_write_disable();
     flash_status_read();
     while(1){   // START OF LOOP
-        toggle_mcu_status_led();
+        MCU_LED_status_toggle();
 
     	dp_display_text("HSCOM V1.0 Command Interface");
 
@@ -44,6 +46,8 @@ uint16_t main(void){
         UART_A0_array_write(flash_memory, FLASH_MEM_SIZE);
 
         flash_id_read(flash_id, FLASH_ID_SIZE);
+
+        blinker();
 
         UART_A0_array_write(flash_id, FLASH_ID_SIZE);
 

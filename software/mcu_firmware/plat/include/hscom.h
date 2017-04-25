@@ -1,7 +1,7 @@
 //Arturs Orbidans, for Master's thesis
 //RF daughterboard's functions
-#ifndef PLAT_INCLUDE_RF_MB_H_
-#define PLAT_INCLUDE_RF_MB_H_
+#ifndef PLAT_INCLUDE_HSCOM_H_
+#define PLAT_INCLUDE_HSCOM_H_
 // Standard libraries
 #include <msp430.h>
 #include <stdint.h>
@@ -10,6 +10,7 @@
 #include "clock.h"
 #include "uart.h"
 #include "spi.h"
+#include "timer.h"
 #include "flash.h"
 #include "dpuser.h"
 #include "max2828.h"
@@ -31,9 +32,10 @@ uint16_t    GPIO_init       (void);     /* Initialize GPIOs             */
 uint16_t    CS_init			(void);     /* Initialize clock system      */
 uint16_t    UART_A0_init    (void);     /* Initialize eUSCI UART A0     */
 uint16_t    SPI_A1_init     (void);     /* Initialize eUSCI A1          */
-uint16_t    TMR_B0_init     (void);     /* Initialize timer B0          */
-
+uint16_t    timer_A0_init   (void);     /* Initialize timer A0          */
 uint16_t    MSP430_Init     (void);     /* Call all other MSP430 inits  */
+
+void        MCU_LED_status_toggle   (void); /* Toggle MCU status LED    */
 
 unsigned char 	osc_set 						(unsigned char);
 unsigned char	SPI_RCS_send_byte				(unsigned char);
