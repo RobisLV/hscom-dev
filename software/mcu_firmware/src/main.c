@@ -11,6 +11,5 @@
 uint16_t main(void){
     MSP430_Init();
     while(1){
-
     }
 }
