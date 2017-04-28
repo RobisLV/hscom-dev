@@ -1,1 +1,1 @@
-"./driver/clock.obj" "./driver/gpio.obj" "./driver/uart.obj" "./lib/dpuser.obj" "./lib/sw_uart.obj" "./plat/RF_DB.obj" "./src/main.obj" "../link/lnk_msp430fr5969.cmd" -llibmpu_init.a -llibmath.a -llibc.a 
+"./driver/clock.obj" "./driver/gpio.obj" "./driver/spi.obj" "./driver/timer.obj" "./driver/uart.obj" "./lib/dpuser.obj" "./lib/flash.obj" "./lib/max2828.obj" "./lib/ringbuffer.obj" "./lib/scheduler.obj" "./lib/sw_uart.obj" "./plat/hscom.obj" "./src/main.obj" "../link/lnk_msp430fr5969.cmd" -llibmpu_init.a -llibmath.a -llibc.a 
