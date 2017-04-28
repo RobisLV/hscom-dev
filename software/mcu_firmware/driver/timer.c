@@ -288,9 +288,11 @@ uint16_t timer_A0_CC_value_write(uint16_t timer_cc_value){
 
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void TIMER0_A0_ISR(void){
-    int a = 0;
+    volatile int a = 0;
+    GPIO_toggle(MCU_LED_STATUS_PIN, MCU_LED_STATUS_PORT, MCU_LED_STATUS_IN);
     switch(__even_in_range(TA0IV,8)){
         case 0x00:  /* No interrupt pending                             */
+            a++;
             break;
         case 0x02:  /* Capture/compare 1; Interrupt Flag: TAxCCR1 CCIFG */
             a++;

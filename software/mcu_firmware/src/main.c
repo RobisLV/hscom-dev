@@ -37,7 +37,7 @@ uint16_t main(void){
     flash_write_disable();
     flash_status_read();
     while(1){   // START OF LOOP
-        MCU_LED_status_toggle();
+        //MCU_LED_status_toggle();
 
     	dp_display_text("HSCOM V1.0 Command Interface");
 

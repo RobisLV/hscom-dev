@@ -289,14 +289,16 @@ uint16_t timer_A0_init(void){
     timer_A0_clock_source(TIMER_CLK_SOURCE_ACLK);
     // select timer clock divider
     timer_A0_clock_divider(TIMER_CLK_DIV_1);
-    // select the operating mode of timer
-    timer_A0_mode(TIMER_MODE_COUNT_UP_CONT);
     // set timer capture/compare value
-    timer_A0_CC_value_write(0x00FF);
+    timer_A0_CC_value_write(0x4B4C);    // ACLK=5Mhz/128=39062.5Hz
     // enable capture/compare interrupts on TA0
     timer_A0_CC_interrupt(TIMER_INT_ENABLE);
     // set extended clock divider value
     timer_A0_clock_divider_exp(TIMER_EXTENDED_DIV_1);
+    // clear timer value
+    timer_A0_clear();
+    // select the operating mode of timer
+    timer_A0_mode(TIMER_MODE_COUNT_UP);
     return EXIT_SUCCESS;
 }
 
@@ -429,6 +431,7 @@ void print_bin(uint16_t value, uint8_t bits){
         }
     }
 }
+
 /*
 unsigned char UART_read_buffer (void)
 {

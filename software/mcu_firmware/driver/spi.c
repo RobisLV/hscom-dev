@@ -614,6 +614,7 @@ uint16_t SPI_A1_TX_interrupt_read(void){
     return 0;
 }
 
+
 #ifdef USE_INTERRUPTS_EUSCI_A1
     #pragma vector=USCI_A1_VECTOR
     __interrupt void USCI_A1_ISR(void){
