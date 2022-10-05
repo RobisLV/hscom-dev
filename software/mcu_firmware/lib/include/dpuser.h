@@ -81,10 +81,14 @@ Parties with respect to the subject matter herein and supersedes all other
 communications whether written or oral.
 */
 
-#ifndef INC_DPUSER_H
-#define INC_DPUSER_H
+#ifndef LIB_INCLUDE_DPUSER_H
+#define LIB_INCLUDE_DPUSER_H
 
 #include <MSP430.h>
+//#include "dpalg.h"
+//#include "dputil.h"
+#include "stdint.h"
+
 /*************** Hardware related constants *****************************/
 /*
  * User Attention: 
@@ -143,8 +147,8 @@ typedef   signed int   DPINT;
 typedef   signed long  DPLONG;
 
 #define DPNULL ((void*)0)
-#define TRUE 1U
-#define FALSE 0U
+//#define TRUE 1U
+//#define FALSE 0U
 
 #define GPIO_SEL 1u
 #define IAP_SEL 2u
@@ -169,14 +173,14 @@ void dp_delay(DPULONG microseconds);
 /******************************************************************************/
 /* users should define their own functions to replace the following functions */
 /******************************************************************************/
-void dp_display_text(DPCHAR *text);
+void dp_display_text(char *text);
 void dp_display_value(DPULONG value,DPUINT descriptive);
-void dp_display_array(DPUCHAR *value,DPUINT bytes, DPUINT descriptive);
+void dp_display_array(uint8_t *value,int16_t bytes, int16_t descriptive);
 
 void set_jtag_pins(void);
 void itoa(long unsigned int, char*, int);
 int atoi(unsigned char*);
-void uart_a0_init(void);
+//void uart_a0_init(void);
 void uart_a0_send_byte (DPCHAR);
 void uart_a1_read_file(long , unsigned char*, long);
 void dp_display_text_a1(char *);
@@ -187,6 +191,6 @@ void uart_a1_init(void);
 
 
 //#ifdef ENABLE_FILE_SYSTEM
-#endif /* INC_DPUSER_H */
+#endif /* INCLUDE_DPUSER_H */
 
 

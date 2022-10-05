@@ -13,9 +13,6 @@
 /****************************************************************************/
 
 #include "dpuser.h"
-//#include "dpalg.h"
-//#include "dputil.h"
-
 //Buffer for UART A1
 //For firmware paging purposes
 #define rx_a1_buffer_size 128u
@@ -73,21 +70,23 @@ int atoi(unsigned char* p)
 }
 
 //Init UART A0, default baud 9600	
+/*
 void uart_a0_init(void)
 {
 	//Baud: 9600 at 1 Mhz master clock!
     P2SEL1 |= BIT0 | BIT1;			// USCI_A0 UART operation
+    //GPIO_mode_set(MCU_RS485_RO_PIN, MCU_RS485_RO_PORT, INPUT);
     P2SEL0 &= ~(BIT0 | BIT1);
-    UCA0CTLW0 = UCSWRST;			// Put eUSCI in reset
-    UCA0CTLW0 = UCSSEL_2;			//Clock source: master clock (SMCLK)
-    UCA0CTLW1 = UCGLIT_3;			//Glitch settings
+
+    UCA0CTLW0 |= UCSWRST;			// Put eUSCI in reset
+    UCA0CTLW0 |= UCSSEL_2;			//Clock source: master clock (SMCLK)
+    UCA0CTLW1 |= UCGLIT_3;			//Glitch settings
     UCA0BRW = 52;					//Set baud rate register
-    UCA0MCTLW_H = 0x49;
-    UCA0MCTLW = UCOS16 | (1<<4);
+    UCA0MCTLW = UCOS16 | UCBRF_1 | (0x49 << 8);
     UCA0IE = UCRXIE;
     UCA0CTLW0 &= ~UCSWRST;			// Initialize eUSCI
 }
-
+*/
 //Init UART A1, default baud 9600
 void uart_a1_init(void)
 {
@@ -269,12 +268,10 @@ void dp_delay(DPULONG microseconds)
 
 #ifdef ENABLE_DISPLAY
 
-void dp_display_text(DPCHAR *text)
-{
-	while (*text)
-	{
+void dp_display_text(char *text){
+	while (*text){
 		uart_a0_send_byte(*text++);
-	};
+	}
 }
 
 void dp_display_value(DPULONG value,DPUINT descriptive)
@@ -293,11 +290,11 @@ void dp_display_value(DPULONG value,DPUINT descriptive)
         itoa(value, value_text, 10);
     }
 
-    dp_display_text (value_text);
+    dp_display_text(value_text);
 }
 
 
-void dp_display_array(DPUCHAR *value,DPUINT bytes, DPUINT descriptive)
+void dp_display_array(uint8_t *value,int16_t bytes, int16_t descriptive)
 {
     int idx;
     for (idx=bytes;idx>0;idx--)
@@ -361,6 +358,7 @@ void uart_a1_rx_int_handle(unsigned char in_value)
 }
 
 //Interrupt vector for UART A1 data RX
+/*
 #pragma vector=USCI_A1_VECTOR
 __interrupt void USCI_A1_ISR(void)
 {
@@ -375,5 +373,5 @@ __interrupt void USCI_A1_ISR(void)
 	    case USCI_UART_UCTXCPTIFG: break;
 	  }
 }
-
+*/
 #endif
