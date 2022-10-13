@@ -20,22 +20,6 @@
 #define menu            0
 
 unsigned char ADC_init(unsigned char pin){
-	/*
-	//Analogue inputs P1.0 and P1.1 are used
-	P1SEL1 |= (BIT0 |BIT1);                          
-	P1SEL0 |= (BIT0 |BIT1);
-	
-	// Configure ADC12
-	ADC12CTL0 = ADC12SHT0_2 | ADC12ON;        	// Sampling time, S&H=16, ADC12 on
-	ADC12CTL1 = ADC12SHP;                     	// Use sampling timer
-	ADC12CTL2 |= ADC12RES_2;                  	// 12-bit conversion results
-	if (pin == 0) ADC12MCTL0 |= ADC12INCH_0;	// ADC input select; Vref=AVCC
-		else if (pin == 1) ADC12MCTL0 |= ADC12INCH_1;
-			else return 0;
-
-	return 1;
-	*/
-
 	//Analogue inputs P1.0 and P1.1 are used
 	P1SEL1 |= (BIT0 |BIT1);
 	P1SEL0 |= (BIT0 |BIT1);
@@ -53,13 +37,6 @@ unsigned char ADC_init(unsigned char pin){
 
 uint16_t ADC_get_sample(unsigned char pin)
 {
-	/*
-	ADC12CTL0 |= ADC12ENC | ADC12SC;
-	while (!(ADC12CTL1&ADC12BUSY)) {};
-	if (pin == 0) return ADC12MEM0;
-		else if (pin == 1) return ADC12MEM1;
-			else return 0;
-			*/
 	ADC12CTL0 |= ADC12ENC | ADC12SC;
 	//while (!(ADC12CTL1&ADC12BUSY)) {};
 	if (pin==0)
@@ -81,66 +58,6 @@ unsigned char ADC_disable(unsigned char pin)
 	ADC12CTL0 = 0; 
 	return 1;
 }
-
-//unsigned char DAC_set_value(unsigned char data_msb, unsigned char data_lsb)
-//{
-//	static const unsigned char dac_register=0b00001111;
-//
-//	if (data_msb>15) return 0b00011110;
-//	SPI_SS_DAC_port &= ~SPI_SS_DAC_pin;
-//	//SPI_RCS_send_byte((dac_register<<4)|((data_msb&0b11110000)>>4));
-//	SPI_RCS_send_byte((dac_register<<4)|((data_msb&0b00001111)));
-//
-//	SPI_RCS_send_byte(data_lsb);
-//	SPI_SS_DAC_port |= SPI_SS_DAC_pin;
-//
-//	store_dac(&data_msb,&data_lsb);
-//
-//	return 0b00011111;
-//}
-
-//unsigned char DAC_set_stored_value(void)
-//{
-//	DAC_set_value(
-//		get_stored_settings(index_dac_msb),
-//		get_stored_settings(index_dac_lsb));
-//	return 1;
-//}
-
-
-//unsigned char DAC_gset_set (unsigned char val)
-//{
-//	if (val == 1) DAC_gset_port |= DAC_gset_pin; else
-//		if (val == 0 )DAC_gset_port &= ~ DAC_gset_pin; else
-//			return 0;
-//	return 1;
-//}
-
-//unsigned char DAC_pdv_set (unsigned char val)
-//{
-//	if (val == 1) DAC_pdv_port |= DAC_pdv_pin; else
-//		if (val==0 )DAC_pdv_port &= ~ DAC_pdv_pin; else
-//			return 0;
-//	return 1;
-//}
-
-//unsigned char DAC_pd_set (unsigned char val)
-//{
-//	if (val == 1) DAC_pd_port |= DAC_pd_pin; else
-//		if (val==0 )DAC_pd_port &= ~ DAC_pd_pin; else
-//			return 0;
-//	return 1;
-//}
-
-/*
-unsigned char DAC_standby_set (unsigned char val)
-{
-	if (val == 1) DAC_standby_port |= DAC_standby_pin; else
-		if (val==0 )DAC_standby_port &= ~ DAC_standby_pin; else
-			return 0;
-	return 1;
-}
-*/
 
 struct chip_conf
 {
@@ -372,31 +289,7 @@ void display_error(void)
 {
 	dp_display_text("\r\n--->Error");
 }
-/*
-uint16_t get_number(char mode){
-	unsigned char j=0;
-    unsigned char input_array[16]={0};
-    //for (j=0;j<16;j++) input_array[j]=0;
-    unsigned char input_char = 0;
-    //j=0;
 
-	while(1)
-	{
-		_BIS_SR(LPM0_bits + GIE); 				//GOTO sleep
-	    input_char = UART_read_buffer();
-	    if (input_char != 13) input_array[j] = input_char; else
-	    {
-	    	input_array[j] = '\0';
-	    	break;
-	    }
-	    j++;
-	}
-	if (mode == DEC)
-		return atoi(input_array);
-	else
-		return bin_to_int(input_array);
-}
-*/
 //Convert char array representing binary number into uint16_t
 uint16_t  bin_to_int(unsigned char *array){
 	uint16_t res = 0;

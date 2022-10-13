@@ -30,3 +30,7 @@
 
 # Debug files
 *.dSYM/
+
+#Folders
+software/mcu_firmware/Debug/
+.vscode
