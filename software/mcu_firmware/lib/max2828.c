@@ -109,33 +109,7 @@ unsigned char MAX2828_enable_set(unsigned char val)
     } else
     return 0;
 }
-/*
-unsigned char MAX2828_TX_set_power(unsigned char value)
-{
-    unsigned char status_code = 0;
-    if (value>127){
-        status_code = 0b01000110;
-    }
-    else{
-        if (value &0x1) MAX2828_pwr_set_port1 |= MAX2828_pwr_set_pin1; else MAX2828_pwr_set_port1 &= ~MAX2828_pwr_set_pin1;
-        value = value>>1;
-        if (value &0x1) MAX2828_pwr_set_port2 |= MAX2828_pwr_set_pin2; else MAX2828_pwr_set_port2 &= ~MAX2828_pwr_set_pin2;
-        value = value>>1;
-        if (value &0x1) MAX2828_pwr_set_port3 |= MAX2828_pwr_set_pin3; else MAX2828_pwr_set_port3 &= ~MAX2828_pwr_set_pin3;
-        value = value>>1;
-        if (value &0x1) MAX2828_pwr_set_port4 |= MAX2828_pwr_set_pin4; else MAX2828_pwr_set_port4 &= ~MAX2828_pwr_set_pin4;
-        value = value>>1;
-        if (value &0x1) MAX2828_pwr_set_port5 |= MAX2828_pwr_set_pin5; else MAX2828_pwr_set_port5 &= ~MAX2828_pwr_set_pin5;
-        value = value>>1;
-        if (value &0x1) MAX2828_pwr_set_port6 |= MAX2828_pwr_set_pin6; else MAX2828_pwr_set_port6 &= ~MAX2828_pwr_set_pin6;
-        value = value>>1;
-        if (value &0x1) MAX2828_pwr_set_port7 |= MAX2828_pwr_set_pin7; else MAX2828_pwr_set_port7 &= ~MAX2828_pwr_set_pin7;
-        store_max2828_power_settings(&value);
-        status_code = 0b01000111;
-    }
-    return status_code;
-}
-*/
+
 //unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned char data_msb,unsigned char data_lsb)
 unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned long int data)
 {
@@ -162,10 +136,6 @@ unsigned char MAX2828_set_tegister_values(unsigned char adress, unsigned long in
         *INT_SPI_SCK_PORT ^= INT_SPI_SCK_PIN;
     }
 
-//  SPI_RCS_send_byte(byte1);
-//  SPI_RCS_send_byte(byte2);
-//  SPI_RCS_send_byte(byte3);
-
     *INT_SPI_TXRX_SS_PORT |= INT_SPI_TXRX_SS_PIN;
 //  TA1CCR1 = 0;
     *INT_SPI_MOSI_PORT &= ~INT_SPI_MOSI_PIN;
@@ -182,13 +152,7 @@ unsigned char MAX2828_set_GPIO_stored (void)
     MAX2828_enable_set(temp&0b10>>1);
     return 1;
 }
-/*
-unsigned char MAX2828_pwr_set_stored (void)
-{
-    MAX2828_TX_set_power(get_stored_settings(index_max2828_pwr));
-    return 1;
-}
-*/
+
 unsigned char MAX2828_set_registers_stored (void)
 {
     unsigned char i = 0;
